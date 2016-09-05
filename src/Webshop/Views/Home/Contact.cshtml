@@ -1,8 +1,25 @@
-﻿@{
+﻿@model Webshop.ViewModels.ContactViewModel
+@{
     ViewData["Title"] = "Contact";
 }
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Namn
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.Names)
+    {
+        <tr>
+            <td>@Html.DisplayFor(i => item)</td>
+        </tr>
+    }
+</table>
 
 <address>
     One Microsoft Way<br />
