@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@*@using Microsoft.AspNetCore.Identity*@
+@using Webshop
+@*@model IEnumerable<Webshop.Models.ArticleModel>*@
+
+@*@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager*@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,16 +14,21 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link href="~/lib/animate.css/animate.css" rel="stylesheet" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+    <!--await Html.PartialAsync("_LoginPartial")-->
+    <div class="nav-white navbar-fixed-top end-border">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -26,28 +37,267 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Webshop</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Superprodukter</a>
             </div>
+
+
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                <ul class="nav-white navbar-nav">
+                    <li class="active">
+                        <a href="#">Productum Ipsum</a>
+                    </li>
+                    <li class="">
+                        <a href="">Lorem Kundsum</a>
+                    </li>
+                    @*@if (SignInManager.IsSignedIn(User))
+                    {*@
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/login">
+                                <span>Mina Sidor</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @*<li class="disabled">
+                                     <a asp-area="" asp-controller="Account" asp-action="Login">
+                                     <span class="fa fa-sign-in icon-padding-right"></span>Logga in
+                                     </a>
+                                 </li>*@
+                                @*<li class="dropdown"><a><span class="fa fa-user lime-green"></span> @UserManager.GetUserName(User)!</a></li>*@
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#"><span class="fa fa-history icon-padding-right"></span>Orderhistorik</a>
+                                </li>
+                                <li>
+                                    <a href="/rma"><span class="fa fa-chain-broken icon-padding-right"></span>Ärenden & reklamationer</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="Manage"><span class="fa fa-cogs icon-padding-right"></span>Kontoinställningar</a></li>
+                                <li>
+                                    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                                        @*<a asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm"><span class="fa fa-sign-in icon-padding-right"></span>Logga Ut</a>*@
+                                        @*<span><i class="fa fa-sign-out icon-padding-right"></i>@await ActionLink("Logga Ut", "LogOff", "Account")</span>*@
+                                        <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-sign-out icon-padding-right" type="submit" id="logoutForm"></span>Logga Ut</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+
+                    @*}
+                    else
+                    {
+                        <li class="dropdown">
+                            <a asp-area="" asp-controller="Account" asp-action="Login"><span class="fa fa-sign-in icon-padding-right"></span>Logga in</a>
+                        </li>
+                    }*@
                 </ul>
+
+
+                <div id="miniCart">
+                    <ul class="nav-white navbar-nav pull-right" id="ko-miniCartContainer">
+                        <li class="dropdown pull-right cart" data-bind="dropdown: TotalQuantity()">
+                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart" data-bind="click: loadCartItems">
+                                <label class="hidden-xs hidden-sm" >Kundvagnen är tom</label>
+                                <label class="cartValue">0 kr</label>
+                                <span class="text-muted lowerText" data-bind="text: ShowPricesInclOrExclVat">Inkl. moms</span>
+                            </a>
+                            <ul class="dropdown-menu keep-open">
+                                <li data-bind="css: inProgressClass" class="hide"></li>
+                                <li class="productList-small container" data-bind="template: { name: 'miniCartItem-template', foreach: Items }"></li>
+                                <li class="col-xs-12 text-center padding-x-off">
+                                    <a class="btn btn-block btn-branded toCheckout" href="/shoppingcart">
+                                       @*await Component.InvokeAsync("Cart")*@
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- SHOPINGCART-->
+                @*<script type="text/html" id="miniCartItem-template">
+                    <div class="itemRow row">
+                        <div class="col-xs-2">
+                            <a data-bind="visible: !RemoveOnly(), attr: { href: Product.ProductUrl, title: Product.DisplayName }">
+                                <img data-bind="attr: { 'src': Product.SmallImageUrl, alt: Product.DisplayName }" alt="" />
+                            </a>
+                            <img data-bind="visible: RemoveOnly, attr: { 'src': Product.SmallImageUrl, alt: Product.DisplayName }" alt="" />
+                        </div>
+                        <div class="col-xs-6">
+                            <a data-bind="visible: !RemoveOnly(), attr: { href: Product.ProductUrl, title: Product.DisplayName }">
+                                <span class="text-muted" data-bind="text: Product.Manufacturer"></span> <strong data-bind="text: Product.DisplayName"></strong> <span class="text-muted" data-bind="text: Product.Specification"></span>
+                            </a>
+                            <div data-bind="visible: RemoveOnly"><span class="text-muted" data-bind="text: Product.Manufacturer"></span> <strong data-bind="text: Product.DisplayName"></strong> <span class="text-muted" data-bind="text: Product.Specification"></span></div>
+                        </div>
+                        <div class="col-xs-2 text-center nowrap-simple">
+                            <!-- ko if: Product.AvailableForSale() && !RemoveOnly() -->
+                            <a href="#" class="btn btn-xs" data-bind="click: $parent.removeOne, attr: { title: DisplayMinQuantity() }" data-quantity-modifier="true">&minus;</a>
+                            <span data-bind="text: Quantity"></span>
+                            <a href="#" class="btn btn-xs" data-bind="click: $parent.addOne, attr: { title: DisplayMaxQuantity() }" data-quantity-modifier="true">+</a>
+                            <!-- /ko -->
+                            <!-- ko if: !Product.AvailableForSale() || RemoveOnly() -->
+                            <a href="#" class="btn btn-xs" data-bind="click: $parent.removeAll">Ta bort</a>
+                            <!-- /ko -->
+                        </div>
+                        <div class="col-xs-2 text-right nowrap" data-bind="text: RowPrice, highlight: RowPrice, css: { 'text-muted': !Product.AvailableForSale() }"></div>
+                    </div>
+                    <div class="hidden accessories row" data-bind="visible: Product.AvailableForSale() && Accessories().length > 0, css: { hidden: false }, template: { name: 'miniCartAccessory-template', foreach: Accessories }"></div>
+                    <div class="hidden accessories row" data-bind="visible: !Product.AvailableForSale(), css: { hidden: false }">
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-10"><strong data-bind="text: Product.LifeCycleStateMessage"></strong></div>
+                    </div>
+                </script>*@
+
+                <script type="text/html" id="miniCartAccessory-template">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-6">
+                        <a data-bind="attr: { href: ProductUrl, title: DisplayName }">
+                            <span class="text-muted" data-bind="text: Manufacturer"></span> <strong data-bind="text: DisplayName"></strong>
+                        </a>
+                    </div>
+                    <div class="col-xs-2 text-center" data-bind="text: Quantity"></div>
+                    <div class="col-xs-2 text-right" data-bind="text: RowPrice"></div>
+                </script>
+
+                <script type="text/javascript">
+                    $(function () {
+                        miniCartViewModel = new MiniCartViewModel({ "Id": 0, "Items": [], "TotalValue": "0 kr", "TotalQuantity": 0, "ShowPricesInclOrExclVat": "Inkl. moms" }, '/shoppingcart/setquantity', '/shoppingcart/remove', '/shoppingcart/getminicartmodel');
+                        ko.applyBindings(miniCartViewModel, document.getElementById("ko-miniCartContainer"));
+                    });
+                </script>
+                <!-- SHOPINGCART END-->
             </div>
         </div>
     </div>
-    <div class="container body-content">
+
+
+    <section class="navbar navbar-blue" id="bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav navbar-nav col-xs-12">
+                        <li class="dropdown">
+                            <a asp-area="" asp-controller="Articles" asp-action="Index">Produkter</a>
+                        </li>
+                        <li class="">
+                        <li>
+                            <a href="#" class="">Tillbehörsguider</a>
+                        </li>
+                        <!-- /ko -->
+                        <li class="">
+                            <a href="#" class="">Lorem Ipsum</a>
+                        </li>
+                        <!--/ko-->
+                        <li class="">
+                            <a href="/favorites" class="">Favoriter</a>
+                        </li>
+                        <li class="pull-right col-xs-6">
+                            <div class="pull-right pull-right-search col-lg-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Sök Artikel...">
+                                    <span class="input-group-btn">
+                                        <button class="btn submit-button" type="button"><span class="fa fa-search"></span>Sök</button>
+                                    </span>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFOBANNER
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 margin-neg18">
+                <table class="table margin-y-off" border="0">
+                    <tbody class="text-info-blue">
+                        <tr>
+                            <td class="padding-y-md" style="border: none!important; text-align: center;">
+                                <i class="fa fa-truck fa-2x flip"></i>
+                            </td>
+                            <td style="border: none!important;">
+                                <a href="/">
+                                    <strong class="small"> Fri frakt över 2 500 kr</strong><span class="hidden-sm hidden-xs small"><br>Ej hempaket, budbil eller pall </span>
+                                </a>
+                            </td>
+
+                            <td class="padding-x-md" style="border: none!important;"></td>
+                            <td class="padding-y-md" style="border: none!important; text-align: center;">
+                                <i class="fa fa-cube fa-2x"></i>
+                            </td>
+                            <td style="border: none!important;">
+                                <a href="/">
+                                    <strong class="small" id="countdown">Beställ inom <span style="color: #ff713d; font-size: larger">00t 53m 16s</span></strong><span class="hidden-sm hidden-xs small"><br>och varan skickas idag.</span>
+                                </a>
+                            </td>
+
+                            <td class="padding-x-md" style="border: none!important;"></td>
+                            <td class="padding-y-md" style="border: none!important; text-align: center;">
+                                <i class="fa fa-rotate-left fa-2x"></i>
+                            </td>
+                            <td style="border: none!important;">
+                                <a href="/">
+                                    <strong class="small"> 60 dagars öppet köp</strong><span class="hidden-sm hidden-xs small"><br> Vid obruten förpackning </span>
+                                </a>
+                            </td>
+
+                            <td class="padding-x-md" style="border: none!important;"></td>
+                            <td class="padding-y-md" style="border: none!important; text-align: center;">
+                                <i class="fa fa-phone fa-2x"></i>
+                            </td>
+                            <td style="border: none!important;">
+                                <a href="/">
+                                    <strong class="small">00-123 456 789</strong><span class="hidden-sm hidden-xs small"><br>Mån-Fre 08-17</span>
+                                </a>
+                            </td>
+                            <td class="padding-x-md" style="border: none!important;"></td>
+                            <td class="padding-y-md" style="border: none!important; text-align: center;">
+                                <i class="fa fa-comments-o fa-2x"></i>
+                            </td>
+                            <td style="border: none!important;">
+                                <a href="/">
+                                    <h4 class="hidden-sm hidden-xs small">Chatta med oss (online)</h4>
+                                </a>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    INFOBANNER END -->
+
+    <!--SMALL MODAL LOGIN-->
+    @*<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>*@
+    <!--LARGE MODAL LOGIN-->
+    @*<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>*@
+
+    <div class="container-details-wide">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2016 - Webshop</p>
-        </footer>
+        <section class="nav-white bottom">
+            <footer class="container footer-height">
+                <p>&copy; 2016 - Webshop</p>
+            </footer>
+        </section>
     </div>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
@@ -64,4 +314,5 @@
 
     @RenderSection("scripts", required: false)
 </body>
+
 </html>

@@ -1,24 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Webshop.Interfaces;
+using Webshop.Models;
 using Webshop.ViewModels;
 
 namespace Webshop.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly IDateTime _datetime;
-        //public HomeController(IDateTime datetime)
-        //{
-        //   _datetime = datetime;
-        //}
+
         public HomeController()
         {
             //_datetime = datetime;
         }
-        public IActionResult Index()
+        public IActionResult Index(ArticleModel art)
         {
-            return View();
+            IEnumerable<ArticleModel> artList = new List<ArticleModel>();
+            //var isCampaign = _context.Article.Where(x => x.ISCampaign == true).ToListAsync();
+            //var outCampaign = isCampaign.Count();
+            //if (outCampaign > 0)
+            //{
+            //    artList = isCampaign.ToList();
+            //    return View(artList);
+            //}
+            //var cart = new ShoppingCart();
+            //cart.ItemsList();
+            return View(artList);
+
         }
 
         public IActionResult About(int id, string name, string lang)

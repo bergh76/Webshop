@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Webshop.Models.ArticleModel>
+@{
+    ViewData["Title"] = "Search";
+}
+<div class="search-bar">
+    <form method="get" asp-action="Index" asp-controller="Articles">
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="btn-block">
+                @*<span class="col-searchnav control-label"> Tillverkare</span>*@
+                <div class="col-searchnav">
+                    @Html.DropDownList("dropdownVendor", (SelectList)ViewBag.dropdownVendor, "-Välj en Tillverkare-", new { @class = "btn btn-default btn-xs  dropdown-toggle", data_toggle = "dropdown" })
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
