@@ -1,0 +1,137 @@
+@model IEnumerable<Webshop.Models.ArticleModel>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAddDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleFeaturesFour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleFeaturesOne)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleFeaturesThree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleFeaturesTwo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleImgPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticlePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleShortText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISCampaign)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImgPathID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubCategoryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendorID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleAddDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleFeaturesFour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleFeaturesOne)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleFeaturesThree)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleFeaturesTwo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleGuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleImgPath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticlePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleShortText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISCampaign)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductImgPathID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategoryID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ArticleID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ArticleID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ArticleID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
