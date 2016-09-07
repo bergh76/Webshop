@@ -8,24 +8,17 @@ namespace Webshop.Controllers
 {
     public class HomeController : Controller
     {
+        //private WebShopRepository _context;
 
-        public HomeController()
+        //public HomeController(WebShopRepository contect)
+        //{
+        //    _context = contect;
+        //    //_datetime = datetime;
+        //}
+        public IActionResult Index(Product art)
         {
-            //_datetime = datetime;
-        }
-        public IActionResult Index(ArticleModel art)
-        {
-            IEnumerable<ArticleModel> artList = new List<ArticleModel>();
-            //var isCampaign = _context.Article.Where(x => x.ISCampaign == true).ToListAsync();
-            //var outCampaign = isCampaign.Count();
-            //if (outCampaign > 0)
-            //{
-            //    artList = isCampaign.ToList();
-            //    return View(artList);
-            //}
-            //var cart = new ShoppingCart();
-            //cart.ItemsList();
-            return View(artList);
+            IEnumerable<Product> prodlist = new List<Product>();
+            return View(prodlist);
 
         }
 

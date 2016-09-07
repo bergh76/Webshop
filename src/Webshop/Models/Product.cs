@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Webshop.Models
 {
-    public class ProductModel
+    public class Product
     {
-        [Key]
-        public int ID { get; set; }
-        public string ProductID { get; set; }
+        public int ProductID { get; set; }
         public string ProductName { get; set; }
-        public bool ISActive { get; set; }
+        public decimal ProductPrice { get; set; }
+
+        public int ProductCategoryId { get; set; }
+        public ProductCategory ProductCategory { get; set; }
     }
 }
