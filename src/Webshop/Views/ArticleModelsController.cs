@@ -33,7 +33,7 @@ namespace Webshop.Views
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
             if (articleModel == null)
             {
                 return NotFound();
@@ -47,7 +47,7 @@ namespace Webshop.Views
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID");
             ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategoryies, "ID", "ID");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID");
             ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID");
             return View();
         }
@@ -67,7 +67,7 @@ namespace Webshop.Views
             }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryID);
             ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductID);
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategoryies, "ID", "ID", articleModel.SubCategoryID);
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryID);
             ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorID);
             return View(articleModel);
         }
@@ -80,14 +80,14 @@ namespace Webshop.Views
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
             if (articleModel == null)
             {
                 return NotFound();
             }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryID);
             ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductID);
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategoryies, "ID", "ID", articleModel.SubCategoryID);
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryID);
             ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorID);
             return View(articleModel);
         }
@@ -99,7 +99,7 @@ namespace Webshop.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] ArticleModel articleModel)
         {
-            if (id != articleModel.ID)
+            if (id != articleModel.ArticleID)
             {
                 return NotFound();
             }
@@ -113,7 +113,7 @@ namespace Webshop.Views
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArticleModelExists(articleModel.ID))
+                    if (!ArticleModelExists(articleModel.ArticleID))
                     {
                         return NotFound();
                     }
@@ -126,7 +126,7 @@ namespace Webshop.Views
             }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryID);
             ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductID);
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategoryies, "ID", "ID", articleModel.SubCategoryID);
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryID);
             ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorID);
             return View(articleModel);
         }
@@ -139,7 +139,7 @@ namespace Webshop.Views
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
             if (articleModel == null)
             {
                 return NotFound();
@@ -153,7 +153,7 @@ namespace Webshop.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
             _context.Articles.Remove(articleModel);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -161,7 +161,7 @@ namespace Webshop.Views
 
         private bool ArticleModelExists(int id)
         {
-            return _context.Articles.Any(e => e.ID == id);
+            return _context.Articles.Any(e => e.ArticleID == id);
         }
     }
 }

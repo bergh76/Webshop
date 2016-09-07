@@ -15,6 +15,7 @@ namespace Webshop.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryID = table.Column<int>(nullable: false),
                     CategoryName = table.Column<string>(nullable: true),
                     ISActive = table.Column<bool>(nullable: false)
                 },
@@ -29,6 +30,7 @@ namespace Webshop.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ArticleGuid = table.Column<Guid>(nullable: false),
                     ImageDate = table.Column<DateTime>(nullable: false),
                     ImageName = table.Column<string>(nullable: true),
                     ImagePath = table.Column<string>(nullable: true)
@@ -45,6 +47,7 @@ namespace Webshop.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ISActive = table.Column<bool>(nullable: false),
+                    ProductID = table.Column<string>(nullable: true),
                     ProductName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -53,17 +56,18 @@ namespace Webshop.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubCategoryies",
+                name: "SubCategories",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ISActive = table.Column<bool>(nullable: false),
+                    SubCategoryID = table.Column<int>(nullable: false),
                     SubCategoryName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubCategoryies", x => x.ID);
+                    table.PrimaryKey("PK_SubCategories", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,6 +77,7 @@ namespace Webshop.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ISActive = table.Column<bool>(nullable: false),
+                    VendorID = table.Column<int>(nullable: false),
                     VendorName = table.Column<string>(nullable: true),
                     VendorWebPage = table.Column<string>(nullable: true)
                 },
@@ -85,18 +90,19 @@ namespace Webshop.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ArticleID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ArticleAddDate = table.Column<DateTime>(nullable: false),
-                    ArticleFeaturesFour = table.Column<string>(nullable: true),
-                    ArticleFeaturesOne = table.Column<string>(nullable: true),
-                    ArticleFeaturesThree = table.Column<string>(nullable: true),
-                    ArticleFeaturesTwo = table.Column<string>(nullable: true),
+                    ArticleFeaturesFour = table.Column<string>(nullable: false),
+                    ArticleFeaturesOne = table.Column<string>(nullable: false),
+                    ArticleFeaturesThree = table.Column<string>(nullable: false),
+                    ArticleFeaturesTwo = table.Column<string>(nullable: false),
                     ArticleGuid = table.Column<string>(nullable: true),
-                    ArticleName = table.Column<string>(nullable: true),
-                    ArticleNumber = table.Column<string>(nullable: true),
+                    ArticleImgPath = table.Column<string>(nullable: true),
+                    ArticleName = table.Column<string>(nullable: false),
+                    ArticleNumber = table.Column<string>(nullable: false),
                     ArticlePrice = table.Column<decimal>(nullable: false),
-                    ArticleShortText = table.Column<string>(nullable: true),
+                    ArticleShortText = table.Column<string>(nullable: false),
                     ArticleStock = table.Column<int>(nullable: false),
                     CategoryID = table.Column<int>(nullable: false),
                     ISActive = table.Column<bool>(nullable: false),
@@ -109,7 +115,7 @@ namespace Webshop.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.ID);
+                    table.PrimaryKey("PK_Articles", x => x.ArticleID);
                     table.ForeignKey(
                         name: "FK_Articles_Categories_CategoryID",
                         column: x => x.CategoryID,
@@ -129,9 +135,9 @@ namespace Webshop.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Articles_SubCategoryies_SubCategoryID",
+                        name: "FK_Articles_SubCategories_SubCategoryID",
                         column: x => x.SubCategoryID,
-                        principalTable: "SubCategoryies",
+                        principalTable: "SubCategories",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -183,7 +189,7 @@ namespace Webshop.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "SubCategoryies");
+                name: "SubCategories");
 
             migrationBuilder.DropTable(
                 name: "Vendors");

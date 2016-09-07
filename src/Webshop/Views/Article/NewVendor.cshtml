@@ -1,0 +1,42 @@
+﻿@model Webshop.Models.VendorModel
+
+@{
+    ViewData["Title"] = "NewVendor";
+}
+
+<form asp-action="NewVendor">
+    @Html.HiddenFor(m => m.ID)
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="VendorName" class="col-md-2 control-label">Tillverkare</label>
+            <div class="col-md-10">
+                <input asp-for="VendorName" class="form-control" />
+                <span asp-validation-for="VendorName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VendorWebPage" class="col-md-2 control-label">Webbadress</label>
+            <div class="col-md-10">
+                <input asp-for="VendorWebPage" class="form-control" />
+                <span asp-validation-for="VendorWebPage" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="ISActive" />
+                    <label asp-for="ISActive"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+               

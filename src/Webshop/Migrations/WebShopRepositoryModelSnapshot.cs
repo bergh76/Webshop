@@ -18,30 +18,41 @@ namespace Webshop.Migrations
 
             modelBuilder.Entity("Webshop.Models.ArticleModel", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ArticleID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ArticleAddDate");
 
-                    b.Property<string>("ArticleFeaturesFour");
+                    b.Property<string>("ArticleFeaturesFour")
+                        .IsRequired();
 
-                    b.Property<string>("ArticleFeaturesOne");
+                    b.Property<string>("ArticleFeaturesOne")
+                        .IsRequired();
 
-                    b.Property<string>("ArticleFeaturesThree");
+                    b.Property<string>("ArticleFeaturesThree")
+                        .IsRequired();
 
-                    b.Property<string>("ArticleFeaturesTwo");
+                    b.Property<string>("ArticleFeaturesTwo")
+                        .IsRequired();
 
                     b.Property<string>("ArticleGuid");
 
-                    b.Property<string>("ArticleName");
+                    b.Property<string>("ArticleImgPath");
 
-                    b.Property<string>("ArticleNumber");
+                    b.Property<string>("ArticleName")
+                        .IsRequired();
+
+                    b.Property<string>("ArticleNumber")
+                        .IsRequired();
 
                     b.Property<decimal>("ArticlePrice");
 
-                    b.Property<string>("ArticleShortText");
+                    b.Property<string>("ArticleShortText")
+                        .IsRequired();
 
                     b.Property<int>("ArticleStock");
+
+                    b.Property<int?>("CategoryForeignKey");
 
                     b.Property<int>("CategoryID");
 
@@ -49,27 +60,33 @@ namespace Webshop.Migrations
 
                     b.Property<bool>("ISCampaign");
 
-                    b.Property<int?>("ImageID");
+                    b.Property<int?>("ImageForeignKey");
+
+                    b.Property<int?>("ProductForeignKey");
 
                     b.Property<int>("ProductID");
 
                     b.Property<int>("ProductImgPathID");
 
+                    b.Property<int?>("SubCatForeignKey");
+
                     b.Property<int>("SubCategoryID");
+
+                    b.Property<int?>("VendorForeignKey");
 
                     b.Property<int>("VendorID");
 
-                    b.HasKey("ID");
+                    b.HasKey("ArticleID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryForeignKey");
 
-                    b.HasIndex("ImageID");
+                    b.HasIndex("ImageForeignKey");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("ProductForeignKey");
 
-                    b.HasIndex("SubCategoryID");
+                    b.HasIndex("SubCatForeignKey");
 
-                    b.HasIndex("VendorID");
+                    b.HasIndex("VendorForeignKey");
 
                     b.ToTable("Articles");
                 });
@@ -78,6 +95,8 @@ namespace Webshop.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
 
                     b.Property<string>("CategoryName");
 
@@ -92,6 +111,8 @@ namespace Webshop.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ArticleGuid");
 
                     b.Property<DateTime>("ImageDate");
 
@@ -111,6 +132,8 @@ namespace Webshop.Migrations
 
                     b.Property<bool>("ISActive");
 
+                    b.Property<string>("ProductID");
+
                     b.Property<string>("ProductName");
 
                     b.HasKey("ID");
@@ -125,11 +148,13 @@ namespace Webshop.Migrations
 
                     b.Property<bool>("ISActive");
 
+                    b.Property<int>("SubCategoryID");
+
                     b.Property<string>("SubCategoryName");
 
                     b.HasKey("ID");
 
-                    b.ToTable("SubCategoryies");
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("Webshop.Models.VendorModel", b =>
@@ -138,6 +163,8 @@ namespace Webshop.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("ISActive");
+
+                    b.Property<int>("VendorID");
 
                     b.Property<string>("VendorName");
 
@@ -152,27 +179,23 @@ namespace Webshop.Migrations
                 {
                     b.HasOne("Webshop.Models.CategoryModel", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CategoryForeignKey");
 
                     b.HasOne("Webshop.Models.ImageModel", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageID");
+                        .HasForeignKey("ImageForeignKey");
 
                     b.HasOne("Webshop.Models.ProductModel", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductForeignKey");
 
                     b.HasOne("Webshop.Models.SubCategory", "SubCategory")
                         .WithMany()
-                        .HasForeignKey("SubCategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SubCatForeignKey");
 
                     b.HasOne("Webshop.Models.VendorModel", "Vendor")
                         .WithMany()
-                        .HasForeignKey("VendorID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("VendorForeignKey");
                 });
         }
     }

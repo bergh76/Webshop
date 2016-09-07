@@ -13,7 +13,7 @@ namespace Webshop.Models
         public DbSet<VendorModel> Vendors { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<ProductModel> Products { get; set; }
-        public DbSet<SubCategory> SubCategoryies { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<ImageModel> Images { get; set; }
         //public DbSet<Cart> Carts { get; set; }
         //public DbSet<OrderModel> Orders { get; set; }

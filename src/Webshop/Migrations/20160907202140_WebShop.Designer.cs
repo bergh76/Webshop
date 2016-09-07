@@ -8,7 +8,7 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    [Migration("20160907105227_WebShop")]
+    [Migration("20160907202140_WebShop")]
     partial class WebShop
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,28 +19,37 @@ namespace Webshop.Migrations
 
             modelBuilder.Entity("Webshop.Models.ArticleModel", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ArticleID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ArticleAddDate");
 
-                    b.Property<string>("ArticleFeaturesFour");
+                    b.Property<string>("ArticleFeaturesFour")
+                        .IsRequired();
 
-                    b.Property<string>("ArticleFeaturesOne");
+                    b.Property<string>("ArticleFeaturesOne")
+                        .IsRequired();
 
-                    b.Property<string>("ArticleFeaturesThree");
+                    b.Property<string>("ArticleFeaturesThree")
+                        .IsRequired();
 
-                    b.Property<string>("ArticleFeaturesTwo");
+                    b.Property<string>("ArticleFeaturesTwo")
+                        .IsRequired();
 
                     b.Property<string>("ArticleGuid");
 
-                    b.Property<string>("ArticleName");
+                    b.Property<string>("ArticleImgPath");
 
-                    b.Property<string>("ArticleNumber");
+                    b.Property<string>("ArticleName")
+                        .IsRequired();
+
+                    b.Property<string>("ArticleNumber")
+                        .IsRequired();
 
                     b.Property<decimal>("ArticlePrice");
 
-                    b.Property<string>("ArticleShortText");
+                    b.Property<string>("ArticleShortText")
+                        .IsRequired();
 
                     b.Property<int>("ArticleStock");
 
@@ -60,7 +69,7 @@ namespace Webshop.Migrations
 
                     b.Property<int>("VendorID");
 
-                    b.HasKey("ID");
+                    b.HasKey("ArticleID");
 
                     b.HasIndex("CategoryID");
 
@@ -80,6 +89,8 @@ namespace Webshop.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CategoryID");
+
                     b.Property<string>("CategoryName");
 
                     b.Property<bool>("ISActive");
@@ -93,6 +104,8 @@ namespace Webshop.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ArticleGuid");
 
                     b.Property<DateTime>("ImageDate");
 
@@ -112,6 +125,8 @@ namespace Webshop.Migrations
 
                     b.Property<bool>("ISActive");
 
+                    b.Property<string>("ProductID");
+
                     b.Property<string>("ProductName");
 
                     b.HasKey("ID");
@@ -126,11 +141,13 @@ namespace Webshop.Migrations
 
                     b.Property<bool>("ISActive");
 
+                    b.Property<int>("SubCategoryID");
+
                     b.Property<string>("SubCategoryName");
 
                     b.HasKey("ID");
 
-                    b.ToTable("SubCategoryies");
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("Webshop.Models.VendorModel", b =>
@@ -139,6 +156,8 @@ namespace Webshop.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("ISActive");
+
+                    b.Property<int>("VendorID");
 
                     b.Property<string>("VendorName");
 

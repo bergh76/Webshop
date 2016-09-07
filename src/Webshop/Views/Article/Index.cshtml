@@ -24,9 +24,9 @@
                                             <span class="small right"></span>
                                         </div>
                                         <div class="image-container">
-                                            <a asp-action="Details" asp-route-id="@item.ID"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.Image.ImagePath)" /></a>
+                                            <a asp-action="Index" asp-route-id="@item.ArticleID"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.Image.ImagePath)" /></a>
                                         </div>
-                                        <a asp-action="Details" asp-route-id="@item.ID">
+                                        <a asp-action="Index" asp-route-id="@item.ArticleID">
                                             <div class="content-block">
                                                 <div class="text-content">
                                                     <h2>@Html.DisplayFor(modelItem => item.ArticleName)</h2><input type="hidden" asp-for="@item.ArticleName" name="Name" />

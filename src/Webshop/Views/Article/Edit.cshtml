@@ -1,153 +1,148 @@
-@model Webshop.Models.ArticleModel
+﻿@model Webshop.Models.ArticleModel
+
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="container">
+    <h2>Edit</h2>
+    <form asp-action="Edit">
+        <div class="form-horizontal">
+            <h4>Article</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ArticleID" />
+            <input type="hidden" asp-for="ArticleGuid" />
+            <input type="hidden" asp-for="ArticleAddDate" />
+            <input type="hidden" asp-for="ArticleImgPath" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <input asp-for="ISActive" />
+                        <label asp-for="ISActive"></label>
+                    </div>
+                    @Html.DisplayFor(m => m.ArticleGuid)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Tillverkare</label>
+                @*<label asp-for="Vendor" class="col-md-2 control-label"></label>*@
+                <div class="col-md-10">
+                    @Html.DropDownList("dropdownVendor", (SelectList)ViewBag.dropdownVendor,  new { @class = "form-control btn btn-default dropdown-toggle", data_toggle = "dropdown" })
+                    @*<input type="text" id="autocomplete" class="form-control" />*@
+                    @*<span asp-validation-for="Vendor.VendorName" class="text-danger" />*@
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Kategori</label>
+                @*<label asp-for="Product" class="col-md-2 control-label"></label>*@
+                <div class="col-md-10">
+                    @Html.DropDownList("dropdownCategory", (SelectList)ViewBag.dropdownCategory, new { @class = "form-control btn btn-default dropdown-toggle", data_toggle = "dropdown" })
+                    @*<input asp-for="Product.ProductName" class="form-control" />*@
+                    @*<span asp-validation-for="Category.CategoryName" class="text-danger" />*@
+                </div>
+            </div>
 
-<form asp-action="Edit">
-    <div class="form-horizontal">
-        <h4>ArticleModel</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="ID" />
-        <div class="form-group">
-            <label asp-for="ArticleAddDate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleAddDate" class="form-control" />
-                <span asp-validation-for="ArticleAddDate" class="text-danger" />
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Produkt</label>
+                @*<label asp-for="Product" class="col-md-2 control-label"></label>*@
+                <div class="col-md-10">
+                    @Html.DropDownList("dropdownProduct", (SelectList)ViewBag.dropdownProduct, new { @class = "form-control btn btn-default dropdown-toggle", data_toggle = "dropdown" })
+                    @*<input asp-for="Product.ProductName" class="form-control" />*@
+                    @*<span asp-validation-for="Product.ProductName" class="text-danger" />*@
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleFeaturesFour" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleFeaturesFour" class="form-control" />
-                <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Kategori</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("dropdownSubCategory", (SelectList)ViewBag.dropdownSubCategory, new { @class = "form-control btn btn-default dropdown-toggle", data_toggle = "dropdown" })
+                    @*<span asp-validation-for="Sub" class="text-danger" />*@
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleFeaturesOne" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleFeaturesOne" class="form-control" />
-                <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
+            
+            <div class="form-group">
+                <label asp-for="ArticleStock" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleStock" class="form-control" />
+                    <span asp-validation-for="ArticleStock" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleFeaturesThree" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleFeaturesThree" class="form-control" />
-                <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticlePrice" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticlePrice" class="form-control" />
+                    <span asp-validation-for="ArticlePrice" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleFeaturesTwo" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleFeaturesTwo" class="form-control" />
-                <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleName" class="form-control" />
+                    <span asp-validation-for="ArticleName" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleGuid" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleGuid" class="form-control" />
-                <span asp-validation-for="ArticleGuid" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleNumber" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleNumber" class="form-control" />
+                    <span asp-validation-for="ArticleNumber" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleName" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleName" class="form-control" />
-                <span asp-validation-for="ArticleName" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleShortText" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleShortText" class="form-control" />
+                    <span asp-validation-for="ArticleShortText" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleNumber" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleNumber" class="form-control" />
-                <span asp-validation-for="ArticleNumber" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleFeaturesOne" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleFeaturesOne" class="form-control" />
+                    <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticlePrice" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticlePrice" class="form-control" />
-                <span asp-validation-for="ArticlePrice" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleFeaturesTwo" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleFeaturesTwo" class="form-control" />
+                    <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleShortText" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleShortText" class="form-control" />
-                <span asp-validation-for="ArticleShortText" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleFeaturesThree" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleFeaturesThree" class="form-control" />
+                    <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ArticleStock" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ArticleStock" class="form-control" />
-                <span asp-validation-for="ArticleStock" class="text-danger" />
+
+            <div class="form-group">
+                <label asp-for="ArticleFeaturesFour" class="col-md-2 control-label">Feature 4</label>
+                <div class="col-md-10">
+                    <input asp-for="ArticleFeaturesFour" class="form-control" />
+                    <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="CategoryID" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
-                <span asp-validation-for="CategoryID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <input asp-for="ISActive" />
-                    <label asp-for="ISActive"></label>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <input asp-for="ISCampaign" />
-                    <label asp-for="ISCampaign"></label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ProductID" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <select asp-for="ProductID" class="form-control" asp-items="ViewBag.ProductID"></select>
-                <span asp-validation-for="ProductID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ProductImgPathID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ProductImgPathID" class="form-control" />
-                <span asp-validation-for="ProductImgPathID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SubCategoryID" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <select asp-for="SubCategoryID" class="form-control" asp-items="ViewBag.SubCategoryID"></select>
-                <span asp-validation-for="SubCategoryID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="VendorID" class="control-label col-md-2"></label>
-            <div class="col-md-10">
-                <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
-                <span asp-validation-for="VendorID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
-
+    </form>
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

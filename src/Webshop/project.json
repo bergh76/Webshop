@@ -43,7 +43,11 @@
     },
     "Microsoft.EntityFrameworkCore": "1.0.0",
     "bootstrap": "3.3.7",
-    "jQuery.Validation": "1.15.1"
+    "BundlerMinifier.Core": "2.2.281",
+    "jQuery": "3.1.0",
+    "jQuery.Validation": "1.15.1",
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3",
+    "Microsoft.jQuery.Unobtrusive.Validation": "3.2.2"
   },
 
   "tools": {

@@ -1,102 +1,72 @@
-@model Webshop.Models.ArticleModel
+﻿@model Webshop.Models.ArticleModel
 
-@{
-    ViewData["Title"] = "Details";
+@*@{
+        ViewData["Title"] = "Details";
+    }*@
+<section class="container">
+    <div class="container-white" data-gasource="CampaignProducts">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3><span class="badge badge-blue-big">Laptop</span></h3>
+            </div>
+        </div>
+        <div class="col-xs-12 padding-x-off">
+            <div class="productItemDetailBox hover-show-trigger">
+                <div class="col-xs-4 pull-right">
+                    <div class="priceInfo super">
+                        <span class="priceHeader">
+                            <span class="symbol pull-left icon-superpris"></span>
+                            <span class="description">-29%</span>
+                        </span>
+                        <span class="price animated rubberBand">@Html.DisplayFor(model => model.ArticlePrice)</span>
+                        <span class="small right">Ord. pris 8 490 kr</span>
+                    </div>
+                </div>
+
+                <div class="col-xs-4 padding-x-off">
+                    <div class="productDetailImageWrap">
+                        <a href="#" class="clear">
+                            <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/@Html.UrlEncoder.Encode(Model.ArticleImgPath)" />
+                        </a>
+                    </div>
+                </div>
+
+                <div class="productDetailDescription">
+                    <div>
+                        <h3 class="margin-x-md">@Html.DisplayFor(model => model.ArticleName)</h3>
+                    </div>
+                    <span class="description">@Html.DisplayFor(model => model.ArticleShortText)</span>
+                    <ul class="list-group shortSpec">
+                        <li>@Html.DisplayFor(model => model.ArticleNumber)</li>
+                        <li>@Html.DisplayFor(model => model.ArticleFeaturesOne)</li>
+                        <li>@Html.DisplayFor(model => model.ArticleFeaturesTwo) </li>
+                        <li>@Html.DisplayFor(model => model.ArticleFeaturesThree)</li>
+                        <li>@Html.DisplayFor(model => model.ArticleFeaturesFour)</li>
+                    </ul>
+                    <div class="btn-group">
+                        <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => model.ArticleStock) kvar</span></span>
+                    </div>
+                </div>
+                <div style="height: 30px;">
+                    <div class="action-row">
+                    </div>
+                    <div class="col-xs-2 pull-right text-field-margin-right">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn submit-button" type="button"><i class="fa fa-cart-plus"></i> Köp</button>
+                            </span>
+                            <input type="number" class="form-control" />
+
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div>
+                <div class="text-muted">
+                    <a onclick="history.go(-1);" ><span class="modal-pointer">Tillbaka</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>ArticleModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleAddDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleAddDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleFeaturesFour)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleFeaturesFour)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleFeaturesOne)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleFeaturesOne)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleFeaturesThree)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleFeaturesThree)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleFeaturesTwo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleFeaturesTwo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleGuid)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleGuid)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticlePrice)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticlePrice)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleShortText)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleShortText)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArticleStock)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArticleStock)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ISActive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ISActive)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ISCampaign)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ISCampaign)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductImgPathID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProductImgPathID)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>

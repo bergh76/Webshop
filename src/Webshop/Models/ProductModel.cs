@@ -8,7 +8,9 @@ namespace Webshop.Models
 { 
     public class ProductModel
     {
+        [Key]
         public int ID { get; set; }
+        public string ProductID { get; set; }
         public string ProductName { get; set; }
         public bool ISActive { get; set; }
     }
