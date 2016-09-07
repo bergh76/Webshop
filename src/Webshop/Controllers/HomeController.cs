@@ -15,10 +15,12 @@ namespace Webshop.Controllers
         //    _context = contect;
         //    //_datetime = datetime;
         //}
-        public IActionResult Index(Product art)
+        public IActionResult Index(ProductModel art)
         {
-            IEnumerable<Product> prodlist = new List<Product>();
-            return View(prodlist);
+            //IEnumerable<Product> prodlist = new List<Product>();
+            //return View(prodlist);
+            return View();
+
 
         }
 
