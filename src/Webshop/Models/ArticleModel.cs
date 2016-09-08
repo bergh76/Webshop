@@ -20,13 +20,13 @@ namespace Webshop.Models
         [Required(ErrorMessage = "Artikelnamn måste anges")]
         public string ArticleName { get; set; }
 
-        [Display(Name = "Pris")]
+        [Display(Name = "Styckpris")]
         [DataType(DataType.Currency)]
         [Range(0,99999)]
         [Required(ErrorMessage = "Pris måste anges")]
         public decimal ArticlePrice { get; set; }
 
-        [Display(Name = "Lagestatus")]
+        [Display(Name = "Lagersaldo")]
         [Required(ErrorMessage = "Lagerantal måste anges")]
         public int ArticleStock { get; set; }
 
@@ -35,22 +35,22 @@ namespace Webshop.Models
         [Required(ErrorMessage = "Beskrivning måste anges")]
         public string ArticleShortText { get; set; }
 
-        [Display(Name = "Egenskap1")]
+        [Display(Name = "Produktdata 1")]
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Egenskap måste anges")]
         public string ArticleFeaturesOne { get; set; }
 
-        [Display(Name = "Egenskap2")]
+        [Display(Name = "Produktdata 2")]
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Egenskap måste anges")]
         public string ArticleFeaturesTwo { get; set; }
 
-        [Display(Name = "Egenskap3")]
+        [Display(Name = "Produktdata 3")]
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Egenskap måste anges")]
         public string ArticleFeaturesThree { get; set; }
 
-        [Display(Name = "Egenskap4")]
+        [Display(Name = "Produktdata 4")]
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Egenskap måste anges")]
         public string ArticleFeaturesFour { get; set; }

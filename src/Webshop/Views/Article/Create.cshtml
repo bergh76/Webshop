@@ -13,142 +13,143 @@
         </div>
         <form asp-action="NewArticle"  enctype="multipart/form-data">
                 <div class="col-xs-12 padding-x-off content-box">
-                    <p class="alert-warning">@ViewBag.IDExists</p>
-                    <div class="col-xs-12">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="col-md-4 pull-left">
-                            <div class="custom-file-upload pull-left">
-                                <input type="file" name="file" multiple />
+                        <div class="col-xs-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="col-md-4 pull-left">
+                                <div class="custom-file-upload pull-left">
+                                    <input type="file" name="file" multiple />
+                                </div>
+                                @*<h3 id="fof">@ViewBag.IDExists</h3>
+                                    <h3 id="fof">@ViewBag.NoFile</h3>*@
+</div>
+                            <div class="productImageWrap">
+                            </div>
+                            <div class="col-md-8 padding-x-off">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="VendorID" class="col-md-10 control-label"></label>
+                                            <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
+                                            <!-- Button trigger modal -->
+                                            <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer pull-right"><i class="fa fa-plus-circle lime-green"></i> Tillverkare</span></a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="CategoryID" class="col-md-10 control-label"></label>
+                                            <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
+                                            <!-- Button trigger modal -->
+                                            <a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer pull-right"><i class="fa fa-plus-circle lime-green"></i> Kategori</span></a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ProductID" class="col-md-10 control-label"></label>
+                                            <select asp-for="ProductID" class="form-control" asp-items="ViewBag.ProductID"></select>
+                                            <!-- Button trigger modal -->
+                                            <a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer pull-right"><i class="fa fa-plus-circle lime-green"></i> Produkt</span></a>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="SubCategoryID" class="col-md-10 control-label"></label>
+                                            <select asp-for="SubCategoryID" class="form-control" asp-items="ViewBag.SubCategoryID"></select>
+                                            <!-- Button trigger modal -->
+                                            <a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer pull-right"><i class="fa fa-plus-circle lime-green"></i> Produkttyp</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleStock" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleStock" class="form-control" placeholder="-Lagersaldo-" />
+                                            <span asp-validation-for="ArticleStock" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticlePrice" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticlePrice" class="form-control" placeholder="-Styckpris-" />
+                                            <span asp-validation-for="ArticlePrice" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleName" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleName" class="form-control" placeholder="-Artikelnamn-" />
+                                            <span asp-validation-for="ArticleName" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleShortText" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleShortText" class="form-control" placeholder="-Ingresstext-" />
+                                            <span asp-validation-for="ArticleShortText" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleFeaturesOne" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleFeaturesOne" class="form-control" placeholder="-Produktdata 1-" />
+                                            <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleFeaturesTwo" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleFeaturesTwo" class="form-control" placeholder="-Produktdata 2-" />
+                                            <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleFeaturesThree" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleFeaturesThree" class="form-control" placeholder="-Produktdata 3-" />
+                                            <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label asp-for="ArticleFeaturesFour" class="col-md-10 control-label"></label>
+                                            <input asp-for="ArticleFeaturesFour" class="form-control" placeholder="-Produktdata 4-" />
+                                            <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
+                                            <a>&nbsp</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="productImageWrap">
-                        </div>
-                        <div class="col-md-8 padding-x-off">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="VendorID" class="col-md-2 control-label"></label>
-                                        <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i> Tillverkare</span></a>
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="CategoryID" class="col-md-2 control-label"></label>
-                                        <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i> Kategori</span></a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ProductID" class="col-md-2 control-label"></label>
-                                        <select asp-for="ProductID" class="form-control" asp-items="ViewBag.ProductID"></select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i> Produkt</span></a>
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="SubCategoryID" class="col-md-2 control-label"></label>
-                                        <select asp-for="SubCategoryID" class="form-control" asp-items="ViewBag.SubCategoryID"></select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i> Produkttyp</span></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleStock" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleStock" class="form-control" placeholder="-Lagersaldo-" />
-                                        <span asp-validation-for="ArticleStock" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticlePrice" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticlePrice" class="form-control" placeholder="-Styckpris-" />
-                                        <span asp-validation-for="ArticlePrice" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleName" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleName" class="form-control" placeholder="-Artikelnamn-" />
-                                        <span asp-validation-for="ArticleName" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleShortText" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleShortText" class="form-control" placeholder="-Ingresstext-" />
-                                        <span asp-validation-for="ArticleShortText" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleFeaturesOne" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleFeaturesOne" class="form-control" placeholder="-Produktdata 1-" />
-                                        <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleFeaturesTwo" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleFeaturesTwo" class="form-control" placeholder="-Produktdata 2-" />
-                                        <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleFeaturesThree" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleFeaturesThree" class="form-control" placeholder="-Produktdata 3-" />
-                                        <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label asp-for="ArticleFeaturesFour" class="col-md-2 control-label"></label>
-                                        <input asp-for="ArticleFeaturesFour" class="form-control" placeholder="-Produktdata 4-" />
-                                        <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
-                                        <a>&nbsp</a>
-                                    </div>
+                        <div class="col-md-12 ">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Create" class="submit-button pull-right" />
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-12 ">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input type="submit" value="Create" class="submit-button pull-right" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+</div>
             </form>
 
 

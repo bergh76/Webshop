@@ -2275,7 +2275,7 @@ th {
   padding: 8px;
   line-height: 1.42857143;
   vertical-align: top;
-  border-top: 1px solid #ddd;
+  /*border-top: 1px solid #ddd;*/
 }
 .table > thead > tr > th {
   vertical-align: bottom;
@@ -4169,12 +4169,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar {
   position: relative;
   min-height: 50px;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   border: 1px solid transparent;
 }
 @media (min-width: 768px) {
   .navbar {
-    border-radius: 4px;
+    /*border-radius: 4px;*/
   }
 }
 @media (min-width: 768px) {
@@ -6247,6 +6247,7 @@ button.close {
 }
 .carousel-inner > .item {
   position: relative;
+  height: 250px;
   display: none;
   -webkit-transition: .6s ease-in-out left;
        -o-transition: .6s ease-in-out left;

@@ -58,17 +58,17 @@ namespace Webshop
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapRoute(
-                    name: "language",
-                    template: "{lang=se}/{controller=Home}/{action=About}/"); //direktsökning via urlsträngen
+                //routes.MapRoute(
+                //    name: "language",
+                //    template: "{lang=se}/{controller=Home}/{action=About}/"); //direktsökning via urlsträngen
 
-                routes.MapRoute(
-                   name: "longroute",
-                   template: "Sverige/{controller}/{action}/{id}/{name}"); //direktsökning via urlsträngen
+                //routes.MapRoute(
+                //   name: "longroute",
+                //   template: "Sverige/{controller}/{action}/{id}/{name}"); //direktsökning via urlsträngen
 
-                routes.MapRoute(
-                    name: "twoparameters",
-                    template: "{controller}/{action}/{id}/{name}"); //direktsökning via urlsträngen
+                //routes.MapRoute(
+                //    name: "twoparameters",
+                //    template: "{controller}/{action}/{id}/{name}"); //direktsökning via urlsträngen
 
 
 

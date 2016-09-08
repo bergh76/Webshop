@@ -41,7 +41,10 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.EntityFrameworkCore": "1.0.0"
+    "Microsoft.EntityFrameworkCore": "1.0.0",
+    "jQuery": "3.1.0",
+    "jQuery.Validation": "1.15.1",
+    "Microsoft.jQuery.Unobtrusive.Validation": "3.2.3"
   },
 
   "tools": {

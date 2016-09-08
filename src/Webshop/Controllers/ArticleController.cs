@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Webshop.ViewModel;
+using Webshop.BusinessLayers;
 
 namespace Webshop.Controllers
 {
@@ -23,17 +24,133 @@ namespace Webshop.Controllers
             _context = context;
             _hostEnvironment = hostEnvironment;
         }
-
         // GET: Article
+
         //public async Task<IActionResult> Index()
         //{
-        //    return View(await _context.Articles.ToListAsync());
+        //    var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
+        //    return View(await webShopRepository.ToListAsync());
         //}
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search, string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
+
         {
-            var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
-            return View(await webShopRepository.ToListAsync());
+            // PERHAPS CREATE A BUSINESSLOGICCLASS //
+            IEnumerable<ArticleModel> artList = new List<ArticleModel>();
+            var vendorList = new List<string>();
+            var all = await _context.Articles.ToListAsync();
+
+            ///<summary>
+            ///Gets all the MANUFACTURES in the database
+            /// </summary>
+
+            var vndrQry = from v in _context.Vendors
+                          orderby v.VendorName
+                          select v.VendorName;
+
+            ViewData["dropdownVendor"] = new SelectList(vendorList);
+            vendorList.AddRange(vndrQry.Distinct());
+            var vendor = from v in _context.Vendors
+                         select v;
+
+            ///<summary>
+            ///Gets all the CATEGORIES in the database
+            /// </summary>
+            var catQry = from c in _context.Categories
+                         orderby c.CategoryName
+                         select c.CategoryName;
+
+            var catList = new List<string>();
+            ViewData["dropdownCategory"] = new SelectList(catList);
+            catList.AddRange(catQry.Distinct());
+            var category = from c in _context.Categories
+                           select c;
+
+            ///<summary>
+            ///Gets all the PRODUCTTYPE in the database
+            /// </summary>
+            var prdctQry = from p in _context.Products
+                           orderby p.ProductName
+                           select p.ProductName;
+
+            var prdctList = new List<string>();
+            ViewData["dropdownProduct"] = new SelectList(prdctList);
+            prdctList.AddRange(prdctQry.Distinct());
+            var product = from p in _context.Products
+                          select p;
+
+            ///<summary>
+            ///Gets all the SUBPRODUCTLIST in the database
+            /// </summary>
+            var subPrdctQry = from s in _context.SubCategories
+                              orderby s.SubCategoryName
+                              select s.SubCategoryName;
+
+            var subPrdctList = new List<string>();
+            ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
+            subPrdctList.AddRange(subPrdctQry.Distinct());
+
+            var subProduct = from s in _context.SubCategories
+                             select s;
+
+            vendor = vendor.Where(r => r.VendorName.Contains(dropdownVendor));
+            var getVendorID = vendor.Where(x => x.VendorName == dropdownVendor).Select(x => x.VendorID).FirstOrDefaultAsync();
+            vendorID = await getVendorID;
+            var vID = vendorID;
+
+            category = category.Where(r => r.CategoryName.Contains(dropdownCategory));
+            var getCategoryID = category.Where(x => x.CategoryName == dropdownCategory).Select(x => x.CategoryID).FirstOrDefaultAsync();
+            categoryID = await getCategoryID;
+            var cID = categoryID;
+
+            product = product.Where(r => r.ProductName.Contains(dropdownProduct));
+            var getProductID = product.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefaultAsync();
+            productID = await getProductID;
+            var pID = Convert.ToInt32(productID);
+
+            subProduct = subProduct.Where(s => s.SubCategoryName.Contains(dropdownSubCategory));
+            var getsubProductID = subProduct.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefaultAsync();
+            subProductID = await getsubProductID;
+            var spID = subProductID;
+
+            artList = from a in _context.Articles
+                      orderby a.ArticlePrice, a.ArticleName ascending
+                      where a.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
+                      where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
+                      where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
+                      where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
+                      select a;
+
+            //var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
+            var isCampaign = artList.Where(x => x.ISCampaign == true);
+            var outCampaign = isCampaign.Count();
+            var searchOut = artList.Where(x => x.ArticleName.Contains(search));
+            if (outCampaign > 10)
+            {
+                return View(isCampaign.ToList());
+            }
+            if (!string.IsNullOrEmpty(search) && searchOut.Count() == 0)
+            {
+                ViewBag.NoHit = "Din sökning gav inga resultat";
+                return View(artList);
+            }
+            if (!string.IsNullOrEmpty(search))
+            {
+                return View(artList.Where(x => x.ArticleName.Contains(search)));
+            }
+            //if (string.IsNullOrEmpty(search))
+            //{
+            //    //ViewBag.NoHit = "Din sökning gav inga resultat";
+            //    //return View(await webShopRepository.Where(x => x.ArticleName.Contains(search)).ToListAsync());
+            //    return View(artList);
+            //}
+            while (artList.Count() != 0)
+            {
+                return View(artList);
+            }
+            ViewBag.NoHit = "Din sökning gav inga resultat";
+            return View(artList);
         }
+
 
         // GET: Article/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -269,26 +386,25 @@ namespace Webshop.Controllers
                 var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);
                 var root = _hostEnvironment.WebRootPath;
                 string uploads = root + "/" + serverPath;
-
-                if (!string.IsNullOrEmpty(root)) {
-
-                    Directory.CreateDirectory(uploads);
-                }
-                else
+                Directory.CreateDirectory(uploads);
+                try
                 {
-                    ViewBag.PathExist = String.Format("Sökvägen kan inte skapas!");
-                    return View(article);
-                }
-                if (file.Length > 0)
-                {
-                    ext = Path.GetExtension(file.FileName);
-                    var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
-                    var tmpNameTwo = tmpName.Replace("\"", "");
-                    newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
-                    using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
+                    if (file.Length != 0)
                     {
-                        await file.CopyToAsync(fileStream);
+                        ext = Path.GetExtension(file.FileName);
+                        var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
+                        var tmpNameTwo = tmpName.Replace("\"", "");
+                        newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
+                        using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
                     }
+                }
+                catch
+                {
+                    ViewBag.NoFile = "Du måste välja en fil";
+                    return RedirectToAction("Create");
                 }
 
                 Guid guidID = Guid.NewGuid();
@@ -310,11 +426,7 @@ namespace Webshop.Controllers
             return View(article);
         }
 
-        public async Task<IActionResult> Search(string search)
-        {
-            var result = _context.Articles.Where(x => x.ArticleName.Contains(search));
-            return View(result);
-        }
+       
 
         public IActionResult NewVendor()
         {
@@ -331,6 +443,7 @@ namespace Webshop.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var nameInput = vendor.VendorName;
                 var exists = _context.Vendors.ToList().Where(x => x.VendorName == nameInput).Select(x => x.VendorName).FirstOrDefault();
                 do while (nameInput == exists)

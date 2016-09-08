@@ -4,12 +4,18 @@
   padding-bottom: 20px;
       /*font-family: 'Trebuchet MS','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
 
-      /*font-family: Corbel!important;*/
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-family: Corbel, Tahoma, Geneva, Verdana, sans-serif!important;
+  /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;*/
   /*font-size: 16px;*/
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
+}
+.control-label {
+    display: inline-block;
+    max-width: 100%;
+    /*margin-bottom: 5px;*/
+
 }
 
 /* Wrapping element */
@@ -18,7 +24,18 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.navbar-toggle {
+    position: relative;
+    float: right;
+    padding: 9px 10px;
+    margin-top: 8px;
+    margin-right: 15px;
+    margin-bottom: 8px;
+    background-color: lawngreen;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 .search-bar{
   padding-right: 15px!important;
   padding-left: 15px!important;

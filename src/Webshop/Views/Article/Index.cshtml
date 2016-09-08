@@ -3,94 +3,101 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-@*<div>@Html.Partial("_AdminMenu")</div>*@
 <section class="container">
-    <div class="container-white" data-gasource="CampaignProducts">
+    <div class="container-white">
         <div class="row">
             <div class="col-xs-12">
-                <h3><span class="badge badge-blue-big">Laptop</span></h3>
+                @Html.Partial("_SearchArticles")
             </div>
         </div>
         <div class="col-xs-12 padding-x-off no-pad-table">
-            <table class="table margin-y-off" border="0">
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-
-                        @Html.HiddenFor(modelItem => item.ArticleAddDate)
-                        @Html.HiddenFor(modelItem => item.ArticleGuid)
-                        <tr>
-                            <td>
-                                <div class="productItemDetailBox">
-                                    <div class="priceInfo super">
-                                        <span class="price animated rubberBand">@Html.DisplayFor(modelItem => item.ArticlePrice)</span>
-                                        <span class="small right"></span>
-                                    </div>
-                                    <div class="image-container">
-                                        <a asp-action="Details" asp-route-id="@item.ArticleID"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" /></a>
-                                    </div>
-                                    <a asp-action="Details" asp-route-id="@item.ArticleID">
-                                        <div class="content-block">
-                                            <div class="text-vendor">
-                                                <h2>@Html.DisplayFor(modelItem => item.ArticleName)</h2>
-                                                <div class="review">
-                                                    <span class="review-rating">
-                                                        <script language="javascript">
-                                                            function scrollToReviews(activeTab) {
-                                                                if (activeTab != null && activeTab != '') {
-                                                                    $('.nav-tabs a[href="#' + activeTab + '"]').tab('show');
-                                                                }
-                                                                $('html, body').animate({ scrollTop: $('#alaTestContainer').offset().top }, 1000);
-                                                            }
-                                                        </script>
-                                                        <div class="review-summary">
-                                                            <a href="javascript:;" title="4.1 av 5" onclick="return false; ">
-                                                                <span class="fa fa-star"></span>
-                                                                <span class="fa fa-star"></span>
-                                                                <span class="fa fa-star"></span>
-                                                                <span class="fa fa-star"></span>
-                                                                <span class="fa fa-star-o"></span>
-                                                            </a>
-                                                        </div>
-
-                                                    </span>
-                                                </div>
-                                                <div class="text-container">
-                                                    <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesOne)</p>
-                                                    <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesTwo)</p>
-                                                    <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesThree)</p>
-                                                    <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesFour)</p>
-                                                </div>
-
-                                                <div class="product-artnr small">
-                                                    Art. nr: <span>@Html.DisplayFor(modelItem => item.ArticleNumber)</span>
-                                                </div>
-                                            </div>
-                                            <div class="box-bottom ">
-                                                <div class="stockstatus">
-                                                    @*<i class="fa-colored-check-square-green"></i>*@
-                                                    <span class="fa fa-check-square-o lime-green icon-padding-right"><span class="small text-muted">  + @Html.DisplayFor(modelItem => item.ArticleStock) st i lager</span></span>
-                                                </div>
-                                            </div>
+            <form method="get" asp-action="Index" asp-controller="Articles">
+                <table class="table margin-y-off" border="0">
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="productItemDetailBox">
+                                        <div class="priceInfo super">
+                                            <span class="price animated tada">@Html.DisplayFor(modelItem => item.ArticlePrice)<input type="hidden" asp-for="@item.ArticlePrice" name="Price" /></span>
+                                            <span class="small right"></span>
                                         </div>
-                                    </a>
-                                </div>
-                                <div class="priceInfo">
-                                    <span class="small right">
-                                        <a asp-action="Edit" asp-route-id="@item.ArticleID">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.ArticleID">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.ArticleID">Delete</a> |
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
-                    }
+                                        <div class="image-container">
+                                            <a asp-action="Details" asp-route-id="@item.ArticleID"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" /></a>
+                                        </div>
+                                        <a asp-action="Details" asp-route-id="@item.ArticleID">
+                                            <div class="content-block">
+                                                <div class="text-content">
+                                                    <h2>@Html.DisplayFor(modelItem => item.ArticleName)</h2><input type="hidden" asp-for="@item.ArticleName" name="Name" />
+                                                    <div class="review">
+                                                        <span class="review-rating">
+                                                            <script language="javascript">
+                                                                function scrollToReviews(activeTab) {
+                                                                    if (activeTab != null && activeTab != '') {
+                                                                        $('.nav-tabs a[href="#' + activeTab + '"]').tab('show');
+                                                                    }
+                                                                    $('html, body').animate({ scrollTop: $('#alaTestContainer').offset().top }, 1000);
+                                                                }
+                                                            </script>
+                                                            <div class="review-summary">
+                                                                <a href="javascript:;" title="4.1 av 5" onclick="return false; ">
+                                                                    <span class="fa fa-star"></span>
+                                                                    <span class="fa fa-star"></span>
+                                                                    <span class="fa fa-star"></span>
+                                                                    <span class="fa fa-star"></span>
+                                                                    <span class="fa fa-star-o"></span>
+                                                                </a>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="text-container">
+                                                        <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesOne)</p>
+                                                        <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesTwo)</p>
+                                                        <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesThree)</p>
+                                                        <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesFour)</p>
+                                                    </div>
 
-                </tbody>
-            </table>
-            <a asp-action="Create">Create New</a>
+                                                    <div class="product-artnr small">
+                                                        Art. nr: <span>@Html.DisplayFor(modelItem => item.ArticleNumber)<input type="hidden" asp-for="@item.ArticleNumber" name="ArtNr" /></span>
+                                                    </div>
+                                                </div>
+                                                <div class="box-bottom right ">
+                                                    <div class="stockstatus">
+                                                        <i class="fa-colored-check-square-green"></i>
+                                                        <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small text-muted">@Html.DisplayFor(modelItem => item.ArticleStock)+ st i lager</span></span>
+                                                    </div>
+                                                </div>
+                                                @*<div class="buy-button">
+                                                        <div class="quantity-picker">
+                                                            <label>
+                                                                <input type="tel" name="Amount" class="form-control order-amount ">
+
+                                                            </label><button class="btn submit-sm-button none-radius" asp-action="buy"><i class="fa fa-cart-plus icon-padding-right flip"></i></button>
+                                                        </div>
+                                                    </div>*@
+                                            </div>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+            <h3 id="fof">@ViewBag.NoHit</h3>
+            @*<div>@Html.Partial("_NoSearchHit")</div>*@
+            <div class="pagination-sm pull-right">
+                <ul class="pagination">
+                    <li><a href="#"><i class="fa fa-chevron-circle-left"></i></a></li>
+                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#"><i class="fa fa-chevron-circle-right"></i></a></li>
+                </ul>
+            </div>
         </div>
     </div>
-    @*</div>*@
 </section>
