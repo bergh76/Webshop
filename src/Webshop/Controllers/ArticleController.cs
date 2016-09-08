@@ -170,59 +170,67 @@ namespace Webshop.Controllers
             return RedirectToAction("Index");
         }
 
-                // GET: Articles/Create
-        //[Authorize]
-        public IActionResult NewArticle(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory)
+        // GET: Articles/Create
+        public IActionResult NewArticle()
         {
-            ///<summary>
-            ///Gets all the MANUFACTURES in the database
-            /// </summary>
-            var vndrQry = from v in _context.Vendors
-                          orderby v.VendorName
-                          select v.VendorName;
-            var vendorList = new List<string>();
-            vendorList.AddRange(vndrQry.Distinct());
-            var vendor = from v in _context.Vendors
-                         select v;
-            ViewData["dropdownVendor"] = new SelectList(vendorList);
-
-            ///<summary>
-            ///Gets all the PRODUCTTYPE in the database
-            /// </summary>
-            var prdctQry = from p in _context.Products
-                           orderby p.ProductName
-                           select p.ProductName;
-            var prdctList = new List<string>();
-            prdctList.AddRange(prdctQry.Distinct());
-            var procuct = from p in _context.Products
-                          select p;
-            ViewData["dropdownProduct"] = new SelectList(prdctList);
-
-            ///<summary>
-            ///Gets all the CATEGORIES in the database
-            /// </summary>
-            var catQry = from c in _context.Categories
-                         orderby c.CategoryName
-                         select c.CategoryName;
-            var catList = new List<string>();
-            catList.AddRange(catQry.Distinct());
-            var category = from c in _context.Categories
-                           select c;
-            ViewData["dropdownCategory"] = new SelectList(catList);
-
-            ///<summary>
-            ///Gets all the SUBPRODUCTLIST in the database
-            /// </summary>
-            var subPrdctQry = from s in _context.SubCategories
-                              orderby s.SubCategoryName
-                              select s.SubCategoryName;
-            var subPrdctList = new List<string>();
-            subPrdctList.AddRange(subPrdctQry.Distinct());
-            var subProduct = from s in _context.SubCategories
-                             select s;
-            ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors, "VendorID", "VendorName");
             return View();
         }
+        //[Authorize]
+        //public IActionResult NewArticle(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory)
+        //{
+        //    ///<summary>
+        //    ///Gets all the MANUFACTURES in the database
+        //    /// </summary>
+        //    var vndrQry = from v in _context.Vendors
+        //                  orderby v.VendorName
+        //                  select v.VendorName;
+        //    var vendorList = new List<string>();
+        //    vendorList.AddRange(vndrQry.Distinct());
+        //    var vendor = from v in _context.Vendors
+        //                 select v;
+        //    ViewData["dropdownVendor"] = new SelectList(vendorList);
+
+        //    ///<summary>
+        //    ///Gets all the PRODUCTTYPE in the database
+        //    /// </summary>
+        //    var prdctQry = from p in _context.Products
+        //                   orderby p.ProductName
+        //                   select p.ProductName;
+        //    var prdctList = new List<string>();
+        //    prdctList.AddRange(prdctQry.Distinct());
+        //    var procuct = from p in _context.Products
+        //                  select p;
+        //    ViewData["dropdownProduct"] = new SelectList(prdctList);
+
+        //    ///<summary>
+        //    ///Gets all the CATEGORIES in the database
+        //    /// </summary>
+        //    var catQry = from c in _context.Categories
+        //                 orderby c.CategoryName
+        //                 select c.CategoryName;
+        //    var catList = new List<string>();
+        //    catList.AddRange(catQry.Distinct());
+        //    var category = from c in _context.Categories
+        //                   select c;
+        //    ViewData["dropdownCategory"] = new SelectList(catList);
+
+        //    ///<summary>
+        //    ///Gets all the SUBPRODUCTLIST in the database
+        //    /// </summary>
+        //    var subPrdctQry = from s in _context.SubCategories
+        //                      orderby s.SubCategoryName
+        //                      select s.SubCategoryName;
+        //    var subPrdctList = new List<string>();
+        //    subPrdctList.AddRange(subPrdctQry.Distinct());
+        //    var subProduct = from s in _context.SubCategories
+        //                     select s;
+        //    ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
+        //    return View();
+        //}
 
 
         // POST: Articles/Create
@@ -294,7 +302,6 @@ namespace Webshop.Controllers
                     ArticleGuid = guidID
                 };
                 _context.Images.Add(img);
-                //var imgPathGuid = _context.Images.Where(x => x.ArticleGuid == guidID).Select(x => x.ImageName).ToList();
                 article.ArticleImgPath = String.Format("{0}{1}", serverPath, newFilename);
                 _context.Add(article);
                 await _context.SaveChangesAsync();
@@ -303,6 +310,11 @@ namespace Webshop.Controllers
             return View(article);
         }
 
+        public async Task<IActionResult> Search(string search)
+        {
+            var result = _context.Articles.Where(x => x.ArticleName.Contains(search));
+            return View(result);
+        }
 
         public IActionResult NewVendor()
         {
@@ -403,8 +415,6 @@ namespace Webshop.Controllers
             }
             return View(product);
         }
-
-
 
         public IActionResult NewCategory()
         {

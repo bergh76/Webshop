@@ -13,5 +13,6 @@ namespace Webshop.Models
         public string ProductID { get; set; }
         public string ProductName { get; set; }
         public bool ISActive { get; set; }
+        public ICollection<ProductModel> Products { get; set; }
     }
 }

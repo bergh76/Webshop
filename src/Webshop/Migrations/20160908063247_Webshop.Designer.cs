@@ -8,8 +8,8 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    [Migration("20160907202140_WebShop")]
-    partial class WebShop
+    [Migration("20160908063247_Webshop")]
+    partial class Webshop
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,33 +53,41 @@ namespace Webshop.Migrations
 
                     b.Property<int>("ArticleStock");
 
+                    b.Property<int?>("CategoryForeignKey");
+
                     b.Property<int>("CategoryID");
 
                     b.Property<bool>("ISActive");
 
                     b.Property<bool>("ISCampaign");
 
-                    b.Property<int?>("ImageID");
+                    b.Property<int?>("ImageForeignKey");
+
+                    b.Property<int?>("ProductForeignKey");
 
                     b.Property<int>("ProductID");
 
                     b.Property<int>("ProductImgPathID");
 
+                    b.Property<int?>("SubCatForeignKey");
+
                     b.Property<int>("SubCategoryID");
+
+                    b.Property<int?>("VendorForeignKey");
 
                     b.Property<int>("VendorID");
 
                     b.HasKey("ArticleID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryForeignKey");
 
-                    b.HasIndex("ImageID");
+                    b.HasIndex("ImageForeignKey");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("ProductForeignKey");
 
-                    b.HasIndex("SubCategoryID");
+                    b.HasIndex("SubCatForeignKey");
 
-                    b.HasIndex("VendorID");
+                    b.HasIndex("VendorForeignKey");
 
                     b.ToTable("Articles");
                 });
@@ -172,27 +180,23 @@ namespace Webshop.Migrations
                 {
                     b.HasOne("Webshop.Models.CategoryModel", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CategoryForeignKey");
 
                     b.HasOne("Webshop.Models.ImageModel", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageID");
+                        .HasForeignKey("ImageForeignKey");
 
                     b.HasOne("Webshop.Models.ProductModel", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductForeignKey");
 
                     b.HasOne("Webshop.Models.SubCategory", "SubCategory")
                         .WithMany()
-                        .HasForeignKey("SubCategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SubCatForeignKey");
 
                     b.HasOne("Webshop.Models.VendorModel", "Vendor")
                         .WithMany()
-                        .HasForeignKey("VendorID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("VendorForeignKey");
                 });
         }
     }

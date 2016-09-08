@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Webshop.Migrations
 {
-    public partial class WebShop : Migration
+    public partial class Webshop : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -104,74 +104,78 @@ namespace Webshop.Migrations
                     ArticlePrice = table.Column<decimal>(nullable: false),
                     ArticleShortText = table.Column<string>(nullable: false),
                     ArticleStock = table.Column<int>(nullable: false),
+                    CategoryForeignKey = table.Column<int>(nullable: true),
                     CategoryID = table.Column<int>(nullable: false),
                     ISActive = table.Column<bool>(nullable: false),
                     ISCampaign = table.Column<bool>(nullable: false),
-                    ImageID = table.Column<int>(nullable: true),
+                    ImageForeignKey = table.Column<int>(nullable: true),
+                    ProductForeignKey = table.Column<int>(nullable: true),
                     ProductID = table.Column<int>(nullable: false),
                     ProductImgPathID = table.Column<int>(nullable: false),
+                    SubCatForeignKey = table.Column<int>(nullable: true),
                     SubCategoryID = table.Column<int>(nullable: false),
+                    VendorForeignKey = table.Column<int>(nullable: true),
                     VendorID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.ArticleID);
                     table.ForeignKey(
-                        name: "FK_Articles_Categories_CategoryID",
-                        column: x => x.CategoryID,
+                        name: "FK_Articles_Categories_CategoryForeignKey",
+                        column: x => x.CategoryForeignKey,
                         principalTable: "Categories",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Articles_Images_ImageID",
-                        column: x => x.ImageID,
+                        name: "FK_Articles_Images_ImageForeignKey",
+                        column: x => x.ImageForeignKey,
                         principalTable: "Images",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Articles_Products_ProductID",
-                        column: x => x.ProductID,
+                        name: "FK_Articles_Products_ProductForeignKey",
+                        column: x => x.ProductForeignKey,
                         principalTable: "Products",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Articles_SubCategories_SubCategoryID",
-                        column: x => x.SubCategoryID,
+                        name: "FK_Articles_SubCategories_SubCatForeignKey",
+                        column: x => x.SubCatForeignKey,
                         principalTable: "SubCategories",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Articles_Vendors_VendorID",
-                        column: x => x.VendorID,
+                        name: "FK_Articles_Vendors_VendorForeignKey",
+                        column: x => x.VendorForeignKey,
                         principalTable: "Vendors",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_CategoryID",
+                name: "IX_Articles_CategoryForeignKey",
                 table: "Articles",
-                column: "CategoryID");
+                column: "CategoryForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_ImageID",
+                name: "IX_Articles_ImageForeignKey",
                 table: "Articles",
-                column: "ImageID");
+                column: "ImageForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_ProductID",
+                name: "IX_Articles_ProductForeignKey",
                 table: "Articles",
-                column: "ProductID");
+                column: "ProductForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_SubCategoryID",
+                name: "IX_Articles_SubCatForeignKey",
                 table: "Articles",
-                column: "SubCategoryID");
+                column: "SubCatForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_VendorID",
+                name: "IX_Articles_VendorForeignKey",
                 table: "Articles",
-                column: "VendorID");
+                column: "VendorForeignKey");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
