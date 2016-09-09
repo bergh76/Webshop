@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Webshop.Models;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
+using System.Linq;
+using System.Threading.Tasks;
+using Webshop.Models;
 using Webshop.ViewModel;
-using Webshop.BusinessLayers;
 
 namespace Webshop.Controllers
 {
@@ -285,6 +286,11 @@ namespace Webshop.Controllers
             _context.Articles.Remove(articleModel);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Search(string search)
+        {
+            throw new NotImplementedException();
         }
 
         // GET: Articles/Create

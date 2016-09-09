@@ -19,6 +19,10 @@ namespace Webshop.Controllers
             //_datetime = datetime;
         }
 
+        //public HomeController()
+        //{
+        //}
+
         public async Task<IActionResult> Index(string search)
         {
             var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
