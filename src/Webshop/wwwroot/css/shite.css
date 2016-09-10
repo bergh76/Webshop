@@ -4,18 +4,12 @@
   padding-bottom: 20px;
       /*font-family: 'Trebuchet MS','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
 
-   font-family: Corbel, Tahoma, Geneva, Verdana, sans-serif!important;
-  /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;*/
+      /*font-family: Corbel!important;*/
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   /*font-size: 16px;*/
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
-}
-.control-label {
-    display: inline-block;
-    max-width: 100%;
-    /*margin-bottom: 5px;*/
-
 }
 
 /* Wrapping element */
@@ -24,18 +18,7 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-.navbar-toggle {
-    position: relative;
-    float: right;
-    padding: 9px 10px;
-    margin-top: 8px;
-    margin-right: 15px;
-    margin-bottom: 8px;
-    background-color: lawngreen;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
+
 .search-bar{
   padding-right: 15px!important;
   padding-left: 15px!important;
@@ -112,9 +95,9 @@
   margin-left: auto;
 }
 .container-details-wide {
-    background-color: #ededed;
-    /*border-top: 1px solid #e6e8e9 !important;*/
-    /*background-image: url('../images/56516f31.png');*/
+    /*background-color: #c8d9d8;*/
+    border-top: 1px solid #e6e8e9 !important;
+    background-image: url('../images/56516f31.png');
     width: 100% !important;
     margin-right: auto;
     margin-left: auto;
@@ -164,11 +147,6 @@
     margin: -150px 10px 0 0;
     padding: 5px 5px 0 5px;
 }
-.padding-x-off {
-    padding-left: 0!important;
-    padding-right: 0!important;
-}
-
 .none-radius{
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -289,15 +267,7 @@
     padding-top: 10px;
 }
 
-.productTitle {
-    font-size: 14px;
-    font-family: "Segoe UI","Helvetica neue",Arial;
-    line-height: 1.3;
-    font-weight: bold;
-    display: inline-block;
-    width: 100%;
-    overflow: hidden;
-}
+
 .productItemDetailBox .priceInfo .small, .hero .priceInfo .small, .productSlot .priceInfo .small, .productRow .priceInfo .small, .dependentAccessoryBox .priceInfo .small {
     float: right;
     clear: both;
@@ -319,7 +289,7 @@
     font-weight: 700;
     font-size: 1.4em;
     padding: .1em .4em;
-    background-color: #264263;
+    background-color: #7ee100;
 
 }
 
@@ -356,27 +326,27 @@
     color: #999;
 }
 .productItemDetailBox .btn-buy {
-    position: absolute;
-    bottom: 5px;
-    right: 20px;
+    /*position: absolute;*/
+    /*bottom: 20px;*/
+    right: 62px;
 }
 .productItemDetailBox .priceInfo {
     position: relative;
 }
 .productItemDetailBox .priceInfo, .hero .priceInfo, .productSlot .priceInfo, .productRow .priceInfo, .dependentAccessoryBox .priceInfo {
     text-align: right;
-    /*margin: 10px 10px;*/
+    margin: 10px 10px;
     float: right;
     z-index: 2;
 }
 
-.productItemDetailBox{
+/*.productItemDetailBox{
     min-height: 200px;
     padding: 3px!important;
     line-height: 1.42857143;
     vertical-align: top;
-     border-top: 1px solid #ddd; 
-}
+    /* border-top: 1px solid #ddd; */
+}*/
 
 .content-block .text-item, h2{
     padding-bottom: 5px;
@@ -385,7 +355,7 @@
 .content-block .text-item, h2:hover{
     color: #ff713d;
 }
-/*PRODUCT LISTDESIGN
+/*PRODUCT LISTDESIGN*/
 .ladda-button[data-style=zoom-out] {
     overflow: hidden;
 }
@@ -402,7 +372,10 @@
     padding-top: 2px;
 }
 
-
+.padding-x-off {
+    /*padding-left: 0!important;
+    padding-right: 0!important;*/
+}
 .text-container h4{
     color: rgba(16, 23, 23, 0.23);
 }
@@ -580,7 +553,7 @@
  /*NAVBAR COLORS*/
  .navbar-blue {
      background-color: #264263;
-     border-bottom: 1px solid #e7e7e7;
+     border-color: #e7e7e7;
      -webkit-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
      -moz-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
      box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
@@ -845,30 +818,30 @@ textarea {
     font-size: 12px;
     font-family: Corbel;
     font-weight: normal;
-        padding: 3px 9px;
     /*-moz-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;*/
-    /*border: 1px solid #dcdcdc;
+    border: 1px solid #dcdcdc;
+    padding: 3px 9px;
     text-decoration: none;
     background: -moz-linear-gradient( center top, #ededed 5%, #ffffff 100% );
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
-    background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ededed), color-stop(100%, #ffffff) );*/
-    background-color: #a7ff03;
-    /*color: #777777;*/
-    /*display: inline-block;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ededed), color-stop(100%, #ffffff) );
+    background-color: #ededed;
+    color: #777777;
+    display: inline-block;
     text-shadow: 1px 1px 0px #ffffff;
     -webkit-box-shadow: inset 1px 1px 0px 0px #ffffff;
     -moz-box-shadow: inset 1px 1px 0px 0px #ffffff;
-    box-shadow: inset 1px 1px 0px 0px #ffffff;*/
+    box-shadow: inset 1px 1px 0px 0px #ffffff;
 }
 
 .submit-sm-button:hover {
-    /*background: -moz-linear-gradient( center top, #ffffff 5%, #ededed 100% );*/
-    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
-    background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ffffff), color-stop(100%, #ededed) );*/
-    background-color: #7ee100;
-    /*color: #5cb85c;*/
+    background: -moz-linear-gradient( center top, #ffffff 5%, #ededed 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ffffff), color-stop(100%, #ededed) );
+    background-color: #ffffff;
+    color: #5cb85c;
     transition: 0.2s !important;
 }
 
@@ -911,23 +884,6 @@ textarea {
 .info-sm-button:active {
     position: relative;
     top: 1px;
-}
-
-.add-article-btn {
-  background: #7ee100;
-
-  font-family: Corbel;
-  color: #ffffff;
-  font-size: 20px;
-  margin-right: 15px;
-  /*padding: 10px 20px 10px 20px;*/
-  text-decoration: none;
-  border-radius: 0;
-}
-
-.add-article-btn:hover {
-  background: #3cb0fd;
-  text-decoration: none;
 }
 
 .text-field-margin-right{
@@ -1079,7 +1035,7 @@ p {
     display: block;
     width: auto;
     font-size: 14px;
-    margin-top: 25px;
+    /*margin-top: 30px;*/
     /*border: 1px solid #ccc;*/
         display: block;
         margin-bottom: 5px;

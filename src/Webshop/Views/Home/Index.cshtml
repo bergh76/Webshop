@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
 <!--Create a carousel for special offers-->
 <section id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
@@ -68,15 +69,14 @@
 </section>
 <!--CAROUSEL END-->
 
-<!--ARTICLES START -->
 <section class="container">
-    <div class="container-white">
+    <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <h3 class="margin-x-md">Toppsäljande kampanjprodukter</h3>
             </div>
         </div>
-        <form method="get" asp-action="Index" asp-controller="Articles">
+        <form method="get" asp-action="Index" asp-controller="Article">
             <table class="table margin-y-off" border="0">
                 <tbody>
                     <tr>
@@ -85,26 +85,26 @@
                             <td>
                                 <div class="col-lg-12">
                                     <div class="productItemDetailBox">
-                                        <a asp-action="Details" asp-controller="Articles" asp-route-id="@item.ArticleID">
-                                            <h3 class="text-muted orange">@Html.DisplayFor(modelItem => item.ArticleName)</h3>
-                                        </a>
-                                        <div>
-                                            <h5 class="text-muted"> @Html.DisplayFor(modelItem => item.ArticleShortText)</h5>
+                                        <div class="priceInfo super">
+                                                <span class="priceHeader">
+                                                            <span class="symbol pull-left icon-superpris"></span>
+                                                            <span class="description">-29%</span>
+                                                    </span>
+                                                <span class="price animated rubberBand">@Html.DisplayFor(modelItem => item.ArticlePrice)</span>
+                                                <span class="small right">Ord. pris 8 490 kr</span>
                                         </div>
+                                       
                                         <div class="image-container">
-                                            <a asp-action="Details" asp-controller="Articles" asp-route-id="@item.ArticleID">
+                                            <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleID">
                                                 <img class="img-responsive img" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" />
                                             </a>
                                         </div>
-                                        <div class="priceInfo super">
-                                            <span class="priceHeader">
-                                                <span class="symbol pull-left icon-superpris"></span>
-                                                <span class="description">-29%</span>
-                                            </span>
-                                            <span class="price animated rubberBand">@Html.DisplayFor(modelItem => item.ArticlePrice)</span>
-                                            <span class="small right">Ord. pris 8 490 kr</span>
-                                        </div>
+                                        
                                         <div class="productDescription">
+                                            <a class="productTitle" asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleID"  class="text-muted orange">@Html.DisplayFor(modelItem => item.ArticleName)</a>
+                                            <div>
+                                                <h5 class="text-muted"> @Html.DisplayFor(modelItem => item.ArticleShortText)</h5>
+                                            </div>
                                             <ul class="small">
                                                 <li>@Html.DisplayFor(modelItem => item.ArticleFeaturesOne)</li>
                                                 <li>@Html.DisplayFor(modelItem => item.ArticleFeaturesTwo)</li>
@@ -117,7 +117,7 @@
                                             <i class="fa fa-heart-o text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Spara som favorit"> </i>
                                             <i class="fa fa-exchange text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Jämför produkten"> </i>
                                             <i class="fa-colored-check-square-green"></i>
-                                            <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small text-muted">@Html.DisplayFor(modelItem => item.ArticleStock)+ st i lager</span></span>
+                                            <span class="fa fa-check-square-o lime-green icon-padding-right"><span class="small text-muted">  + @Html.DisplayFor(modelItem => item.ArticleStock) st i lager</span></span>
                                         </div>
                                         <button type="submit" class="btn submit-sm-button ladda-button btn-buy buy hidden-print productItemBox">
                                             <span class="ladda-label"><i class="fa fa-cart-plus"></i> Köp</span>

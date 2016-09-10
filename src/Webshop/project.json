@@ -41,7 +41,8 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.EntityFrameworkCore": "1.0.0"
+    "Microsoft.EntityFrameworkCore": "1.0.0",
+    "Newtonsoft.Json": "9.0.1"
   },
 
   "tools": {

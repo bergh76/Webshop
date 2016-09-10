@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Webshop.BusinessLayers;
 using Webshop.Models;
 using Webshop.ViewModel;
 
@@ -17,9 +18,10 @@ namespace Webshop.Controllers
 {
     public class ArticleController : Controller
     {
-        private readonly string[] _imageFileExtensions = { ".jpg", ".png", ".gif", ".jpeg" };
         private readonly WebShopRepository _context;
         private readonly IHostingEnvironment _hostEnvironment;
+        private object message;
+
         public ArticleController(WebShopRepository context, IHostingEnvironment hostEnvironment)
         {
             _context = context;
@@ -136,7 +138,7 @@ namespace Webshop.Controllers
             }
             if (!string.IsNullOrEmpty(search))
             {
-                return View(artList.Where(x => x.ArticleName.Contains(search)));
+                return View(artList.Where(x => x.ArticleName.Contains(search)).FirstOrDefault());
             }
             //if (string.IsNullOrEmpty(search))
             //{
@@ -173,10 +175,10 @@ namespace Webshop.Controllers
         // GET: Article/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "VendorID", "VendorName");
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View();
         }
 
@@ -208,16 +210,15 @@ namespace Webshop.Controllers
             {
                 return NotFound();
             }
-
             var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
             if (articleModel == null)
             {
                 return NotFound();
             }
-            ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorID);
-            ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductID);
-            ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryID);
-            ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", articleModel.SubCategoryID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(articleModel);
         }
 
@@ -226,9 +227,9 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] ArticleModel articleModel)
+        public async Task<IActionResult> Edit(int id, [Bind("ArticleID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID,ArticleImgPath")]ArticleModel article, EditArticleBusiness newArticle)
         {
-            if (id != articleModel.ArticleID)
+            if (id != article.ArticleID)
             {
                 return NotFound();
             }
@@ -237,12 +238,13 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    _context.Update(articleModel);
+                     newArticle.UpdateArticleData(article,_context);
+                    _context.Update(article);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArticleModelExists(articleModel.ArticleID))
+                    if (!ArticleModelExists(article.ArticleID))
                     {
                         return NotFound();
                     }
@@ -253,13 +255,63 @@ namespace Webshop.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorID);
-            ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductID);
-            ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryID);
-            ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", articleModel.SubCategoryID);
+            ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorID);
+            ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductID);
+            ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryID);
+            ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryID);
+            return View(article);
+        }
+
+        public async Task<IActionResult> UpdateImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            if (articleModel == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(articleModel);
         }
 
+
+        //public async Task<IActionResult> UpdateImage(ArticleModel article, EditArticleBusiness newArticle, IFormFile file, string ext, string newFilename, string message, int id, [Bind("ArticleID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID,ArticleImgPath")] IFormCollection form)
+        //{
+        //    if (id != article.ArticleID)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            //
+        //            newArticle.UpdateArticleImage(article, _hostEnvironment, _context, ext, newFilename, file, form, message)
+        //            _context.Update(article);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ArticleModelExists(article.ArticleID))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction("Index");
+        //    }
+        //}
         // GET: Article/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -362,11 +414,10 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewArticle(IFormFile file, string ext, string newFilename, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Models.ArticleModel article, IFormCollection form)
+        public async Task<IActionResult> NewArticle(ArticleModel article, IFormFile file, string ext, string newFilename, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
         {
             if (ModelState.IsValid)
             {
-
                 var date = DateTime.Now.ToLocalTime();
                 int vendorID = Convert.ToInt32(form["VendorID"]);
                 string vendor = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
@@ -432,7 +483,7 @@ namespace Webshop.Controllers
             return View(article);
         }
 
-       
+
 
         public IActionResult NewVendor()
         {
@@ -630,127 +681,7 @@ namespace Webshop.Controllers
             return sub;
         }
 
-        private bool IsImage(HttpPostAttribute file)
-        {
-            if (file == null) return false;
-            return file.Equals("image") ||
-                _imageFileExtensions.Any(item => file.Name.EndsWith(item, StringComparison.OrdinalIgnoreCase));
-        }
-
-
-        // GET: Articles/Edit/5
-        //[Authorize]
-        public async Task<IActionResult> Edit(int? id, string dropdownVendor, string dropdownProduct, string dropdownCategory)
-        {
-            ///<summary>
-            ///Gets all the MANUFACTURES in the database
-            /// </summary>
-            var vndrQry = from v in _context.Vendors
-                          orderby v.VendorName
-                          //where v.ID == id
-                          select v.VendorName;
-            var vendorList = new List<string>();
-            vendorList.AddRange(vndrQry.Distinct());
-            ViewData["dropdownVendor"] = new SelectList(vendorList);
-
-
-            ///<summary>
-            ///Gets all the PRODUCTTYPE in the database
-            /// </summary>
-            var prdctQry = from p in _context.Products
-                           orderby p.ProductName
-                           //where p.ID == id
-                           select p.ProductName;
-            var prdctList = new List<string>();
-            prdctList.AddRange(prdctQry.Distinct());
-            ViewData["dropdownProduct"] = new SelectList(prdctList);
-
-            ///<summary>
-            ///Gets all the CATEGORIES in the database
-            /// </summary>
-            var catQry = from c in _context.Categories
-                         orderby c.CategoryName
-                         //where c.ID == id
-                         select c.CategoryName;
-            var catList = new List<string>();
-            catList.AddRange(catQry.Distinct());
-            ViewData["dropdownCategory"] = new SelectList(catList);
-
-            ///<summary>
-            ///Gets all the SUBPRODUCTLIST in the database
-            /// </summary>
-            var subPrdctQry = from s in _context.SubCategories
-                              orderby s.SubCategoryName
-                              select s.SubCategoryName;
-            var subPrdctList = new List<string>();
-            subPrdctList.AddRange(subPrdctQry.Distinct());
-            var subProduct = from s in _context.SubCategories
-                             select s;
-            ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
-            if (article == null)
-            {
-                return NotFound();
-            }
-            return View(article);
-        }
-
-        // POST: Articles/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        //[Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,ArticleActive,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,ArticleAddDate,ArticleGuid,ArticleImgPath,VendorID,ProductID,CategoryID")] Models.ArticleModel article, IFormCollection form)
-        {
-            if (id != article.ArticleID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                    var vendor = form["dropdownVendor"].ToString();
-                    var vendorID = _context.Vendors.Where(x => x.VendorName == vendor).Select(x => x.VendorID).FirstOrDefault();
-                    article.VendorID = vendorID;
-
-                    var category = form["dropdownCategory"].ToString();
-                    var categoryID = _context.Categories.Where(x => x.CategoryName == category).Select(x => x.CategoryID).FirstOrDefault();
-                    article.CategoryID = categoryID;
-
-                    var product = form["dropdownProduct"].ToString();
-                    var productID = _context.Products.Where(x => x.ProductName == product).Select(x => x.ProductID).FirstOrDefault();
-                    article.ProductID = Convert.ToInt32(productID);
-
-                    var subproduct = form["dropdownSubCategory"].ToString();
-                    var subproductID = _context.SubCategories.Where(x => x.SubCategoryName == subproduct).Select(x => x.SubCategoryID).FirstOrDefault();
-                    article.SubCategoryID = subproductID;
-                    article.ArticleNumber = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
-                    //article.ArticleNumber = String.Format("{0}{1}{2}", vendorID, categoryID, productID);
-                    //var stockCount = _context.Articles.ToList().Select(x => x.ArticleStock).FirstOrDefault();
-                    //var tmpStock = article.ArticleStock;
-                    //var newStock = stockCount + tmpStock;
-                    //article.ArticleStock = newStock;
-                    _context.Update(article);
-                    await _context.SaveChangesAsync();
-                
-                
-                    if (!ArticleModelExists(article.ArticleID))
-                    {
-                        return NotFound();
-                    }    
-                return RedirectToAction("Index");
-            }
-            return View(article);
-        }
-
-
+    
 
         private bool ArticleModelExists(int id)
         {

@@ -189,7 +189,7 @@
                             <a href="/favorites" class="">Favoriter</a>
                         </li>
                         <li class="pull-right col-xs-6">
-                            <form method="get" asp-action="Index" asp-controller="Article">
+                            <form asp-action="Index" asp-controller="Article" enctype="multipart/form-data">
                                 <div class="pull-right pull-right-search col-lg-6">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Sök Artikel...">
@@ -207,6 +207,7 @@
     </section>
 
     <!--INFOBANNER START -->
+
     @*<div class="container">
         <div class="row">
             <div class="col-xs-12 margin-neg18">
@@ -294,6 +295,24 @@
             </footer>
         </section>
     </div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
     @RenderSection("scripts", required: false)
 </body>
 
