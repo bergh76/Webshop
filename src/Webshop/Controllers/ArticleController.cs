@@ -139,21 +139,21 @@ namespace Webshop.Controllers
 
 
         // GET: Article/Details/5
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             //if (id == null)
             //{
             //    return NotFound();
             //}
 
-            //var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
             //if (articleModel == null)
             //{
             //    return NotFound();
             //}
 
-            BreadCrumTracker bc = new BreadCrumTracker(id);
-            bc.GetTracker();
+            BreadCrumTracker bc = new BreadCrumTracker(_context, id);
+            await bc.GetTracker();
             return View(bc);
         }
 
@@ -425,7 +425,10 @@ namespace Webshop.Controllers
                 article.SubCategoryID = subproductID;
 
                 string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
-                var dbArtID = _context.Articles.ToList().Where(x => x.ArticleNumber == tempArtNr).Select(x => x.ArticleNumber).FirstOrDefault();
+                if (_context.Articles != null)
+                {
+                    var dbArtID = _context.Articles.Where(x => x.ArticleNumber == tempArtNr).Select(x => x.ArticleNumber).FirstOrDefault();
+                }
                 article.ArticleNumber = tempArtNr;
                 string tmpImgName = String.Format("{0}_{1}_{2}_{3}", vendor, category, product, subproductID);
                 string newImgName = tmpImgName.Replace("&", "_");
