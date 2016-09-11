@@ -79,7 +79,7 @@ namespace Webshop.Models
         [ForeignKey("ProductForeignKey")]
         public ProductModel Product { get; set; }
         [Display(Name = "Produkt")]
-        public int ProductID { get; set; }
+        public string ProductID { get; set; }
 
         [ForeignKey("CategoryForeignKey")]
         public CategoryModel Category { get; set; }

@@ -24,16 +24,20 @@ namespace Webshop.Migrations
                     b.Property<DateTime>("ArticleAddDate");
 
                     b.Property<string>("ArticleFeaturesFour")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 66);
 
                     b.Property<string>("ArticleFeaturesOne")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 66);
 
                     b.Property<string>("ArticleFeaturesThree")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 66);
 
                     b.Property<string>("ArticleFeaturesTwo")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 66);
 
                     b.Property<string>("ArticleGuid");
 
@@ -48,7 +52,8 @@ namespace Webshop.Migrations
                     b.Property<decimal>("ArticlePrice");
 
                     b.Property<string>("ArticleShortText")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 40);
 
                     b.Property<int>("ArticleStock");
 
@@ -64,7 +69,7 @@ namespace Webshop.Migrations
 
                     b.Property<int?>("ProductForeignKey");
 
-                    b.Property<int>("ProductID");
+                    b.Property<string>("ProductID");
 
                     b.Property<int>("ProductImgPathID");
 

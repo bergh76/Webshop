@@ -17,7 +17,10 @@
     /*margin-bottom: 5px;*/
 
 }
-
+.bg-white{
+    margin-top: 1px;
+    /*background-color: #fff;*/
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -43,7 +46,7 @@
   margin-left: auto!important;
 }
 .container-white {
-    /* border-top: 1px solid #ddd; */
+     border-top: 1px solid #ddd; 
   background-color: #fff;
   padding-right: 15px!important;
   padding-left: 15px!important;
@@ -114,7 +117,7 @@
 .container-details-wide {
     background-color: #ededed;
     /*border-top: 1px solid #e6e8e9 !important;*/
-    /*background-image: url('../images/56516f31.png');*/
+    background-image: url('../images/56516f31.png');
     width: 100% !important;
     margin-right: auto;
     margin-left: auto;
@@ -319,7 +322,7 @@
     font-weight: 700;
     font-size: 1.4em;
     padding: .1em .4em;
-    background-color: #264263;
+    background-color: #a7ff03;
 
 }
 
@@ -385,17 +388,8 @@
 .content-block .text-item, h2:hover{
     color: #ff713d;
 }
-/*PRODUCT LISTDESIGN
-.ladda-button[data-style=zoom-out] {
-    overflow: hidden;
-}
+/*PRODUCT LISTDESIGN*/
 
-.action-row {
-
-    /*position: absolute;*/
-    padding-right: 5px;
-    /*bottom: 35px;*/
-}
 .priceInfo .review-rating {
     clear: both;
     float: right;
@@ -846,33 +840,37 @@ textarea {
     font-family: Corbel;
     font-weight: normal;
         padding: 3px 9px;
-    /*-moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    border-radius: 8px;*/
-    /*border: 1px solid #dcdcdc;
-    text-decoration: none;
-    background: -moz-linear-gradient( center top, #ededed 5%, #ffffff 100% );
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
-    background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ededed), color-stop(100%, #ffffff) );*/
-    background-color: #a7ff03;
-    /*color: #777777;*/
-    /*display: inline-block;
-    text-shadow: 1px 1px 0px #ffffff;
-    -webkit-box-shadow: inset 1px 1px 0px 0px #ffffff;
-    -moz-box-shadow: inset 1px 1px 0px 0px #ffffff;
-    box-shadow: inset 1px 1px 0px 0px #ffffff;*/
+    background-color: #ffcb00;
 }
 
 .submit-sm-button:hover {
-    /*background: -moz-linear-gradient( center top, #ffffff 5%, #ededed 100% );*/
-    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
-    background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ffffff), color-stop(100%, #ededed) );*/
+    color: #fff;
     background-color: #7ee100;
-    /*color: #5cb85c;*/
     transition: 0.2s !important;
 }
 
 .submit-sm-button:active {
+    position: relative;
+    top: 1px;
+}
+
+.search-sm-button {
+    border: 1px solid rgba(16, 23, 23, 0.23);
+    font-size: 10px;
+    font-family: Corbel;
+    font-weight: normal;
+        padding: 3px 9px;
+    background-color: #fff;
+}
+
+.search-sm-button:hover {
+    border: 1px solid rgba(16, 23, 23, 0.23);
+    color: #7ee100;
+    background-color: #fff;
+    transition: 0.2s !important;
+}
+
+.search-sm-button:active {
     position: relative;
     top: 1px;
 }

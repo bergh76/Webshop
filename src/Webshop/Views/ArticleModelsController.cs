@@ -103,7 +103,7 @@ namespace Webshop.Views
             product = product.Where(r => r.ProductName.Contains(dropdownProduct));
             var getProductID = product.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefaultAsync();
             productID = await getProductID;
-            var pID = Convert.ToInt32(productID);
+            var pID = productID;
 
             subProduct = subProduct.Where(s => s.SubCategoryName.Contains(dropdownSubCategory));
             var getsubProductID = subProduct.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefaultAsync();

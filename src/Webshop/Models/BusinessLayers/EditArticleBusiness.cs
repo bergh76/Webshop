@@ -55,8 +55,8 @@ namespace Webshop.BusinessLayers
             int categoryID = article.CategoryID;
             string cName = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
 
-            int productID = article.ProductID;
-            string pName = _context.Products.Where(x => x.ProductID == Convert.ToString(productID)).Select(x => x.ProductName).FirstOrDefault();
+            string productID = article.ProductID;
+            string pName = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
 
             string subproduct = p;
             int subproductID = article.SubCategoryID;
@@ -78,8 +78,8 @@ namespace Webshop.BusinessLayers
             int categoryID = article.CategoryID;
             string cName = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
 
-            int productID = article.ProductID;
-            string pName = _context.Products.Where(x => x.ProductID == Convert.ToString(productID)).Select(x => x.ProductName).FirstOrDefault();
+            string productID = article.ProductID;
+            string pName = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
 
             string subproduct = p;
             int subproductID = article.SubCategoryID;

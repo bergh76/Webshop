@@ -24,7 +24,7 @@
 <body>
 
     <!--await Html.PartialAsync("_LoginPartial")-->
-    <div class="nav-white navbar-fixed-top end-border">
+    <section class="nav-white navbar-fixed-top end-border">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -165,7 +165,7 @@
                 <!-- SHOPINGCART END-->
             </div>
         </div>
-    </div>
+    </section>
 
 
     <section class="navbar navbar-blue" id="bottom">
@@ -189,7 +189,7 @@
                             <a href="/favorites" class="">Favoriter</a>
                         </li>
                         <li class="pull-right col-xs-6">
-                            <form asp-action="Index" asp-controller="Article" enctype="multipart/form-data">
+                            <form asp-action="Search" asp-controller="Article" enctype="multipart/form-data">
                                 <div class="pull-right pull-right-search col-lg-6">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Sök Artikel...">
@@ -208,7 +208,7 @@
 
     <!--INFOBANNER START -->
 
-    @*<div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-xs-12 margin-neg18">
                 <table class="table margin-y-off" border="0">
@@ -267,7 +267,7 @@
                 </table>
             </div>
         </div>
-    </div>*@
+    </div>
     <!--INFOBANNER END -->
 
     <!--SMALL MODAL LOGIN-->

@@ -6,16 +6,16 @@ using Webshop.Models;
 
 namespace Webshop.BusinessLayers
 {
-    public class VendorBusiness
+    public class VendorBusinessLayer
     {
         private WebShopRepository _context;
         private readonly IHostingEnvironment _hostEnvironment;
 
-        public VendorBusiness()
+        public VendorBusinessLayer()
         {
 
         }
-        public VendorBusiness(WebShopRepository context, IHostingEnvironment hostEnviroment)
+        public VendorBusinessLayer(WebShopRepository context, IHostingEnvironment hostEnviroment)
         {
             _context = context;
             _hostEnvironment = hostEnviroment;

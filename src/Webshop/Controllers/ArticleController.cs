@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,6 +25,7 @@ namespace Webshop.Controllers
             _context = context;
             _hostEnvironment = hostEnvironment;
         }
+
         // GET: Article
 
         //public async Task<IActionResult> Index()
@@ -34,7 +33,7 @@ namespace Webshop.Controllers
         //    var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
         //    return View(await webShopRepository.ToListAsync());
         //}
-        public async Task<IActionResult> Index(string search, string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
+        public async Task<IActionResult> Index(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
 
         {
             // PERHAPS CREATE A BUSINESSLOGICCLASS //
@@ -108,7 +107,7 @@ namespace Webshop.Controllers
             product = product.Where(r => r.ProductName.Contains(dropdownProduct));
             var getProductID = product.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefaultAsync();
             productID = await getProductID;
-            var pID = Convert.ToInt32(productID);
+            var pID = productID;
 
             subProduct = subProduct.Where(s => s.SubCategoryName.Contains(dropdownSubCategory));
             var getsubProductID = subProduct.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefaultAsync();
@@ -126,26 +125,10 @@ namespace Webshop.Controllers
             //var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
             var isCampaign = artList.Where(x => x.ISCampaign == true);
             var outCampaign = isCampaign.Count();
-            var searchOut = artList.Where(x => x.ArticleName.Contains(search));
             if (outCampaign > 10)
             {
                 return View(isCampaign.ToList());
             }
-            if (!string.IsNullOrEmpty(search) && searchOut.Count() == 0)
-            {
-                ViewBag.NoHit = "Din sökning gav inga resultat";
-                return View(artList);
-            }
-            if (!string.IsNullOrEmpty(search))
-            {
-                return View(artList.Where(x => x.ArticleName.Contains(search)).FirstOrDefault());
-            }
-            //if (string.IsNullOrEmpty(search))
-            //{
-            //    //ViewBag.NoHit = "Din sökning gav inga resultat";
-            //    //return View(await webShopRepository.Where(x => x.ArticleName.Contains(search)).ToListAsync());
-            //    return View(artList);
-            //}
             while (artList.Count() != 0)
             {
                 return View(artList);
@@ -156,20 +139,22 @@ namespace Webshop.Controllers
 
 
         // GET: Article/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
-            if (articleModel == null)
-            {
-                return NotFound();
-            }
+            //var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            //if (articleModel == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return View(articleModel);
+            BreadCrumTracker bc = new BreadCrumTracker(id);
+            bc.GetTracker();
+            return View(bc);
         }
 
         // GET: Article/Create
@@ -221,6 +206,7 @@ namespace Webshop.Controllers
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(articleModel);
         }
+
 
         // POST: Article/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -340,9 +326,12 @@ namespace Webshop.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(string search)
         {
-            throw new NotImplementedException();
+            var hitlist = _context.Articles.Where(x => x.ArticleName.Contains(search)).Select(x => x.ArticleName);
+            return RedirectToAction("Index",await _context.Articles.ToListAsync());
         }
 
         // GET: Articles/Create
@@ -429,7 +418,7 @@ namespace Webshop.Controllers
 
                 string productID = form["ProductID"];
                 string product = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
-                article.ProductID = Convert.ToInt32(productID);
+                article.ProductID = productID;
 
                 int subproductID = Convert.ToInt32(form["SubCategoryID"]);
                 string subproduct = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
@@ -482,8 +471,6 @@ namespace Webshop.Controllers
             }
             return View(article);
         }
-
-
 
         public IActionResult NewVendor()
         {

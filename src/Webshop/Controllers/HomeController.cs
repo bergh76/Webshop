@@ -13,9 +13,9 @@ namespace Webshop.Controllers
     {
         private WebShopRepository _context;
 
-        public HomeController(WebShopRepository contect)
+        public HomeController(WebShopRepository context)
         {
-            _context = contect;
+            _context = context;
             //_datetime = datetime;
         }
 
@@ -23,12 +23,15 @@ namespace Webshop.Controllers
         //{
         //}
 
-        public async Task<IActionResult> Index(string search)
+        //public HomeController()
+        //{
+        //}
+
+        public async Task<IActionResult> Index()
         {
             var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
             var isCampaign = await webShopRepository.Where(x => x.ISCampaign == true).ToListAsync();
             var outCampaign = isCampaign.Count();
-            var searchOut = await webShopRepository.Where(x => x.ArticleName.Contains(search)).ToListAsync();
             if (outCampaign > 0)
             {                
                 return View(isCampaign.ToList());
@@ -43,7 +46,7 @@ namespace Webshop.Controllers
             //    //ViewBag.NoHit = "Din sökning gav inga resultat";
             //    return View(webShopRepository.ToListAsync());
             //}
-            return View(await webShopRepository.Where(x => x.ArticleName.Contains(search)).ToListAsync());
+            return View(await webShopRepository.ToListAsync());
         }
 
         public IActionResult About(int id, string name, string lang)

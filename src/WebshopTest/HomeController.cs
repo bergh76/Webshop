@@ -4,6 +4,7 @@ using Webshop.Interfaces;
 using Webshop.ViewModels;
 using System.Linq;
 using Xunit;
+using Webshop.Models;
 
 namespace Webshop.Controllers
 {
@@ -18,12 +19,14 @@ namespace Webshop.Controllers
     public class HomeControllerTest
         
     {
-       [Fact]
+        private WebShopRepository context;
+
+        [Fact]
         public void HomeControllerContactTest()
         {
             //Arrange
             var datetime = new StaticDateTime();
-            var controller = new HomeController();
+            var controller = new HomeController(context);
             //Act
             var result = controller.Contact(datetime);
             //Assert
