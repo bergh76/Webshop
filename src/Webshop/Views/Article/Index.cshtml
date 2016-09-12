@@ -1,16 +1,15 @@
-@model IEnumerable<Webshop.Models.ArticleModel>
+@model IEnumerable<Webshop.Models.Articles>
 
-@{
-    ViewData["Title"] = "Index";
-}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
+ 
 @*<div>@Html.Partial("_AdminMenu")</div>*@
 <section class="container">
     <div class="container-white">
         <div class="row">
             <div class="col-xs-12">
                 <div class="col-xs-2">
-
                     <a asp-action="Create"> Create New </a>
                 </div>
             </div>

@@ -9,7 +9,7 @@ namespace Webshop.Models
             : base(options)
         { }
 
-        public DbSet<ArticleModel> Articles { get; set; }
+        public DbSet<Articles> Articles { get; set; }
         public DbSet<VendorModel> Vendors { get; set; }
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<ProductModel> Products { get; set; }

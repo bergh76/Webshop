@@ -9,7 +9,7 @@ namespace Webshop.ViewModels
 {
     public class CartViewModel
     {
-        public ArticleModel Article { get; set; }
+        public Articles Article { get; set; }
         public ICollection CartList { get; set; }
     }
 }

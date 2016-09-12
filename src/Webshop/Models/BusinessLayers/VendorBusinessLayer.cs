@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Localization;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Controllers;
@@ -10,6 +11,8 @@ namespace Webshop.BusinessLayers
     {
         private WebShopRepository _context;
         private readonly IHostingEnvironment _hostEnvironment;
+        private readonly IStringLocalizer<ArticleController> _localizer;
+
 
         public VendorBusinessLayer()
         {
@@ -26,7 +29,7 @@ namespace Webshop.BusinessLayers
             var exists = _context.Vendors.ToList().Where(x => x.VendorName == nameInput).Select(x => x.VendorName).FirstOrDefault();
             do while (nameInput == exists)
                 {
-                    ArticleController create = new ArticleController(_context, _hostEnvironment);
+                    ArticleController create = new ArticleController(_context, _hostEnvironment,_localizer);
                     create.Create();
                 }
             while (false);

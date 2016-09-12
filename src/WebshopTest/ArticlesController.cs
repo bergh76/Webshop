@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Webshop.BusinessLayers;
+using Microsoft.Extensions.Localization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +19,7 @@ namespace Webshop.Controllers
 
     {
         private readonly IHostingEnvironment hostEnvironment;
+        private readonly IStringLocalizer<ArticleController> localizer;
         private static DbContextOptions<WebShopRepository> CreateNewContextOptions()
         {
             // Create a fresh service provider, and therefore a fresh 
@@ -78,20 +80,20 @@ namespace Webshop.Controllers
             }
             using (var context = new WebShopRepository(options))
             {
-                context.Articles.Add(new ArticleModel { ArticleName = "Test Product 1", VendorID = 9001, CategoryID = 1001, ProductID = "1001", SubCategoryID = 0001 });
-                context.Articles.Add(new ArticleModel { ArticleName = "Test Product 2", VendorID = 9002, CategoryID = 1002, ProductID = "1001", SubCategoryID = 0002 });
+                context.Articles.Add(new Articles { ArticleName = "Test Product 1", VendorID = 9001, CategoryID = 1001, ProductID = "1001", SubCategoryID = 0001 });
+                context.Articles.Add(new Articles { ArticleName = "Test Product 2", VendorID = 9002, CategoryID = 1002, ProductID = "1001", SubCategoryID = 0002 });
                 context.SaveChanges();
             }
 
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(context, hostEnvironment);
+                var service = new ArticleController(context, hostEnvironment, localizer);
                 //Act
                 var result = await service.Index(dropdownCategory, dropdownProduct, dropdownSubCategory, dropdownVendor, vendorID, productID, categoryID, subProductID);
                 //Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                var model = Assert.IsAssignableFrom<IEnumerable<ArticleModel>>(
+                var model = Assert.IsAssignableFrom<IEnumerable<Articles>>(
                     viewResult.ViewData.Model);
                 Assert.Equal(2, model.Count());
                 Assert.Equal("Test Product 1", model.ElementAt(0).ArticleName);
@@ -113,12 +115,12 @@ namespace Webshop.Controllers
             using (var context = new WebShopRepository(options))
             {
                 context.Articles.Add(
-                    new ArticleModel
+                    new Articles
                     {
                         ArticleName = "Test Product 1",
                         ArticleAddDate = new System.DateTime(1999, 10, 1),
                     });
-                var controller = new ArticleController(context, hostEnvironment);
+                var controller = new ArticleController(context, hostEnvironment, localizer);
                 controller.ModelState.AddModelError("Error", "Error");
                 //Act
                 var result = controller.Index(dropdownCategory, dropdownProduct, dropdownSubCategory, dropdownVendor, vendorID, productID, categoryID, subProductID);
@@ -147,7 +149,7 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(context, hostEnvironment);
+                var service = new ArticleController(context, hostEnvironment, localizer);
                 //Act
                 var result = service.NewProduct();
                 //Assert
@@ -166,15 +168,15 @@ namespace Webshop.Controllers
             // Insert seed data into the database using one instance of the context
             using (var context = new WebShopRepository(options))
             {
-                context.Articles.Add(new ArticleModel { ArticleName = "Test Product 1" });
-                context.Articles.Add(new ArticleModel { ArticleName = "Test Product 2" });
+                context.Articles.Add(new Articles { ArticleName = "Test Product 1" });
+                context.Articles.Add(new Articles { ArticleName = "Test Product 2" });
                 context.SaveChanges();
             }
 
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(context, hostEnvironment);
+                var service = new ArticleController(context, hostEnvironment, localizer);
                 //Act
                 var result = await service.DeleteConfirmed(1);
                 //Assert
@@ -290,7 +292,7 @@ namespace Webshop.Controllers
             // Insert seed data into the database using one instance of the context
             using (var context = new WebShopRepository(options))
             {
-                context.Articles.Add(new ArticleModel
+                context.Articles.Add(new Articles
                 {
                     ArticleID = 1,
                     ArticleName = "Sony",
@@ -313,7 +315,7 @@ namespace Webshop.Controllers
                     VendorID = 9111,
                     ProductImgPathID = 1
                 });
-                context.Articles.Add(new ArticleModel
+                context.Articles.Add(new Articles
                 {
                     ArticleID = 2,
                     ArticleName = "Adidas",
@@ -342,13 +344,13 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(context, hostEnvironment);
+                var service = new ArticleController(context, hostEnvironment, localizer);
                 //Act
                 var query = await service.Search(search);
 
                 //Assert
                 var viewResult = Assert.IsType<ViewResult>(query);
-                var model = Assert.IsAssignableFrom<IEnumerable<ArticleModel>>(
+                var model = Assert.IsAssignableFrom<IEnumerable<Articles>>(
                     viewResult.ViewData.Model);
                 Assert.Equal(1, model.Count());
             }

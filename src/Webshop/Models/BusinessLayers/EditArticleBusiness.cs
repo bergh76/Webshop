@@ -21,7 +21,7 @@ namespace Webshop.BusinessLayers
         private string _newFilename;
         private IFormFile _file;
         private IFormCollection _form;
-        private ArticleModel _article;
+        private Articles _article;
         private object _message;
         private string v;
         private string c;
@@ -33,7 +33,7 @@ namespace Webshop.BusinessLayers
         {
         }
 
-        public EditArticleBusiness(IHostingEnvironment hostEnvironment, WebShopRepository context, string ext, string newFilename, IFormFile file, IFormCollection form, ArticleModel article, string message)
+        public EditArticleBusiness(IHostingEnvironment hostEnvironment, WebShopRepository context, string ext, string newFilename, IFormFile file, IFormCollection form, Articles article, string message)
         {
             _hostEnvironment = hostEnvironment;
             _context = context;
@@ -45,7 +45,7 @@ namespace Webshop.BusinessLayers
             _message = message;
         }
 
-        internal void UpdateArticleData(ArticleModel article, WebShopRepository _context)
+        internal void UpdateArticleData(Articles article, WebShopRepository _context)
         {
             var date = DateTime.Now.ToLocalTime();
             int vendorID = article.VendorID;
@@ -67,7 +67,7 @@ namespace Webshop.BusinessLayers
             //return _context.SaveChanges();
         }
 
-        internal void UpdateArticleImage(ArticleModel article, IHostingEnvironment _hostEnvironment, WebShopRepository _context, string ext, string newFilename, IFormFile file, IFormCollection form, string message)
+        internal void UpdateArticleImage(Articles article, IHostingEnvironment _hostEnvironment, WebShopRepository _context, string ext, string newFilename, IFormFile file, IFormCollection form, string message)
         {
 
             var date = DateTime.Now.ToLocalTime();
