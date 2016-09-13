@@ -3,14 +3,13 @@
 @{
     ViewData["Title"] = "NewProduct";
 }
-<form asp-action="NewProduct">
+
+    <form asp-action="NewProduct">
+        @Html.HiddenFor(m => m.ID)
         <div class="form-horizontal">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @Html.HiddenFor(m => m.ID)
-
             <div class="form-group">
-                <label asp-for="ProductName" class="col-md-2 control-label">Produktnamn</label>
+                <label asp-for="ProductName" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
                     <input asp-for="ProductName" class="form-control" />
                     <span asp-validation-for="ProductName" class="text-danger" />
@@ -31,6 +30,6 @@
             </div>
         </div>
     </form>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -114,6 +114,87 @@ namespace Webshop.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorArticleDescription {
+            get {
+                return ResourceManager.GetString("ErrorArticleDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorArticleName {
+            get {
+                return ResourceManager.GetString("ErrorArticleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorArticlePrice {
+            get {
+                return ResourceManager.GetString("ErrorArticlePrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorArticleStock {
+            get {
+                return ResourceManager.GetString("ErrorArticleStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorCategoryName {
+            get {
+                return ResourceManager.GetString("ErrorCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorProductdata {
+            get {
+                return ResourceManager.GetString("ErrorProductdata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorProductName {
+            get {
+                return ResourceManager.GetString("ErrorProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorSubCategory {
+            get {
+                return ResourceManager.GetString("ErrorSubCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Fältet får inte vara tomt.
+        /// </summary>
+        public static string ErrorVendorName {
+            get {
+                return ResourceManager.GetString("ErrorVendorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Produktdata 1.
         /// </summary>
         public static string Feature1 {
@@ -146,6 +227,15 @@ namespace Webshop.Resources {
         public static string Feature4 {
             get {
                 return ResourceManager.GetString("Feature4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Ballan Allan.
+        /// </summary>
+        public static string name {
+            get {
+                return ResourceManager.GetString("name", resourceCulture);
             }
         }
         

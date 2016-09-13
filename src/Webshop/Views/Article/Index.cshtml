@@ -1,18 +1,23 @@
-@model IEnumerable<Webshop.Models.Articles>
-
+﻿@model IEnumerable<Webshop.Models.Articles>
 @using Microsoft.AspNetCore.Mvc.Localization
+@* The IViewLocalizer can be injected into the view. It does two things of interest:
+    1. It can HTML encode *parameters* passed to resource strings (not the resource strings themselves, as they may contain
+       HTML) automatically, and return the result as an IHtmlContent so Razor won't HTML encode it again;
+    2. It looks for localization resources for this view based on the view path, e.g. if the view's path is
+       "MyApplication/Views/Home/Index.cshtml", then the corresponding resource base path will be "MyApplication.Views.Home.Index" *@
 @inject IViewLocalizer Localizer
-
- 
+@{
+    ViewData["Title"] = Localizer["Index"];
+}
 @*<div>@Html.Partial("_AdminMenu")</div>*@
 <section class="container">
     <div class="container-white">
         <div class="row">
-            <div class="col-xs-12">
-                <div class="col-xs-2">
+            @*<div class="col-xs-12">
+                @*<div class="col-xs-2">
                     <a asp-action="Create"> Create New </a>
                 </div>
-            </div>
+            </div>*@
             <div class="col-xs-9">
                 @Html.Partial("_SearchArticles")
             </div>
@@ -86,7 +91,7 @@
                                                     <div class="box-bottom ">
                                                         <div class="stockstatus">
                                                             @*<i class="fa-colored-check-square-green"></i>*@
-                                                            <span class="fa fa-check-square-o lime-green icon-padding-right"><span class="small text-muted">  + @Html.DisplayFor(modelItem => item.ArticleStock) st i lager</span></span>
+                                                            <span class="fa fa-check-square-o lime-green icon-padding-right"><span class="small text-muted">  + @Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Lager"]</span></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -94,9 +99,9 @@
                                         </div>
                                         <div class="priceInfo">
                                             <span class="small right">
-                                                <a asp-action="Edit" asp-route-id="@item.ArticleID">Edit</a> |
-                                                <a asp-action="Details" asp-route-id="@item.ArticleID">Details</a> |
-                                                <a asp-action="Delete" asp-route-id="@item.ArticleID">Delete</a> |
+                                                <a asp-action="Edit" asp-route-id="@item.ArticleID">@Localizer["Ändra"]</a> |
+                                                <a asp-action="Details" asp-route-id="@item.ArticleID">@Localizer["Detaljer"]</a> |
+                                                <a asp-action="Delete" asp-route-id="@item.ArticleID">@Localizer["Ta Bort"]</a> |
                                             </span>
                                         </div>
                                     </td>

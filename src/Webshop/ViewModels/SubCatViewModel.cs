@@ -6,8 +6,8 @@ namespace Webshop.ViewModel
     public class SubCatViewModel
     {
 
-        public SubCategory SubCatObject { get; set; }
-        public IEnumerable<SubCategory> SubCatList { get; set; }
+        public SubCategoryModel SubCatObject { get; set; }
+        public IEnumerable<SubCategoryModel> SubCatList { get; set; }
 
         //public ImageViewModel(ApplicationDbContext context)
         //{

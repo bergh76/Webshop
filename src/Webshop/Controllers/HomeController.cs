@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,20 +16,26 @@ namespace Webshop.Controllers
     public class HomeController : Controller
     {
         private WebShopRepository _context;
-
-        public HomeController(WebShopRepository context)
+        private readonly IStringLocalizer<HomeController> _localizer;
+        public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer)
         {
             _context = context;
+            _localizer = localizer;
             //_datetime = datetime;
         }
 
-        //public HomeController()
-        //{
-        //}
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
 
-        //public HomeController()
-        //{
-        //}
+            return LocalRedirect(returnUrl);
+        }
+
 
         public async Task<IActionResult> Index()
         {

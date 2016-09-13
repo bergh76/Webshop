@@ -1,13 +1,23 @@
 ﻿@using Webshop
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@* The IViewLocalizer can be injected into the view. It does two things of interest:
+    1. It can HTML encode *parameters* passed to resource strings (not the resource strings themselves, as they may contain
+       HTML) automatically, and return the result as an IHtmlContent so Razor won't HTML encode it again;
+    2. It looks for localization resources for this view based on the view path, e.g. if the view's path is
+       "MyApplication/Views/Home/Index.cshtml", then the corresponding resource base path will be "MyApplication.Views.Home.Index" *@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["_Layout"];
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Webshop</title>
+    <title>Webshop</title>
 
     <environment names="Development">
+        @*<link href="~/css/style.css" rel="stylesheet" />*@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
@@ -20,7 +30,9 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
     </environment>
+
 </head>
+
 <body>
 
     <!--await Html.PartialAsync("_LoginPartial")-->
@@ -43,43 +55,45 @@
                         <a asp-area="" asp-controller="" asp-action="" class="navbar-brand">Ipsum</a>
                     </li>
                     <li class="">
-                        <a asp-area="" asp-controller="Article" asp-action="Index" class="navbar-brand">Produkter</a>
+                        <a asp-area="" asp-controller="Article" asp-action="Index" class="navbar-brand">@Localizer["Produkter"]</a>
                     </li>
                     <li class="">
-                        <a asp-area="" asp-controller="Article" asp-action="Create" class="navbar-brand">Skapa Ny</a>
+                        <a asp-area="" asp-controller="Article" asp-action="Create" class="navbar-brand">@Localizer["Skapa Ny"]</a>
                     </li>
                     @*@if (SignInManager.IsSignedIn(User))
                     {*@
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/login">
-                                <span>Mina Sidor</span>
+                                <span>@Localizer["Mina Sidor"]</span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="disabled">
-                                     <a asp-area="" asp-controller="Account" asp-action="Login">
-                                     <span class="fa fa-sign-in icon-padding-right"></span>Logga in
-                                     </a>
+                                     <span class="icon-padding-right-15"></span><button type="submit" class="logout-button">@*<a asp-area="" asp-controller="Account" asp-action="Login">*@<span class="fa fa-sign-in icon-padding-right"></span>@Localizer["Logga in"]
+                                     @*</a>*@</button>
                                  </li>
                                 @*<li class="dropdown"><a><span class="fa fa-user lime-green"></span> @UserManager.GetUserName(User)!</a></li>*@
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="#"><span class="fa fa-history icon-padding-right"></span>Orderhistorik</a>
-                                </li>
+                                    <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-history icon-padding-right"></span>@Localizer["Orderhistorik"]</button>
+</li>
                                 <li>
-                                    <a href="/rma"><span class="fa fa-chain-broken icon-padding-right"></span>Ärenden & reklamationer</a>
-                                </li>
+                                    <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-chain-broken icon-padding-right"></span>@Localizer["Ärenden & reklamationer"]</button>
+</li>
                                 <li class="divider"></li>
-                                <li><a href="Manage"><span class="fa fa-cogs icon-padding-right"></span>Kontoinställningar</a></li>
+                                <li><span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-cogs icon-padding-right"></span>@Localizer["Kontoinställningar"]</button></li>
                                 <li>
                                     <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
                                         @*<a asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm"><span class="fa fa-sign-in icon-padding-right"></span>Logga Ut</a>*@
                                         @*<span><i class="fa fa-sign-out icon-padding-right"></i>@await ActionLink("Logga Ut", "LogOff", "Account")</span>*@
-                                        <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-sign-out icon-padding-right" type="submit" id="logoutForm"></span>Logga Ut</button>
+                                        <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-sign-out icon-padding-right" type="submit" id="logoutForm"></span>@Localizer["Logga Ut"]</button>
                                     </form>
                                 </li>
                             </ul>
                         </li>
+                    <li class="">
+                        @await Html.PartialAsync("_SelectLanguagePartial")
+                    </li>
 
                     @*}
                     else
@@ -95,9 +109,9 @@
                     <ul class="nav-white navbar-nav pull-right" id="ko-miniCartContainer">
                         <li class="dropdown pull-right cart" data-bind="dropdown: TotalQuantity()">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart" data-bind="click: loadCartItems">
-                                <label class="hidden-xs hidden-sm" >Kundvagnen är tom</label>
-                                <label class="cartValue">0 kr</label>
-                                <span class="text-muted lowerText" data-bind="text: ShowPricesInclOrExclVat">Inkl. moms</span>
+                                <label class="hidden-xs hidden-sm" >@Localizer["Kundvagnen är tom"]</label>
+                                <label class="cartValue">@Localizer["Summa"]</label>
+                                <span class="text-muted lowerText" data-bind="text: ShowPricesInclOrExclVat">@Localizer["Inkl. moms"]</span>
                             </a>
                             <ul class="dropdown-menu keep-open">
                                 <li data-bind="css: inProgressClass" class="hide"></li>
@@ -174,27 +188,27 @@
                 <div class="col-xs-12">
                     <ul class="nav navbar-nav col-xs-12">
                         <li class="dropdown">
-                            <a asp-area="" asp-controller="Article" asp-action="Index" >Produkter</a>
+                            <a asp-area="" asp-controller="Article" asp-action="Index" >@Localizer["Produkter"]</a>
                         </li>
                         <li class="">
                         <li>
-                            <a href="#" class="">Tillbehörsguider</a>
+                            <a href="#" class="">@Localizer["Tillbehörsguider"]</a>
                         </li>
                         <!-- /ko -->
                         <li class="">
-                            <a href="#" class="">Lorem Ipsum</a>
+                            <a href="#" class="">@Localizer["Lorem Ipsum"]</a>
                         </li>
                         <!--/ko-->
                         <li class="">
-                            <a href="/favorites" class="">Favoriter</a>
+                            <a href="/favorites" class="">@Localizer["Favoriter"]</a>
                         </li>
                         <li class="pull-right col-xs-6">
                             <form asp-action="Search" asp-controller="Article" enctype="multipart/form-data">
                                 <div class="pull-right pull-right-search col-lg-6">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Sök Artikel...">
+                                        <input type="text" name="search" class="form-control" placeholder=@Localizer["Sök"]>
                                         <span class="input-group-btn">
-                                            <button class="btn submit-button" type="submit"><span class="fa fa-search"></span>Sök</button>
+                                            <button class="btn submit-button" type="submit"><span class="fa fa-search"></span>@Localizer["Sök"]</button>
                                         </span>
                                     </div><!-- /input-group -->
                                 </div><!-- /.col-lg-6 -->
@@ -208,66 +222,6 @@
 
     <!--INFOBANNER START -->
 
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 margin-neg18">
-                <table class="table margin-y-off" border="0">
-                    <tbody class="text-info-blue">
-                        <tr>
-                            <td class="padding-y-md" style="border: none!important; text-align: center;">
-                                <i class="fa fa-truck fa-2x flip"></i>
-                            </td>
-                            <td style="border: none!important;">
-                                <a href="/">
-                                    <strong class="small"> Fri frakt över 2 500 kr</strong><span class="hidden-sm hidden-xs small"><br>Ej hempaket, budbil eller pall </span>
-                                </a>
-                            </td>
-
-                            <td class="padding-x-md" style="border: none!important;"></td>
-                            <td class="padding-y-md" style="border: none!important; text-align: center;">
-                                <i class="fa fa-cube fa-2x"></i>
-                            </td>
-                            <td style="border: none!important;">
-                                <a href="/">
-                                    <strong class="small" id="countdown">Beställ inom <span style="color: #ff713d; font-size: larger">00t 53m 16s</span></strong><span class="hidden-sm hidden-xs small"><br>och varan skickas idag.</span>
-                                </a>
-                            </td>
-
-                            <td class="padding-x-md" style="border: none!important;"></td>
-                            <td class="padding-y-md" style="border: none!important; text-align: center;">
-                                <i class="fa fa-rotate-left fa-2x"></i>
-                            </td>
-                            <td style="border: none!important;">
-                                <a href="/">
-                                    <strong class="small"> 60 dagars öppet köp</strong><span class="hidden-sm hidden-xs small"><br> Vid obruten förpackning </span>
-                                </a>
-                            </td>
-
-                            <td class="padding-x-md" style="border: none!important;"></td>
-                            <td class="padding-y-md" style="border: none!important; text-align: center;">
-                                <i class="fa fa-phone fa-2x"></i>
-                            </td>
-                            <td style="border: none!important;">
-                                <a href="/">
-                                    <strong class="small">00-123 456 789</strong><span class="hidden-sm hidden-xs small"><br>Mån-Fre 08-17</span>
-                                </a>
-                            </td>
-                            <td class="padding-x-md" style="border: none!important;"></td>
-                            <td class="padding-y-md" style="border: none!important; text-align: center;">
-                                <i class="fa fa-comments-o fa-2x"></i>
-                            </td>
-                            <td style="border: none!important;">
-                                <a href="/">
-                                    <h4 class="hidden-sm hidden-xs small">Chatta med oss (online)</h4>
-                                </a>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
     <!--INFOBANNER END -->
 
     <!--SMALL MODAL LOGIN-->
@@ -278,7 +232,7 @@
                 </div>
             </div>
         </div>*@
-    <!--LARGE MODAL LOGIN-->
+    @*LARGE MODAL LOGIN*@
     @*<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -290,9 +244,82 @@
     <div class="container-details-wide">
         @RenderBody()
         <section class="nav-white bottom">
-            <footer class="container footer-height">
-                <p>&copy; 2016 - Webshop</p>
-            </footer>
+            <div class="footer">
+                <div class="wrap">
+                    <div class="contact-section">
+                        <div class="col-md-4 different-products">
+                            <ul>
+                                <li class="first"> Shop </li> -
+                                <li><a href=""> Mobiles </a></li> |
+                                <li><a href=""> Laptops </a></li> |
+                                <li><a href=""> Cameras </a></li> |
+                                <li><a href=""> Clothing </a></li> |
+                                <li><a href=""> Footwear </a></li> |
+                                <li><a href=""> Jewellery </a></li>
+                            </ul>
+                            <ul>
+                                <li class="first"> Help </li> -
+                                <li><a href=""> Faqs </a></li> |
+                                <li><a href=""> shipping </a></li> |
+                                <li><a href=""> payments </a></li> |
+                                <li><a href=""> cancellation&returns </a></li>
+                            </ul>
+                            <ul>
+                                <li class="first"> account
+                                <li> -
+                                <li><a href=""> log in </a></li> |
+                                <li><a href=""> sign up </a></li> |
+                                <li><a href=""> My WhishList </a></li> |
+                                <li><a href=""> My cart </a></li>
+                            </ul>
+                            <ul>
+                                <li class="first"> boxshop </li> -
+                                <li><a href="contact.html"> contact us </a></li> |
+                                <li><a href=""> about us </a></li> |
+                                <li><a href=""> careers </a></li> |
+                                <li><a href=""> blog </a></li> |
+                                <li><a href=""> press </a></li>
+                            </ul>
+                            <ul>
+                                <li class="first"> policies</li> -
+                                <li><a href=""> terms of use </a></li> |
+                                <li><a href=""> security </a></li> |
+                                <li><a href=""> privacy policy</a></li>
+                            </ul>
+                        </div>
+                       
+                        <div class="col-md-4 subscribe text-center">
+                            <h3>Subscribe Us</h3>
+                            <p>Get the latest updates & Offers right in your inbox.</p>
+                            <input type="text" class="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
+                            <input type="submit" value="Subscribe">
+                        </div>
+                        <div class="col-md-4 help text-right">
+                            <h3>Need Help?</h3>
+                            <p>Lorem ipsum dolor sit amet</p>
+                            <a href="contact.html">Contact us</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="footer-middle">
+                        <div class="col-md-12 follow text-center">
+                            <h3>Follow Us</h3>
+                            <p>Lorem ipsum dolor sit amet</p>
+                            <div class="social-icons">
+                                <i class="twitter"></i>
+                                <i class="facebook"></i>
+                                <i class="googlepluse"></i>
+                                <i class="pinterest"></i>
+                                <i class="linkedin"></i>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="cards text-center">
+                        <img src="~/images/cards.jpg" alt="Payment" />
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 

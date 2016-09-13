@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,11 +29,16 @@ namespace Webshop.Controllers
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
         }
-        [HttpGet]
-        public string Get()
-        {
-            return _localizer["Create"];
-        }
+        //[HttpGet]
+        //public string GetCreate()
+        //{
+        //    return _localizer["Create"];
+        //}
+        //[HttpGet]
+        //public string GetVendor()
+        //{
+        //    return _localizer["NewVendor"];
+        //}
         // GET: Article
 
         //public async Task<IActionResult> Index()
@@ -40,10 +46,12 @@ namespace Webshop.Controllers
         //    var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
         //    return View(await webShopRepository.ToListAsync());
         //}
+
+           
         public async Task<IActionResult> Index(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
 
         {
-            // PERHAPS CREATE A BUSINESSLOGICCLASS //
+            //PERHAPS CREATE A BUSINESSLOGICCLASS //
             IEnumerable<Articles> artList = new List<Articles>();
             var vendorList = new List<string>();
             var all = await _context.Articles.ToListAsync();
@@ -100,6 +108,10 @@ namespace Webshop.Controllers
 
             var subProduct = from s in _context.SubCategories
                              select s;
+            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
 
             vendor = vendor.Where(r => r.VendorName.Contains(dropdownVendor));
             var getVendorID = vendor.Where(x => x.VendorName == dropdownVendor).Select(x => x.VendorID).FirstOrDefaultAsync();
@@ -148,20 +160,20 @@ namespace Webshop.Controllers
         // GET: Article/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
-            //if (articleModel == null)
-            //{
-            //    return NotFound();
-            //}
+            if (articleModel == null)
+            {
+                return NotFound();
+            }
 
-            BreadCrumTracker bc = new BreadCrumTracker(_context, id);
-            await bc.GetTracker();
-            return View(bc);
+            //BreadCrumTracker bc = new BreadCrumTracker(_context, id);
+            //await bc.GetTracker();
+            return View(articleModel);
         }
 
         // GET: Article/Create
@@ -335,10 +347,14 @@ namespace Webshop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search(string search)
+        public IActionResult Search(string search)
         {
-            var hitlist = _context.Articles.Where(x => x.ArticleName.Contains(search)).Select(x => x.ArticleName);
-            return RedirectToAction("Index",await _context.Articles.ToListAsync());
+            var hitlist = _context.Articles.Where(x => x.ArticleName.Contains(search));
+            if(hitlist.Count() == 0)
+            {
+                ViewBag.NoHit = "Din sökning gav inga resultat";
+            }
+            return RedirectToAction("Index", hitlist);
         }
 
         // GET: Articles/Create
@@ -636,7 +652,7 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewSubCategory([Bind("SubCategoryID, SubCategoryName, ISActive")] SubCategory subCategory)
+        public async Task<IActionResult> NewSubCategory([Bind("SubCategoryID, SubCategoryName, ISActive")] SubCategoryModel subCategory)
         {
 
             if (ModelState.IsValid)
@@ -672,7 +688,7 @@ namespace Webshop.Controllers
         {
             sub = new SubCatViewModel
             {
-                SubCatObject = new SubCategory(),
+                SubCatObject = new SubCategoryModel(),
                 SubCatList = _context.SubCategories.ToList().OrderBy(x => x.SubCategoryName),
             };
             return sub;

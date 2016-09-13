@@ -74,8 +74,8 @@ namespace Webshop.Controllers
             }
             using (var context = new WebShopRepository(options))
             {
-                context.SubCategories.Add(new SubCategory { SubCategoryID = 0001, SubCategoryName = "7.2 Reciever" });
-                context.SubCategories.Add(new SubCategory { SubCategoryID = 0002, SubCategoryName = "Förstärkare" });
+                context.SubCategories.Add(new SubCategoryModel { SubCategoryID = 0001, SubCategoryName = "7.2 Reciever" });
+                context.SubCategories.Add(new SubCategoryModel { SubCategoryID = 0002, SubCategoryName = "Förstärkare" });
                 context.SaveChanges();
             }
             using (var context = new WebShopRepository(options))

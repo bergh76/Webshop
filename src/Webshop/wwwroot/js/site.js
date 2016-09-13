@@ -3,7 +3,11 @@
 function openNav() {
     document.getElementById("mySidenav").style.height = "450px";
 }
-
+(function () {
+    $("#selectLanguage select").change(function () {
+        $(this).parent().submit();
+    });
+}());
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }

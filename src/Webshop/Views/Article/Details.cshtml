@@ -1,12 +1,19 @@
 ﻿@model Webshop.Models.Articles
-@*@{
-        ViewData["Title"] = "Details";
-    }*@
+@using Microsoft.AspNetCore.Mvc.Localization
+@* The IViewLocalizer can be injected into the view. It does two things of interest:
+    1. It can HTML encode *parameters* passed to resource strings (not the resource strings themselves, as they may contain
+       HTML) automatically, and return the result as an IHtmlContent so Razor won't HTML encode it again;
+    2. It looks for localization resources for this view based on the view path, e.g. if the view's path is
+       "MyApplication/Views/Home/Index.cshtml", then the corresponding resource base path will be "MyApplication.Views.Home.Index" *@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Details"];
+}
 <section class="container">
     <div class="container-white" data-gasource="CampaignProducts">
         <div class="row">
             <div class="col-xs-12">
-                <div>@await Component.InvokeAsync("BreadCrumTracker") @*@await Component.InvokeAsync(nameof(BreadCrumTracker)*@</div>
+                @*<div>@await Component.InvokeAsync("BreadCrumTracker") @await Component.InvokeAsync(nameof(BreadCrumTracker)</div>*@
             </div>
         </div>
         <div class="col-xs-12 padding-x-off">
@@ -43,7 +50,7 @@
                         <li>@Html.DisplayFor(model => model.ArticleFeaturesFour)</li>
                     </ul>
                     <div class="btn-group">
-                        <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => model.ArticleStock) kvar</span></span>
+                        <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => model.ArticleStock) @Localizer["Kvar"]</span></span>
                     </div>
                 </div>
                 <div style="height: 30px;">
@@ -52,7 +59,7 @@
                     <div class="col-xs-2 pull-right text-field-margin-right">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn submit-button" type="button"><i class="fa fa-cart-plus"></i> Köp</button>
+                                <button class="btn submit-button" type="button"><i class="fa fa-cart-plus"></i>@Localizer["Köp"]</button>
                             </span>
                             <input type="number" class="form-control" />
 
@@ -60,7 +67,7 @@
                     </div><!-- /.col-lg-6 -->
                 </div>
                 <div class="text-muted">
-                    <a onclick="history.go(-1);" ><span class="modal-pointer">Tillbaka</span></a>
+                    <a class="btn btn-success" onclick="history.go(-1);" ><span class="modal-pointer">@Localizer["Bakåt"]</span></a>
                 </div>
             </div>
         </div>

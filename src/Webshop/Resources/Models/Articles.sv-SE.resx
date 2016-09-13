@@ -147,6 +147,9 @@
   <data name="Feature4" xml:space="preserve">
     <value>Produktdata 4</value>
   </data>
+  <data name="name" xml:space="preserve">
+    <value>Ballan Allan</value>
+  </data>
   <data name="Price" xml:space="preserve">
     <value>Pris</value>
   </data>
@@ -158,5 +161,32 @@
   </data>
   <data name="SubCategoryType" xml:space="preserve">
     <value>Underkategori</value>
+  </data>
+  <data name="ErrorArticleDescription" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorArticleName" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorArticlePrice" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorArticleStock" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorCategoryName" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorProductdata" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorProductName" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorSubCategory" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
+  </data>
+  <data name="ErrorVendorName" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
   </data>
 </root>

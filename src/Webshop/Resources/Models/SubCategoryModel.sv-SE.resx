@@ -118,45 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Active" xml:space="preserve">
-    <value>Active</value>
+    <value>Aktiv</value>
   </data>
-  <data name="ArticleName" xml:space="preserve">
-    <value>Article Name</value>
-  </data>
-  <data name="Brand" xml:space="preserve">
-    <value>Brand</value>
-  </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Campaign</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Feature1" xml:space="preserve">
-    <value>Feature 1</value>
-  </data>
-  <data name="Feature2" xml:space="preserve">
-    <value>Feature 2</value>
-  </data>
-  <data name="Feature3" xml:space="preserve">
-    <value>Feature 3</value>
-  </data>
-  <data name="Feature4" xml:space="preserve">
-    <value>Feature 4</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="Product" xml:space="preserve">
-    <value>Product</value>
-  </data>
-  <data name="Stock" xml:space="preserve">
-    <value>Stock</value>
+  <data name="ErrorSubCategory" xml:space="preserve">
+    <value>Fältet får inte vara tomt</value>
   </data>
   <data name="SubCategoryType" xml:space="preserve">
-    <value>Sub Category</value>
+    <value>Underkategori</value>
   </data>
 </root>
