@@ -15,6 +15,7 @@ namespace Webshop.Models
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<SubCategoryModel> SubCategories { get; set; }
         public DbSet<ImageModel> Images { get; set; }
+        public DbSet<Language> Languages { get; set; }
         //public DbSet<Cart> Carts { get; set; }
         //public DbSet<OrderModel> Orders { get; set; }
         //public DbSet<OrderDetail> OrderDetails { get; set; }
