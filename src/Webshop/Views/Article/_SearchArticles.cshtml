@@ -13,28 +13,28 @@
             <div class="btn-block">
                 @*<span class="col-searchnav control-label"> Tillverkare</span>*@
                 <div class="col-searchnav">
-                    @Html.DropDownList("dropdownVendor", (SelectList)ViewBag.dropdownVendor, new { @class = "btn btn-default btn-xs  dropdown-toggle", data_toggle = "dropdown"})
+                    @Html.DropDownList("dropdownVendor", (SelectList)ViewBag.dropdownVendor, "",new { @class = "btn btn-default btn-xs  dropdown-toggle", data_toggle = "dropdown"})
                 </div>
             </div>
 
             <div class="btn-block">
                 @*<span class="col-searchnav control-label"> Kategori</span>*@
                 <div class="col-searchnav">
-                    @Html.DropDownList("dropdownCategory", (SelectList)ViewBag.dropdownCategory, new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown"})
+                    @Html.DropDownList("dropdownCategory", (SelectList)ViewBag.dropdownCategory,"", new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown"})
                 </div>
             </div>
 
             <div class="btn-block">
                 @*<span class="col-searchnav control-label"> Produkt</span>*@
                 <div class="col-searchnav">
-                    @Html.DropDownList("dropdownProduct", (SelectList)ViewBag.dropdownProduct, new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown"})
+                    @Html.DropDownList("dropdownProduct", (SelectList)ViewBag.dropdownProduct,"", new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown"})
                 </div>
             </div>
 
             <div class="btn-block">
                 @*<span class="col-searchnav control-label"> Produkt</span>*@
                 <div class="col-searchnav">
-                    @Html.DropDownList("dropdownSubCategory", (SelectList)ViewBag.dropdownSubCategory, new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown" })
+                    @Html.DropDownList("dropdownSubCategory", (SelectList)ViewBag.dropdownSubCategory,"", new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown" })
                 </div>
             </div>
             <div class="btn-block">

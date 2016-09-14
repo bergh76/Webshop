@@ -1,7 +1,7 @@
 ﻿@using Webshop
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-
+@model IEnumerable<Webshop.Models.Articles>
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["_Layout"];
@@ -183,7 +183,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                        @Html.Partial("_SearchArticles")
+                        @*@Html.Partial("_SearchArticles")*@
 
                     @*<ul class="nav navbar-nav col-xs-12">
                         <li class="dropdown">
