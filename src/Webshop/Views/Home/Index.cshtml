@@ -118,7 +118,7 @@
                             <i class="fa fa-heart-o text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Spara som favorit"> </i>
                             <i class="fa fa-exchange text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Jämför produkten"> </i>
                             <i class="fa-colored-check-square-green"></i>
-                            <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green">@Html.DisplayFor(modelItem => item.ArticleStock)+ @Localizer["Stock"]</span></span>
+                            <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green"> @Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Stock"]</span></span>
                         </div>
                         <button type="submit" class="btn submit-sm-button ladda-button btn-buy buy hidden-print">
                             <span class="ladda-label"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</span>

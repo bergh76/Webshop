@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Webshop.BusinessLayers;
 using Webshop.Models;
-using Webshop.ViewModel;
+using Webshop.Models.BusinessLayers;
 
 namespace Webshop.Controllers
 {
@@ -29,16 +29,6 @@ namespace Webshop.Controllers
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
         }
-        //[HttpGet]
-        //public string GetCreate()
-        //{
-        //    return _localizer["Create"];
-        //}
-        //[HttpGet]
-        //public string GetVendor()
-        //{
-        //    return _localizer["NewVendor"];
-        //}
         // GET: Article
 
         //public async Task<IActionResult> Index()
@@ -426,73 +416,73 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewArticle(Articles article, IFormFile file, string ext, string newFilename, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        public IActionResult NewArticle(Articles article, AddArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
         {
             if (ModelState.IsValid)
             {
-                var date = DateTime.Now.ToLocalTime();
-                int vendorID = Convert.ToInt32(form["VendorID"]);
-                string vendor = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
-                article.VendorID = Convert.ToInt32(vendorID);
+                add.AddArticle(article, _context, _hostEnvironment, _localizer, file, form);
+                //var date = DateTime.Now.ToLocalTime();
+                //int vendorID = Convert.ToInt32(form["VendorID"]);
+                //string vendor = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
+                //article.VendorID = Convert.ToInt32(vendorID);
 
-                int categoryID = Convert.ToInt32(form["CategoryID"]);
-                string category = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
-                article.CategoryID = categoryID;
+                //int categoryID = Convert.ToInt32(form["CategoryID"]);
+                //string category = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
+                //article.CategoryID = categoryID;
 
-                string productID = form["ProductID"];
-                string product = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
-                article.ProductID = productID;
+                //string productID = form["ProductID"];
+                //string product = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
+                //article.ProductID = productID;
 
-                int subproductID = Convert.ToInt32(form["SubCategoryID"]);
-                string subproduct = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
-                article.SubCategoryID = subproductID;
+                //int subproductID = Convert.ToInt32(form["SubCategoryID"]);
+                //string subproduct = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
+                //article.SubCategoryID = subproductID;
 
-                string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
-                if (_context.Articles != null)
-                {
-                    var dbArtID = _context.Articles.Where(x => x.ArticleNumber == tempArtNr).Select(x => x.ArticleNumber).FirstOrDefault();
-                }
-                article.ArticleNumber = tempArtNr;
-                string tmpImgName = String.Format("{0}_{1}_{2}_{3}", vendor, category, product, subproductID);
-                string newImgName = tmpImgName.Replace("&", "_");
-                var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);
-                var root = _hostEnvironment.WebRootPath;
-                string uploads = root + "/" + serverPath;
-                Directory.CreateDirectory(uploads);
-                try
-                {
-                    if (file.Length != 0)
-                    {
-                        ext = Path.GetExtension(file.FileName);
-                        var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
-                        var tmpNameTwo = tmpName.Replace("\"", "");
-                        newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
-                        using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
-                        {
-                            await file.CopyToAsync(fileStream);
-                        }
-                    }
-                }
-                catch
-                {
-                    ViewBag.NoFile = "Du måste välja en fil";
-                    return RedirectToAction("Create");
-                }
+                //string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
+                //if (_context.Articles != null)
+                //{
+                //    var dbArtID = _context.Articles.Where(x => x.ArticleNumber == tempArtNr).Select(x => x.ArticleNumber).FirstOrDefault();
+                //}
+                //article.ArticleNumber = tempArtNr;
+                //string tmpImgName = String.Format("{0}_{1}_{2}_{3}", vendor, category, product, subproductID);
+                //string newImgName = tmpImgName.Replace("&", "_");
+                //var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);
+                //var root = _hostEnvironment.WebRootPath;
+                //string uploads = root + "/" + serverPath;
+                //Directory.CreateDirectory(uploads);
+                //try
+                //{
+                //    if (file.Length != 0)
+                //    {
+                //        ext = Path.GetExtension(file.FileName);
+                //        var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
+                //        var tmpNameTwo = tmpName.Replace("\"", "");
+                //        newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
+                //        using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
+                //        {
+                //            await file.CopyToAsync(fileStream);
+                //        }
+                //    }
+                //}
+                //catch
+                //{
+                //    ViewBag.NoFile = "Du måste välja en fil";
+                //    return RedirectToAction("Create");
+                //}
 
-                Guid guidID = Guid.NewGuid();
-                article.ArticleGuid = guidID.ToString();
-                article.ArticleAddDate = date;
-                ImageModel img = new ImageModel
-                {
-                    ImageDate = date,
-                    ImageName = newFilename,
-                    ImagePath = String.Format("{0}", serverPath),
-                    ArticleGuid = guidID
-                };
-                _context.Images.Add(img);
-                article.ArticleImgPath = String.Format("{0}{1}", serverPath, newFilename);
-                _context.Add(article);
-                await _context.SaveChangesAsync();
+                //Guid guidID = Guid.NewGuid();
+                //article.ArticleGuid = guidID.ToString();
+                //article.ArticleAddDate = date;
+                //ImageModel img = new ImageModel
+                //{
+                //    ImageDate = date,
+                //    ImageName = newFilename,
+                //    ImagePath = String.Format("{0}", serverPath),
+                //    ArticleGuid = guidID
+                //};
+                //_context.Images.Add(img);
+                //_context.Add(article);
+                //await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(article);
@@ -683,17 +673,6 @@ namespace Webshop.Controllers
             }
             return View(subCategory);
         }
-
-        private SubCatViewModel _ListSubCat(SubCatViewModel sub)
-        {
-            sub = new SubCatViewModel
-            {
-                SubCatObject = new SubCategoryModel(),
-                SubCatList = _context.SubCategories.ToList().OrderBy(x => x.SubCategoryName),
-            };
-            return sub;
-        }
-
     
 
         private bool ArticleModelExists(int id)

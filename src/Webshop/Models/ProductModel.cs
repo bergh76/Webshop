@@ -16,6 +16,6 @@ namespace Webshop.Models
         public string ProductName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Resources.ProductModel))]
         public bool ISActive { get; set; }
-        public ICollection<ProductModel> Products { get; set; }
+
     }
 }

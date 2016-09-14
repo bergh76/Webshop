@@ -7,18 +7,6 @@
 }
 @*<div>@Html.Partial("_AdminMenu")</div>*@
 <section class="container">
-    <div class="container-white">
-        <div class="row">
-            @*<div class="col-xs-12">
-                    @*<div class="col-xs-2">
-                        <a asp-action="Create"> Create New </a>
-                    </div>
-                </div>*@
-            <div class="col-xs-9">
-                @Html.Partial("_SearchArticles")
-            </div>
-        </div>
-    </div>
     <div class="col-xs-12 padding-x-off no-pad-table">
         <table class="table margin-y-off" border="0">
             <tbody>
@@ -35,7 +23,6 @@
                     {
                         @foreach (var item in Model)
                         {
-
                             @Html.HiddenFor(modelItem => item.ArticleAddDate)
                             @Html.HiddenFor(modelItem => item.ArticleGuid)
                             <tr>
