@@ -1,4 +1,5 @@
 ﻿@model Webshop.Models.Articles
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
@@ -9,7 +10,7 @@
     <div class="container-white">
         <div class="row">
             <div class="col-xs-12">
-                <h3><span class="badge badge-blue-big">Lägg till Artikel</span></h3>
+                <h3><span class="badge badge-blue-big">@Localizer["BadgeHeader"]</span></h3>
             </div>
         </div>
         <form asp-action="NewArticle" enctype="multipart/form-data">
@@ -20,8 +21,6 @@
                         <div class="custom-file-upload pull-left">
                             <input type="file" name="file" multiple />
                         </div>
-                        @*<h3 id="fof">@ViewBag.IDExists</h3>
-                    <h3 id="fof">@ViewBag.NoFile</h3>*@
                     </div>
                     <div class="productImageWrap">
 
@@ -30,10 +29,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <label asp-for="VendorID" class="col-md-10 control-label"></label>                                    
-                                       <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
-                                       <!-- Button trigger modal -->
-                                       <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
+                                    <label asp-for="VendorID" class="col-md-10 control-label"></label>
+                                    <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
+                                    <!-- Button trigger modal -->
+                                    <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
 
                                 </div>
                             </div>
@@ -94,7 +93,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <label asp-for="ArticleShortText" class="col-md-10 control-label"></label>
-                                    <input asp-for="ArticleShortText" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleShortText)/>
+                                    <input asp-for="ArticleShortText" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleShortText) />
                                     <span asp-validation-for="ArticleShortText" class="text-danger" />
                                 </div>
                             </div>
@@ -129,100 +128,101 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <label asp-for="ArticleFeaturesFour" class="col-md-10 control-label"></label>
-                                    <input asp-for="ArticleFeaturesFour" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesFour)/>
+                                    <input asp-for="ArticleFeaturesFour" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesFour) />
                                     <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-
-                    <div class="col-md-12 ">
-                        <div class="col-md-9 pull-right">
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <div class="checkbox">
-                                        <input checked="checked" asp-for="ISActive" />
-                                        <label asp-for="ISActive"></label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <input asp-for="ISCampaign" />
-                                        <label asp-for="ISCampaign"></label>
-                                    </div>
+                <div class="col-md-12 ">
+                    <div class="col-md-9 pull-right">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    <input checked="checked" asp-for="ISActive" />
+                                    <label asp-for="ISActive"></label>
                                 </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input type="submit" value=@Localizer["Spara Artikel"] class="btn add-article-btn pull-right" />
+                                <div class="checkbox">
+                                    <input asp-for="ISCampaign" />
+                                    <label asp-for="ISCampaign"></label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            </form>
+                    <div style="height: 30px;">
+                        <div class="action-row">
+                            <div class="form-actions no-color">
+                                <input type="submit" value=@Localizer["Save"] class="btn btn-danger" />
+                                <a class="btn btn-success" asp-action="Index">@Localizer["Back"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </form>
 
 
-            <!-- Modal NewVendor-->
-            <div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">@Localizer["Lägg till ny Tillverkare"]</h4>
-                        </div>
-                        <div class="modal-body">
-                            @Html.Partial("NewVendor")
-                        </div>
+        <!-- Modal NewVendor-->
+        <div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddVendor"]</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Partial("NewVendor")
                     </div>
                 </div>
             </div>
-            <!-- Modal NewCategory-->
-            <div class="modal fade" id="NewCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">@Localizer["Lägg till ny Kategori"]</h4>
-                        </div>
-                        <div class="modal-body">
-                            @Html.Partial("NewCategory")
-                        </div>
+        </div>
+        <!-- Modal NewCategory-->
+        <div class="modal fade" id="NewCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddCategory"]</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Partial("NewCategory")
                     </div>
                 </div>
             </div>
-            <!-- Modal NewProduct-->
-            <div class="modal fade" id="NewProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">@Localizer["Lägg till ny Produkt"]</h4>
-                        </div>
-                        <div class="modal-body">
-                            @Html.Partial("NewProduct")
-                        </div>
+        </div>
+        <!-- Modal NewProduct-->
+        <div class="modal fade" id="NewProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddProduct"]</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Partial("NewProduct")
                     </div>
                 </div>
             </div>
-            <!-- Modal NewSubCategory-->
-            <div class="modal fade" id="NewSubCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">@Localizer["Lägg till ny Produkttyp"]</h4>
-                        </div>
-                        <div class="modal-body">
-                            @Html.Partial("NewSubCategory")
-                        </div>
+        </div>
+        <!-- Modal NewSubCategory-->
+        <div class="modal fade" id="NewSubCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddProductType"]</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Partial("NewSubCategory")
                     </div>
                 </div>
             </div>
+        </div>
 
-</div>
+    </div>
 </section>
 
 @section Scripts {

@@ -117,25 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Aktiv</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Kategori</value>
-  </data>
-  <data name="ErrorCategory" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="Lägg till ny Kategori" xml:space="preserve">
-    <value>Lägg till ny Kategori</value>
-  </data>
-  <data name="Lägg till ny Produkt" xml:space="preserve">
-    <value>Lägg till ny Produkt</value>
-  </data>
-  <data name="Lägg till ny Produkttyp" xml:space="preserve">
-    <value>Lägg till ny Produkttyp</value>
-  </data>
-  <data name="Lägg till ny Tillverkare" xml:space="preserve">
-    <value>Lägg till ny Tillverkare</value>
+  <data name="Spara" xml:space="preserve">
+    <value>Lägg till</value>
   </data>
 </root>

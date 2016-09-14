@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Spara" xml:space="preserve">
-    <value>Add</value>
+  <data name="AddCategory" xml:space="preserve">
+    <value>Lägg till ny Kategori</value>
+  </data>
+  <data name="AddProduct" xml:space="preserve">
+    <value>Lägg till ny Produkt</value>
+  </data>
+  <data name="AddProductType" xml:space="preserve">
+    <value>Lägg till ny Produkttyp</value>
+  </data>
+  <data name="AddVendor" xml:space="preserve">
+    <value>Lägg till ny Tillverkare</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Tillbaka</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Spara</value>
   </data>
 </root>

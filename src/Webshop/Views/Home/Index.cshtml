@@ -1,11 +1,8 @@
 ﻿@model IEnumerable<Webshop.Models.Articles>
 @using Webshop
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-@* The IViewLocalizer can be injected into the view. It does two things of interest:
-    1. It can HTML encode *parameters* passed to resource strings (not the resource strings themselves, as they may contain
-       HTML) automatically, and return the result as an IHtmlContent so Razor won't HTML encode it again;
-    2. It looks for localization resources for this view based on the view path, e.g. if the view's path is
-       "MyApplication/Views/Home/Index.cshtml", then the corresponding resource base path will be "MyApplication.Views.Home.Index" *@
+
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Index"];
@@ -79,10 +76,10 @@
     <div class="container-white">
         <div class="row">
             <div class="col-xs-12">
-                <h3 class="margin-x-md">@Localizer["Toppsäljanderubrik"]</h3>
+                <h3 class="margin-x-md">@Localizer["TopProducts"]</h3>
             </div>
         </div>
-        <form method="get" asp-action="Index" asp-controller="Articles">
+        <form method="get" asp-action="Index" asp-controller="Home">
 
             @foreach (var item in Model)
             {
@@ -94,16 +91,16 @@
                                 <span class="description">-29%</span>
                             </span>
                             <span class="price animated rubberBand">@Html.DisplayFor(modelItem => item.ArticlePrice)</span>
-                            <span class="small right">Ord. pris 8 490 kr</span>
+                            <span class="small right">@Localizer["Ord.Price"]</span>
                         </div>
-                        <a asp-action="Details" asp-controller="Articles" asp-route-id="@item.ArticleID">
+                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ArticleID">
                             <h3 class="text-muted orange">@Html.DisplayFor(modelItem => item.ArticleName)</h3>
                         </a>
                         <div>
                             <h5 class="text-muted"> @Html.DisplayFor(modelItem => item.ArticleShortText)</h5>
                         </div>
                         <div class="productImageWrap">
-                            <a asp-action="Details" asp-controller="Articles" asp-route-id="@item.ArticleID">
+                            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ArticleID">
                                 <img class="img-responsive img" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" />
                             </a>
                         </div>
@@ -121,10 +118,10 @@
                             <i class="fa fa-heart-o text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Spara som favorit"> </i>
                             <i class="fa fa-exchange text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Jämför produkten"> </i>
                             <i class="fa-colored-check-square-green"></i>
-                            <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green">@Html.DisplayFor(modelItem => item.ArticleStock)+ @Localizer["Lager"]</span></span>
+                            <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green">@Html.DisplayFor(modelItem => item.ArticleStock)+ @Localizer["Stock"]</span></span>
                         </div>
                         <button type="submit" class="btn submit-sm-button ladda-button btn-buy buy hidden-print">
-                            <span class="ladda-label"><i class="fa fa-cart-plus"></i>@Localizer["KnappKöp"]</span>
+                            <span class="ladda-label"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</span>
                         </button>
 
                     </div>

@@ -58,6 +58,24 @@ namespace Webshop.Controllers
             //}
             return View(await webShopRepository.ToListAsync());
         }
+        // GET: Article/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            if (articleModel == null)
+            {
+                return NotFound();
+            }
+
+            //BreadCrumTracker bc = new BreadCrumTracker(_context, id);
+            //await bc.GetTracker();
+            return View(articleModel);
+        }
 
         public IActionResult About(int id, string name, string lang)
         {

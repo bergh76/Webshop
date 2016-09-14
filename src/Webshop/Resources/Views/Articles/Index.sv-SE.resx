@@ -117,22 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Detaljer" xml:space="preserve">
-    <value>Detaljer</value>
-  </data>
-  <data name="KnappKöp" xml:space="preserve">
-    <value>Köp</value>
-  </data>
-  <data name="Lager" xml:space="preserve">
-    <value>st i lager</value>
-  </data>
-  <data name="Ta Bort" xml:space="preserve">
+  <data name="Delete" xml:space="preserve">
     <value>Ta Bort</value>
   </data>
-  <data name="Toppsäljanderubrik" xml:space="preserve">
-    <value>Toppsäljande kampanjprodukter</value>
+  <data name="Details" xml:space="preserve">
+    <value>Detaljer</value>
   </data>
-  <data name="Ändra" xml:space="preserve">
+  <data name="Edit" xml:space="preserve">
     <value>Ändra</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Sök</value>
+  </data>
+  <data name="Stock" xml:space="preserve">
+    <value>st i lager</value>
   </data>
 </root>

@@ -117,19 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CategoryDropdown" xml:space="preserve">
-    <value>- Kategori -</value>
-  </data>
-  <data name="ProductDropdown" xml:space="preserve">
-    <value>- Produkttyp  -</value>
-  </data>
-  <data name="SubCatDropdown" xml:space="preserve">
-    <value>- Produktkategori -</value>
-  </data>
-  <data name="Sök" xml:space="preserve">
+  <data name="Search" xml:space="preserve">
     <value>Sök</value>
-  </data>
-  <data name="VendorDropdown" xml:space="preserve">
-    <value>- Märke  - </value>
   </data>
 </root>

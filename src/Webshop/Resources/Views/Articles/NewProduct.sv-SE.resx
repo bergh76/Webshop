@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Aktiv</value>
-  </data>
-  <data name="Product" xml:space="preserve">
-    <value>Produkt</value>
-  </data>
-  <data name="ProductError" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
+  <data name="Spara" xml:space="preserve">
+    <value>Lägg till</value>
   </data>
 </root>

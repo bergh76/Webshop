@@ -117,91 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Aktiv</value>
-  </data>
-  <data name="ArticleName" xml:space="preserve">
-    <value>Artikelnamn</value>
-  </data>
-  <data name="Brand" xml:space="preserve">
-    <value>Tillverkare</value>
-  </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Kampanj</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Kategori</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Beskrivning</value>
-  </data>
-  <data name="ErrorArticleDescription" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorArticleName" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorArticlePrice" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorArticleStock" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorCategoryName" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorProductdata" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorProductName" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorSubCategory" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="ErrorVendorName" xml:space="preserve">
-    <value>Fältet får inte vara tomt</value>
-  </data>
-  <data name="Feature1" xml:space="preserve">
-    <value>Produktdata 1</value>
-  </data>
-  <data name="Feature2" xml:space="preserve">
-    <value>Produktdata 2</value>
-  </data>
-  <data name="Feature3" xml:space="preserve">
-    <value>Produktdata 3</value>
-  </data>
-  <data name="Feature4" xml:space="preserve">
-    <value>Produktdata 4</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>Ballan Allan</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Pris</value>
-  </data>
-  <data name="Product" xml:space="preserve">
-    <value>Produktyp</value>
-  </data>
-  <data name="Stock" xml:space="preserve">
-    <value>Lagerstatus</value>
-  </data>
-  <data name="SubCategoryType" xml:space="preserve">
-    <value>Underkategori</value>
-  </data>
-  <data name="Spara Artikel" xml:space="preserve">
-    <value>Spara Artikel</value>
-  </data>
-  <data name="Lägg till ny Kategori" xml:space="preserve">
+  <data name="AddCategory" xml:space="preserve">
     <value>Lägg till ny Kategori</value>
   </data>
-  <data name="Lägg till ny Produkt" xml:space="preserve">
+  <data name="AddProduct" xml:space="preserve">
     <value>Lägg till ny Produkt</value>
   </data>
-  <data name="Lägg till ny Produkttyp" xml:space="preserve">
+  <data name="AddProductType" xml:space="preserve">
     <value>Lägg till ny Produkttyp</value>
   </data>
-  <data name="Lägg till ny Tillverkare" xml:space="preserve">
+  <data name="AddVendor" xml:space="preserve">
     <value>Lägg till ny Tillverkare</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Tillbaka</value>
+  </data>
+  <data name="BadgeHeader" xml:space="preserve">
+    <value>Lägg till nya artiklar i webshopen</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Spara</value>
   </data>
 </root>

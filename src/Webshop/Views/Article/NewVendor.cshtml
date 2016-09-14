@@ -1,4 +1,5 @@
 ﻿@model Webshop.Models.VendorModel
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
@@ -32,7 +33,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Lägg till" class="btn btn-default" />
+                    <input type="submit" value=@Localizer["Save"] class="btn btn-default" />
                 </div>
             </div>
         </div>

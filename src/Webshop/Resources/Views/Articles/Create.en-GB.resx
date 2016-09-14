@@ -117,94 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="ArticleName" xml:space="preserve">
-    <value>Article Name</value>
-  </data>
-  <data name="Brand" xml:space="preserve">
-    <value>Brand</value>
-  </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Campaign</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="ErrorArticleDescription" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorArticleName" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorArticlePrice" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorArticleStock" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorCategoryName" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorProductdata" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorProductName" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorSubCategory" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="ErrorVendorName" xml:space="preserve">
-    <value>The input field can not be empty</value>
-  </data>
-  <data name="Feature1" xml:space="preserve">
-    <value>Feature 1</value>
-  </data>
-  <data name="Feature2" xml:space="preserve">
-    <value>Feature 2</value>
-  </data>
-  <data name="Feature3" xml:space="preserve">
-    <value>Feature 3</value>
-  </data>
-  <data name="Feature4" xml:space="preserve">
-    <value>Feature 4</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>Allan Ballan</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="Product" xml:space="preserve">
-    <value>Product</value>
-  </data>
-  <data name="Stock" xml:space="preserve">
-    <value>Stock</value>
-  </data>
-  <data name="SubCategoryType" xml:space="preserve">
-    <value>Sub Category</value>
-  </data>
-  <data name="Spara Artikel" xml:space="preserve">
-    <value>Save Article</value>
-  </data>
-  <data name="Lägg till ny Kategori" xml:space="preserve">
+  <data name="AddCategory" xml:space="preserve">
     <value>Add new Category</value>
   </data>
-  <data name="Lägg till ny Produkt" xml:space="preserve">
+  <data name="AddProduct" xml:space="preserve">
     <value>Add new Product</value>
   </data>
-  <data name="Lägg till ny Produkttyp" xml:space="preserve">
+  <data name="AddProductType" xml:space="preserve">
     <value>Add new Product type</value>
   </data>
-  <data name="Lägg till ny Tillverkare" xml:space="preserve">
-    <value>Add new Brand</value>
+  <data name="AddVendor" xml:space="preserve">
+    <value>Add new Vendor</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="BadgeHeader" xml:space="preserve">
+    <value>Add new Articles to the webshop</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>
