@@ -421,69 +421,7 @@ namespace Webshop.Controllers
             if (ModelState.IsValid)
             {
                 add.AddArticle(article, _context, _hostEnvironment, _localizer, file, form);
-                //var date = DateTime.Now.ToLocalTime();
-                //int vendorID = Convert.ToInt32(form["VendorID"]);
-                //string vendor = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
-                //article.VendorID = Convert.ToInt32(vendorID);
-
-                //int categoryID = Convert.ToInt32(form["CategoryID"]);
-                //string category = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
-                //article.CategoryID = categoryID;
-
-                //string productID = form["ProductID"];
-                //string product = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
-                //article.ProductID = productID;
-
-                //int subproductID = Convert.ToInt32(form["SubCategoryID"]);
-                //string subproduct = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
-                //article.SubCategoryID = subproductID;
-
-                //string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
-                //if (_context.Articles != null)
-                //{
-                //    var dbArtID = _context.Articles.Where(x => x.ArticleNumber == tempArtNr).Select(x => x.ArticleNumber).FirstOrDefault();
-                //}
-                //article.ArticleNumber = tempArtNr;
-                //string tmpImgName = String.Format("{0}_{1}_{2}_{3}", vendor, category, product, subproductID);
-                //string newImgName = tmpImgName.Replace("&", "_");
-                //var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);
-                //var root = _hostEnvironment.WebRootPath;
-                //string uploads = root + "/" + serverPath;
-                //Directory.CreateDirectory(uploads);
-                //try
-                //{
-                //    if (file.Length != 0)
-                //    {
-                //        ext = Path.GetExtension(file.FileName);
-                //        var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
-                //        var tmpNameTwo = tmpName.Replace("\"", "");
-                //        newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
-                //        using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
-                //        {
-                //            await file.CopyToAsync(fileStream);
-                //        }
-                //    }
-                //}
-                //catch
-                //{
-                //    ViewBag.NoFile = "Du måste välja en fil";
-                //    return RedirectToAction("Create");
-                //}
-
-                //Guid guidID = Guid.NewGuid();
-                //article.ArticleGuid = guidID.ToString();
-                //article.ArticleAddDate = date;
-                //ImageModel img = new ImageModel
-                //{
-                //    ImageDate = date,
-                //    ImageName = newFilename,
-                //    ImagePath = String.Format("{0}", serverPath),
-                //    ArticleGuid = guidID
-                //};
-                //_context.Images.Add(img);
-                //_context.Add(article);
-                //await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create");
             }
             return View(article);
         }

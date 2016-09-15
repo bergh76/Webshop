@@ -58,47 +58,49 @@
                         <a asp-area="" asp-controller="Article" asp-action="Create" class="navbar-brand">@Localizer["Skapa Ny"]</a>
                     </li>
                     @*@if (SignInManager.IsSignedIn(User))
-                    {*@
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/login">
-                                <span>@Localizer["Mina Sidor"]</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="disabled">
-                                     <span class="icon-padding-right-15"></span><button type="submit" class="logout-button">@*<a asp-area="" asp-controller="Account" asp-action="Login">*@<span class="fa fa-sign-in icon-padding-right"></span>@Localizer["Logga in"]
-                                     @*</a>*@</button>
-                                 </li>
-                                @*<li class="dropdown"><a><span class="fa fa-user lime-green"></span> @UserManager.GetUserName(User)!</a></li>*@
-                                <li class="divider"></li>
-                                <li>
-                                    <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-history icon-padding-right"></span>@Localizer["Orderhistorik"]</button>
-</li>
-                                <li>
-                                    <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-chain-broken icon-padding-right"></span>@Localizer["Ärenden & reklamationer"]</button>
-</li>
-                                <li class="divider"></li>
-                                <li><span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-cogs icon-padding-right"></span>@Localizer["Kontoinställningar"]</button></li>
-                                <li>
-                                    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                                        @*<a asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm"><span class="fa fa-sign-in icon-padding-right"></span>Logga Ut</a>*@
-                                        @*<span><i class="fa fa-sign-out icon-padding-right"></i>@await ActionLink("Logga Ut", "LogOff", "Account")</span>*@
-                                        <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-sign-out icon-padding-right" type="submit" id="logoutForm"></span>@Localizer["Logga Ut"]</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
+            {*@
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/login">
+                            <span>@Localizer["Mina Sidor"]</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="disabled">
+                                <span class="icon-padding-right-15"></span><button type="submit" class="logout-button">
+                                    @*<a asp-area="" asp-controller="Account" asp-action="Login">*@<span class="fa fa-sign-in icon-padding-right"></span>@Localizer["Logga in"]
+                                    @*</a>*@
+                                </button>
+                            </li>
+                            @*<li class="dropdown"><a><span class="fa fa-user lime-green"></span> @UserManager.GetUserName(User)!</a></li>*@
+                            <li class="divider"></li>
+                            <li>
+                                <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-history icon-padding-right"></span>@Localizer["Orderhistorik"]</button>
+                            </li>
+                            <li>
+                                <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-chain-broken icon-padding-right"></span>@Localizer["Ärenden & reklamationer"]</button>
+                            </li>
+                            <li class="divider"></li>
+                            <li><span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-cogs icon-padding-right"></span>@Localizer["Kontoinställningar"]</button></li>
+                            <li>
+                                <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                                    @*<a asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm"><span class="fa fa-sign-in icon-padding-right"></span>Logga Ut</a>*@
+                                    @*<span><i class="fa fa-sign-out icon-padding-right"></i>@await ActionLink("Logga Ut", "LogOff", "Account")</span>*@
+                                    <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-sign-out icon-padding-right" type="submit" id="logoutForm"></span>@Localizer["Logga Ut"]</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="">
                         @await Html.PartialAsync("_SelectLanguagePartial")
                     </li>
 
                     @*}
-                    else
-                    {
-                        <li class="dropdown">
-                            <a asp-area="" asp-controller="Account" asp-action="Login"><span class="fa fa-sign-in icon-padding-right"></span>Logga in</a>
-                        </li>
-                    }*@
+            else
+            {
+                <li class="dropdown">
+                    <a asp-area="" asp-controller="Account" asp-action="Login"><span class="fa fa-sign-in icon-padding-right"></span>Logga in</a>
+                </li>
+            }*@
                 </ul>
 
 
@@ -179,13 +181,13 @@
     </section>
 
 
-    <section class="navbar navbar-blue" id="bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                        @*@Html.Partial("_SearchArticles")*@
+@*<section class="navbar navbar-blue" id="bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                    @Html.Partial("_SearchArticles")
 
-                    @*<ul class="nav navbar-nav col-xs-12">
+               <ul class="nav navbar-nav col-xs-12">
                         <li class="dropdown">
                             <a asp-area="" asp-controller="Article" asp-action="Index" >@Localizer["Produkter"]</a>
                         </li>
@@ -213,11 +215,11 @@
                                 </div><!-- /.col-lg-6 -->
                             </form>
                         </li>
-                    </ul>*@
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
+    </section>*@
 
     <!--INFOBANNER START -->
 

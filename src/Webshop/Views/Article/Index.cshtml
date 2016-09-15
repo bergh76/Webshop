@@ -5,10 +5,18 @@
 @{
     ViewData["Title"] = Localizer["Index"];
 }
-@*<div>@Html.Partial("_AdminMenu")</div>*@
+<section class="navbar navbar-blue" id="bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="search-bar">@Html.Partial("_SearchArticles")</div>
+                </div>
+            </div>
+        </div>
+    </section>
 <section class="container">
     <div class="col-xs-12 padding-x-off no-pad-table">
-        @Html.Partial("_SearchArticles")
+        @*@Html.Partial("_SearchArticles")*@
         <table class="table margin-y-off" border="0">
             <tbody>
                 @{  var count = Model.Count();

@@ -53,43 +53,72 @@ namespace Webshop.Models.BusinessLayers
             article.SubCategoryID = subproductID;
 
             string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
-
             article.ArticleNumber = tempArtNr;
-            string tmpImgName = String.Format("{0}_{1}_{2}_{3}", vendor, category, product, subproductID);
-            string newImgName = tmpImgName.Replace("&", "_");
-            var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);
-            var root = _hostEnvironment.WebRootPath;
-            string uploads = root + "/" + serverPath;
-            string newFilename = "";
-            string ext = "";
-            Directory.CreateDirectory(uploads);
-            var image = IsImage(file);
-            if (image == true)
-            {
-                ext = Path.GetExtension(file.FileName);
-                var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
-                var tmpNameTwo = tmpName.Replace("\"", "");
-                newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
-                using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
-                {
-                    file.CopyToAsync(fileStream);
-                }
-            }
             Guid guidID = CreatGuid();
             article.ArticleGuid = guidID.ToString();
             article.ArticleAddDate = date;
 
-            ImageModel img = new ImageModel
+            var image = IsImage(file); // check if file is a image
+            if (image == true)
             {
-                ImageDate = date,
-                ImageName = newFilename,
-                ImagePath = String.Format("{0}", serverPath),
-                ArticleGuid = guidID
-            };
-            _context.Images.Add(img);
+                string tmpImgName = String.Format("{0}_{1}_{2}_{3}", vendor, category, product, subproductID);
+                string newImgName = tmpImgName.Replace("&", "_");
+                var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);
+                var root = _hostEnvironment.WebRootPath;
+                string uploads = root + "/" + serverPath;
+                Directory.CreateDirectory(uploads);
+
+                string ext = Path.GetExtension(file.FileName);
+                var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
+                var tmpNameTwo = tmpName.Replace("\"", "");
+                string newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
+                var fPath = Path.Combine(uploads, newFilename); // gets the path and filename for ifexists
+                //var fileExists = File.Exists(fPath) || File.Exists(Path.Combine(Directory.GetParent(Path.GetDirectoryName(fPath)).FullName, Path.GetFileName(fPath))); // check if file exists in dir
+                if (File.Exists(fPath) || File.Exists(Path.Combine(Directory.GetParent(Path.GetDirectoryName(fPath)).FullName, Path.GetFileName(fPath))) == true)
+                {
+                    ext = Path.GetExtension(file.FileName); // get file extention
+                    tmpName = form["ArticleName"] + "_" + tempArtNr;
+                    tmpNameTwo = tmpName.Replace("\"", "");
+                    int countFInDir = Directory.GetFiles(uploads, "*", SearchOption.TopDirectoryOnly).Length; // count existing files in topdirectory ie. uploads
+                    int addCount = countFInDir + 1; // increment filecount 
+                    string dash = "_";
+                    string tmpNameThree = string.Format("{0}{1}{2}", tmpNameTwo, dash, addCount);
+                    string newFnameExists = tmpNameThree.Replace(" ", "_") + ext.ToString();
+                    using (var fileStream = new FileStream(Path.Combine(uploads, newFnameExists), FileMode.Create))
+                    {
+                        file.CopyToAsync(fileStream);
+                    }
+                    ImageModel imgExists = new ImageModel
+                    {
+                        ImageDate = date,
+                        ImageName = newFnameExists,
+                        ImagePath = String.Format("{0}", serverPath),
+                        ArticleGuid = guidID
+                    };
+                    article.ArticleImgPath = string.Format("{0}{1}", serverPath + newFnameExists);
+                    _context.Images.Add(imgExists);
+                }
+                else
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
+                    {
+                        file.CopyToAsync(fileStream);
+                    }
+                    ImageModel img = new ImageModel
+                    {
+                        ImageDate = date,
+                        ImageName = newFilename,
+                        ImagePath = String.Format("{0}", serverPath),
+                        ArticleGuid = guidID
+                    };
+                    article.ArticleImgPath = string.Format("{0}{1}", serverPath + newFilename);
+                    _context.Images.Add(img);
+                }
+            }
             _context.Articles.Add(article);
             _context.SaveChangesAsync();
         }
+
 
         private Guid CreatGuid()
         {            
