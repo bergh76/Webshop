@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Webshop.Migrations
 {
-    public partial class Webshop : Migration
+    public partial class WebshopTranslation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace Webshop.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CategoryID = table.Column<int>(nullable: false),
-                    CategoryName = table.Column<string>(nullable: true),
+                    CategoryName = table.Column<string>(nullable: false),
                     ISActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -28,7 +28,7 @@ namespace Webshop.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    ImageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ArticleGuid = table.Column<Guid>(nullable: false),
                     ImageDate = table.Column<DateTime>(nullable: false),
@@ -37,7 +37,21 @@ namespace Webshop.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.ID);
+                    table.PrimaryKey("PK_Images", x => x.ImageId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Country = table.Column<string>(nullable: true),
+                    LangCode = table.Column<string>(maxLength: 5, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,7 +62,7 @@ namespace Webshop.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ISActive = table.Column<bool>(nullable: false),
                     ProductID = table.Column<string>(nullable: true),
-                    ProductName = table.Column<string>(nullable: true)
+                    ProductName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +77,7 @@ namespace Webshop.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ISActive = table.Column<bool>(nullable: false),
                     SubCategoryID = table.Column<int>(nullable: false),
-                    SubCategoryName = table.Column<string>(nullable: true)
+                    SubCategoryName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +92,7 @@ namespace Webshop.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ISActive = table.Column<bool>(nullable: false),
                     VendorID = table.Column<int>(nullable: false),
-                    VendorName = table.Column<string>(nullable: true),
+                    VendorName = table.Column<string>(nullable: false),
                     VendorWebPage = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -90,36 +104,29 @@ namespace Webshop.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    ArticleID = table.Column<int>(nullable: false)
+                    ArticleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ArticleAddDate = table.Column<DateTime>(nullable: false),
-                    ArticleFeaturesFour = table.Column<string>(nullable: false),
-                    ArticleFeaturesOne = table.Column<string>(nullable: false),
-                    ArticleFeaturesThree = table.Column<string>(nullable: false),
-                    ArticleFeaturesTwo = table.Column<string>(nullable: false),
-                    ArticleGuid = table.Column<string>(nullable: true),
-                    ArticleImgPath = table.Column<string>(nullable: true),
-                    ArticleName = table.Column<string>(nullable: false),
-                    ArticleNumber = table.Column<string>(nullable: false),
+                    ArticleGuid = table.Column<Guid>(nullable: false),
+                    ArticleNumber = table.Column<string>(nullable: true),
                     ArticlePrice = table.Column<decimal>(nullable: false),
-                    ArticleShortText = table.Column<string>(nullable: false),
                     ArticleStock = table.Column<int>(nullable: false),
                     CategoryForeignKey = table.Column<int>(nullable: true),
-                    CategoryID = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
                     ISActive = table.Column<bool>(nullable: false),
                     ISCampaign = table.Column<bool>(nullable: false),
                     ImageForeignKey = table.Column<int>(nullable: true),
+                    ImageId = table.Column<int>(nullable: false),
                     ProductForeignKey = table.Column<int>(nullable: true),
-                    ProductID = table.Column<int>(nullable: false),
-                    ProductImgPathID = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(nullable: false),
                     SubCatForeignKey = table.Column<int>(nullable: true),
-                    SubCategoryID = table.Column<int>(nullable: false),
+                    SubCategoryId = table.Column<int>(nullable: false),
                     VendorForeignKey = table.Column<int>(nullable: true),
-                    VendorID = table.Column<int>(nullable: false)
+                    VendorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.ArticleID);
+                    table.PrimaryKey("PK_Articles", x => x.ArticleId);
                     table.ForeignKey(
                         name: "FK_Articles_Categories_CategoryForeignKey",
                         column: x => x.CategoryForeignKey,
@@ -130,7 +137,7 @@ namespace Webshop.Migrations
                         name: "FK_Articles_Images_ImageForeignKey",
                         column: x => x.ImageForeignKey,
                         principalTable: "Images",
-                        principalColumn: "ID",
+                        principalColumn: "ImageId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Articles_Products_ProductForeignKey",
@@ -149,6 +156,33 @@ namespace Webshop.Migrations
                         column: x => x.VendorForeignKey,
                         principalTable: "Vendors",
                         principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleTranslations",
+                columns: table => new
+                {
+                    ArticleId = table.Column<int>(nullable: false),
+                    LangCode = table.Column<string>(nullable: false),
+                    ArticleFeaturesFour = table.Column<string>(maxLength: 66, nullable: false),
+                    ArticleFeaturesOne = table.Column<string>(maxLength: 66, nullable: false),
+                    ArticleFeaturesThree = table.Column<string>(maxLength: 66, nullable: false),
+                    ArticleFeaturesTwo = table.Column<string>(maxLength: 66, nullable: false),
+                    ArticleName = table.Column<string>(nullable: false),
+                    ArticleNumber = table.Column<string>(nullable: true),
+                    ArticleShortText = table.Column<string>(maxLength: 40, nullable: false),
+                    ArticlesArticleId = table.Column<int>(nullable: true),
+                    ISDefault = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleTranslations", x => new { x.ArticleId, x.LangCode });
+                    table.ForeignKey(
+                        name: "FK_ArticleTranslations_Articles_ArticlesArticleId",
+                        column: x => x.ArticlesArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "ArticleId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -176,10 +210,21 @@ namespace Webshop.Migrations
                 name: "IX_Articles_VendorForeignKey",
                 table: "Articles",
                 column: "VendorForeignKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArticleTranslations_ArticlesArticleId",
+                table: "ArticleTranslations",
+                column: "ArticlesArticleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ArticleTranslations");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
+
             migrationBuilder.DropTable(
                 name: "Articles");
 

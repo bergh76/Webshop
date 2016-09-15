@@ -16,12 +16,66 @@ namespace Webshop.Migrations
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Webshop.Models.ArticleModel", b =>
+            modelBuilder.Entity("Webshop.Models.Articles", b =>
                 {
-                    b.Property<int>("ArticleID")
+                    b.Property<int>("ArticleId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ArticleAddDate");
+
+                    b.Property<Guid>("ArticleGuid");
+
+                    b.Property<string>("ArticleNumber");
+
+                    b.Property<decimal>("ArticlePrice");
+
+                    b.Property<int>("ArticleStock");
+
+                    b.Property<int?>("CategoryForeignKey");
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<bool>("ISActive");
+
+                    b.Property<bool>("ISCampaign");
+
+                    b.Property<int?>("ImageForeignKey");
+
+                    b.Property<int>("ImageId");
+
+                    b.Property<int?>("ProductForeignKey");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired();
+
+                    b.Property<int?>("SubCatForeignKey");
+
+                    b.Property<int>("SubCategoryId");
+
+                    b.Property<int?>("VendorForeignKey");
+
+                    b.Property<int>("VendorId");
+
+                    b.HasKey("ArticleId");
+
+                    b.HasIndex("CategoryForeignKey");
+
+                    b.HasIndex("ImageForeignKey");
+
+                    b.HasIndex("ProductForeignKey");
+
+                    b.HasIndex("SubCatForeignKey");
+
+                    b.HasIndex("VendorForeignKey");
+
+                    b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("Webshop.Models.ArticleTranslation", b =>
+                {
+                    b.Property<int>("ArticleId");
+
+                    b.Property<string>("LangCode");
 
                     b.Property<string>("ArticleFeaturesFour")
                         .IsRequired()
@@ -39,61 +93,24 @@ namespace Webshop.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 66);
 
-                    b.Property<string>("ArticleGuid");
-
-                    b.Property<string>("ArticleImgPath");
-
                     b.Property<string>("ArticleName")
                         .IsRequired();
 
-                    b.Property<string>("ArticleNumber")
-                        .IsRequired();
-
-                    b.Property<decimal>("ArticlePrice");
+                    b.Property<string>("ArticleNumber");
 
                     b.Property<string>("ArticleShortText")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 40);
 
-                    b.Property<int>("ArticleStock");
+                    b.Property<int?>("ArticlesArticleId");
 
-                    b.Property<int?>("CategoryForeignKey");
+                    b.Property<bool>("ISDefault");
 
-                    b.Property<int>("CategoryID");
+                    b.HasKey("ArticleId", "LangCode");
 
-                    b.Property<bool>("ISActive");
+                    b.HasIndex("ArticlesArticleId");
 
-                    b.Property<bool>("ISCampaign");
-
-                    b.Property<int?>("ImageForeignKey");
-
-                    b.Property<int?>("ProductForeignKey");
-
-                    b.Property<string>("ProductID");
-
-                    b.Property<int>("ProductImgPathID");
-
-                    b.Property<int?>("SubCatForeignKey");
-
-                    b.Property<int>("SubCategoryID");
-
-                    b.Property<int?>("VendorForeignKey");
-
-                    b.Property<int>("VendorID");
-
-                    b.HasKey("ArticleID");
-
-                    b.HasIndex("CategoryForeignKey");
-
-                    b.HasIndex("ImageForeignKey");
-
-                    b.HasIndex("ProductForeignKey");
-
-                    b.HasIndex("SubCatForeignKey");
-
-                    b.HasIndex("VendorForeignKey");
-
-                    b.ToTable("Articles");
+                    b.ToTable("ArticleTranslations");
                 });
 
             modelBuilder.Entity("Webshop.Models.CategoryModel", b =>
@@ -103,7 +120,8 @@ namespace Webshop.Migrations
 
                     b.Property<int>("CategoryID");
 
-                    b.Property<string>("CategoryName");
+                    b.Property<string>("CategoryName")
+                        .IsRequired();
 
                     b.Property<bool>("ISActive");
 
@@ -114,7 +132,7 @@ namespace Webshop.Migrations
 
             modelBuilder.Entity("Webshop.Models.ImageModel", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ImageId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("ArticleGuid");
@@ -125,9 +143,24 @@ namespace Webshop.Migrations
 
                     b.Property<string>("ImagePath");
 
-                    b.HasKey("ID");
+                    b.HasKey("ImageId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Webshop.Models.Language", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("LangCode")
+                        .HasAnnotation("MaxLength", 5);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("Webshop.Models.ProductModel", b =>
@@ -139,18 +172,15 @@ namespace Webshop.Migrations
 
                     b.Property<string>("ProductID");
 
-                    b.Property<int?>("ProductModelID");
-
-                    b.Property<string>("ProductName");
+                    b.Property<string>("ProductName")
+                        .IsRequired();
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ProductModelID");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Webshop.Models.SubCategory", b =>
+            modelBuilder.Entity("Webshop.Models.SubCategoryModel", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -159,7 +189,8 @@ namespace Webshop.Migrations
 
                     b.Property<int>("SubCategoryID");
 
-                    b.Property<string>("SubCategoryName");
+                    b.Property<string>("SubCategoryName")
+                        .IsRequired();
 
                     b.HasKey("ID");
 
@@ -175,7 +206,8 @@ namespace Webshop.Migrations
 
                     b.Property<int>("VendorID");
 
-                    b.Property<string>("VendorName");
+                    b.Property<string>("VendorName")
+                        .IsRequired();
 
                     b.Property<string>("VendorWebPage");
 
@@ -184,7 +216,7 @@ namespace Webshop.Migrations
                     b.ToTable("Vendors");
                 });
 
-            modelBuilder.Entity("Webshop.Models.ArticleModel", b =>
+            modelBuilder.Entity("Webshop.Models.Articles", b =>
                 {
                     b.HasOne("Webshop.Models.CategoryModel", "Category")
                         .WithMany()
@@ -198,7 +230,7 @@ namespace Webshop.Migrations
                         .WithMany()
                         .HasForeignKey("ProductForeignKey");
 
-                    b.HasOne("Webshop.Models.SubCategory", "SubCategory")
+                    b.HasOne("Webshop.Models.SubCategoryModel", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCatForeignKey");
 
@@ -207,11 +239,11 @@ namespace Webshop.Migrations
                         .HasForeignKey("VendorForeignKey");
                 });
 
-            modelBuilder.Entity("Webshop.Models.ProductModel", b =>
+            modelBuilder.Entity("Webshop.Models.ArticleTranslation", b =>
                 {
-                    b.HasOne("Webshop.Models.ProductModel")
-                        .WithMany("Products")
-                        .HasForeignKey("ProductModelID");
+                    b.HasOne("Webshop.Models.Articles")
+                        .WithMany("Translations")
+                        .HasForeignKey("ArticlesArticleId");
                 });
         }
     }

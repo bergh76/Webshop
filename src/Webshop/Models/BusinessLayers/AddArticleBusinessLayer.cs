@@ -31,31 +31,29 @@ namespace Webshop.Models.BusinessLayers
             _form = form;
         }
 
-
-        internal void AddArticle(Articles article, WebShopRepository _context, IHostingEnvironment _hostEnvironment, IStringLocalizer<ArticleController> _localizer, IFormFile file, IFormCollection form)
+        internal void AddArticle(Articles article, ArticleTranslation artTranslate,  WebShopRepository _context, IHostingEnvironment _hostEnvironment, IStringLocalizer<ArticleController> _localizer, IFormFile file, IFormCollection form)
         {
-
             var date = DateTime.Now.ToLocalTime();
             int vendorID = Convert.ToInt32(form["VendorID"]);
             string vendor = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
-            article.VendorID = Convert.ToInt32(vendorID);
+            article.VendorId = Convert.ToInt32(vendorID);
 
             int categoryID = Convert.ToInt32(form["CategoryID"]);
             string category = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
-            article.CategoryID = categoryID;
+            article.CategoryId = categoryID;
 
             string productID = form["ProductID"];
             string product = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
-            article.ProductID = productID;
+            article.ProductId = productID;
 
             int subproductID = Convert.ToInt32(form["SubCategoryID"]);
             string subproduct = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
-            article.SubCategoryID = subproductID;
+            article.SubCategoryId = subproductID;
 
             string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
             article.ArticleNumber = tempArtNr;
             Guid guidID = CreatGuid();
-            article.ArticleGuid = guidID.ToString();
+            article.ArticleGuid = guidID;
             article.ArticleAddDate = date;
 
             var image = IsImage(file); // check if file is a image
@@ -95,8 +93,8 @@ namespace Webshop.Models.BusinessLayers
                         ImagePath = String.Format("{0}", serverPath),
                         ArticleGuid = guidID
                     };
-                    article.ArticleImgPath = string.Format("{0}{1}", serverPath + newFnameExists);
                     _context.Images.Add(imgExists);
+                    _context.SaveChangesAsync();
                 }
                 else
                 {
@@ -111,9 +109,12 @@ namespace Webshop.Models.BusinessLayers
                         ImagePath = String.Format("{0}", serverPath),
                         ArticleGuid = guidID
                     };
-                    article.ArticleImgPath = string.Format("{0}{1}", serverPath + newFilename);
+                    //article.ArticleImgPath = string.Format("{0}{1}", serverPath + newFilename);
                     _context.Images.Add(img);
+                    article.ImageId = _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+
                 }
+
             }
             _context.Articles.Add(article);
             _context.SaveChangesAsync();

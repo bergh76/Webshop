@@ -42,12 +42,7 @@ namespace Webshop
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
-                .AddDataAnnotationsLocalization()
-                
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-            .AddDataAnnotationsLocalization();
-            services.AddDbContext<LocalizationModelContext>(options => options.UseSqlite(connection, b => b.MigrationsAssembly("Angular2LocalizationAspNetCore"))
-            );
+                .AddDataAnnotationsLocalization();
 
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>

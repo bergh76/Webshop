@@ -9,7 +9,6 @@ namespace Webshop.Models
         [Key]
         public int ID { get; set; }
         public int CategoryID { get; set; }
-        public CategoryModel Category { get; set; }
         [Display(Name = "Category", ResourceType = typeof(Resources.CategoryModel))]
         [Required(ErrorMessage = "ErrorCategory")]
         public string CategoryName { get; set; }

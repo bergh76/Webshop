@@ -21,19 +21,16 @@ namespace Webshop.BusinessLayers
         private string _newFilename;
         private IFormFile _file;
         private IFormCollection _form;
-        private Articles _article;
-        private object _message;
         private string v;
         private string c;
         private string p;
         private string s;
 
-        private string Message { get; set; }
         public EditArticleBusiness()
         {
         }
 
-        public EditArticleBusiness(IHostingEnvironment hostEnvironment, WebShopRepository context, string ext, string newFilename, IFormFile file, IFormCollection form, Articles article, string message)
+        public EditArticleBusiness(IHostingEnvironment hostEnvironment, WebShopRepository context, string ext, string newFilename, IFormFile file, IFormCollection form)
         {
             _hostEnvironment = hostEnvironment;
             _context = context;
@@ -41,27 +38,25 @@ namespace Webshop.BusinessLayers
             _newFilename = newFilename;
             _file = file;
             _form = form;
-            _article = article;
-            _message = message;
         }
 
         internal void UpdateArticleData(Articles article, WebShopRepository _context)
         {
             var date = DateTime.Now.ToLocalTime();
-            int vendorID = article.VendorID;
+            int vendorID = article.VendorId;
             string vName = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
-            article.VendorID = vendorID;
+            article.VendorId = vendorID;
 
-            int categoryID = article.CategoryID;
+            int categoryID = article.CategoryId;
             string cName = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
 
-            string productID = article.ProductID;
+            string productID = article.ProductId;
             string pName = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
 
             string subproduct = p;
-            int subproductID = article.SubCategoryID;
+            int subproductID = article.SubCategoryId;
             string subpName = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
-            article.SubCategoryID = subproductID;
+            article.SubCategoryId = subproductID;
             _context.Update(article);
              //_context.SaveChanges();
             //return _context.SaveChanges();
@@ -69,22 +64,22 @@ namespace Webshop.BusinessLayers
 
         internal void UpdateArticleImage(Articles article, IHostingEnvironment _hostEnvironment, WebShopRepository _context, string ext, string newFilename, IFormFile file, IFormCollection form, string message)
         {
-
             var date = DateTime.Now.ToLocalTime();
-            int vendorID = article.VendorID;
+            int vendorID = article.VendorId;
             string vName = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
-            article.VendorID = vendorID;
+            article.VendorId = vendorID;
 
-            int categoryID = article.CategoryID;
+            int categoryID = article.CategoryId;
             string cName = _context.Categories.Where(x => x.CategoryID == categoryID).Select(x => x.CategoryName).FirstOrDefault();
 
-            string productID = article.ProductID;
+            string productID = article.ProductId;
             string pName = _context.Products.Where(x => x.ProductID == productID).Select(x => x.ProductName).FirstOrDefault();
 
             string subproduct = p;
-            int subproductID = article.SubCategoryID;
+            int subproductID = article.SubCategoryId;
             string subpName = _context.SubCategories.Where(x => x.SubCategoryID == subproductID).Select(x => x.SubCategoryName).FirstOrDefault();
-            article.SubCategoryID = subproductID;
+            article.SubCategoryId = subproductID;
+
             var image = EditArticleBusiness.IsImage(file);
             if (image == true)
             {
@@ -102,27 +97,27 @@ namespace Webshop.BusinessLayers
                 var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
                 var tmpNameTwo = tmpName.Replace("\"", "");
                 newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
-                if (article.ArticleImgPath == uploads + newFilename)
-                {
-                    File.Delete(uploads);
-                    Directory.Delete(uploads);
-                }
+                //if (article.ArticleImgPath == uploads + newFilename)
+                //{
+                //    File.Delete(uploads);
+                //    Directory.Delete(uploads);
+                //}
                 using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
                 {
                     file.CopyToAsync(fileStream);
                 }
-                article.ArticleImgPath = String.Format("{0}{1}", serverPath, newFilename);
+                //article.ArticleImgPath = String.Format("{0}{1}", serverPath, newFilename);
                 ImageModel img = new ImageModel
                 {
                     ImageDate = date,
                     ImageName = newFilename,
                     ImagePath = String.Format("{0}", serverPath),
-                    ArticleGuid = new Guid(article.ArticleGuid)
+                    ArticleGuid = article.ArticleGuid
                 };
+                article.ImageId = img.ImageId;
                 _context.Images.Add(img);
+
             }
-
-
             //_context.SaveChanges();
             //return GetAwaiter(article,_hostEnvironment, _context, ext, newFilename, file, form, message);
         }

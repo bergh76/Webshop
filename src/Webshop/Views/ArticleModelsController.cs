@@ -110,13 +110,13 @@ namespace Webshop.Views
             subProductID = await getsubProductID;
             var spID = subProductID;
 
-            artList = from a in _context.Articles
-                      orderby a.ArticlePrice, a.ArticleName ascending
-                      where a.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
-                      where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
-                      where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
-                      where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
-                      select a;
+            //artList = from a in _context.Articles
+            //          orderby a.ArticlePrice, a.ArticleName ascending
+            //          where a.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
+            //          where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
+            //          where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
+            //          where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
+            //          select a;
 
             while (artList.Count() == 0)
             {
@@ -136,7 +136,7 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
             if (articleModel == null)
             {
                 return NotFound();
@@ -168,10 +168,10 @@ public async Task<IActionResult> Details(int? id)
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryID);
-            ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductID);
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryID);
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryId);
+            ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductId);
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryId);
+            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorId);
             return View(articleModel);
         }
 
@@ -183,15 +183,15 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
             if (articleModel == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryID);
-            ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductID);
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryID);
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryId);
+            ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductId);
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryId);
+            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorId);
             return View(articleModel);
         }
 
@@ -202,7 +202,7 @@ public async Task<IActionResult> Details(int? id)
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel)
         {
-            if (id != articleModel.ArticleID)
+            if (id != articleModel.ArticleId)
             {
                 return NotFound();
             }
@@ -216,7 +216,7 @@ public async Task<IActionResult> Details(int? id)
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArticleModelExists(articleModel.ArticleID))
+                    if (!ArticleModelExists(articleModel.ArticleId))
                     {
                         return NotFound();
                     }
@@ -227,10 +227,10 @@ public async Task<IActionResult> Details(int? id)
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryID);
-            ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductID);
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryID);
-            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "ID", articleModel.CategoryId);
+            ViewData["ProductID"] = new SelectList(_context.Products, "ID", "ID", articleModel.ProductId);
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "ID", "ID", articleModel.SubCategoryId);
+            ViewData["VendorID"] = new SelectList(_context.Vendors, "ID", "ID", articleModel.VendorId);
             return View(articleModel);
         }
 
@@ -242,7 +242,7 @@ public async Task<IActionResult> Details(int? id)
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
             if (articleModel == null)
             {
                 return NotFound();
@@ -256,15 +256,15 @@ public async Task<IActionResult> Details(int? id)
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var articleModel = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleID == id);
-            _context.Articles.Remove(articleModel);
+            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
+            _context.Articles.Remove((Articles)articleModel);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool ArticleModelExists(int id)
         {
-            return _context.Articles.Any(e => e.ArticleID == id);
+            return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
         }
     }
 }

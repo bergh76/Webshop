@@ -8,8 +8,7 @@ namespace Webshop.Models
 {
     public class ImageModel
     {
-        [Key]
-        public int ID { get; set; }
+        public int ImageId { get; set; }
         public string ImageName { get; set; }
         public string ImagePath { get; set; }
         public DateTime ImageDate { get; set; }

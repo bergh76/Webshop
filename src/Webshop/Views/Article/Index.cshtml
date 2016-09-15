@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Webshop.Models.Articles>
+﻿@model IEnumerable<Webshop.ViewModels.ArticlesViewModel>
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -76,9 +76,9 @@
                                                         <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesFour)</p>
                                                     </div>
 
-                                                    <div class="product-artnr small">
+                                                    @*<div class="product-artnr small">
                                                         Art. nr: <span>@Html.DisplayFor(modelItem => item.ArticleNumber)</span>
-                                                    </div>
+                                                    </div>*@
                                                 </div>
                                                 <div class="box-bottom ">
                                                     <div class="stockstatus">

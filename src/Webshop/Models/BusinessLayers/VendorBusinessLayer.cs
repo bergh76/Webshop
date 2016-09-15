@@ -18,10 +18,11 @@ namespace Webshop.BusinessLayers
         {
 
         }
-        public VendorBusinessLayer(WebShopRepository context, IHostingEnvironment hostEnviroment)
+        public VendorBusinessLayer(IStringLocalizer<ArticleController> localizer, WebShopRepository context, IHostingEnvironment hostEnviroment)
         {
             _context = context;
             _hostEnvironment = hostEnviroment;
+            _localizer = localizer;
         }
         internal async Task<VendorModel> GetVendors(string name, string url, bool isactive, VendorModel vendor )
         {
