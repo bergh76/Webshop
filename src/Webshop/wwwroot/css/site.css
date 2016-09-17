@@ -1,12 +1,13 @@
-﻿body {
-  /*font-size: 1.4em !important;*/
+﻿ @import 'https://fonts.googleapis.com/css?family=Raleway';
+@import 'https://fonts.googleapis.com/css?family=Roboto';
+body {
+  font-size: 1.4em !important;
   padding-top: 50px;
   padding-bottom: 20px;
-      /*font-family: 'Trebuchet MS','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
-
-   font-family: Corbel, Tahoma, Geneva, Verdana, sans-serif!important;
+  /*font-family: 'Trebuchet MS','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+  font-family: 'Roboto';
+   /*font-family: Corbel, Tahoma, Geneva, Verdana, sans-serif!important;*/
   /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;*/
-  /*font-size: 16px;*/
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
@@ -29,14 +30,8 @@
 }
 .bg-white{
     margin-top: 1px;
-    /*background-color: #fff;*/
 }
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-/*.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
+
 
 .navbar-toggle {
     position: relative;
@@ -85,15 +80,6 @@
     vertical-align: top;
 }
 
-/*.dropdown-menu > li > a :hover{
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-}*/
 
 @media (min-width: 768px) {
   .container-white {
@@ -127,7 +113,6 @@
 }
 .container-details-wide {
     background-color: #ededed;
-    /*border-top: 1px solid #e6e8e9 !important;*/
     background-image: url('../images/56516f31.png');
     width: 100% !important;
     margin-right: auto;
@@ -139,11 +124,9 @@
 }
 .end-border{
     border-bottom: 2px solid #3498db !important;
-    /*width: 100% !important;*/
 }
 .end-border-blue{
     border-bottom: 1px solid #264263 !important;
-    /*width: 100% !important;*/
 }
 .text-info-blue a {
     color: #264263;
@@ -210,19 +193,6 @@
     padding-top: 10px;
 }
 
-/*.productItemBox .priceInfo .small, .hero .priceInfo .small, .productSlot .priceInfo .small, .productRow .priceInfo .small, .dependentAccessoryBox .priceInfo .small {
-    float: right;
-    clear: both;
-    padding: 2px;
-    height: auto;
-    background-color: rgba(255,255,255,.8);
-    /*background: #fff;
-    color: #333;
-    white-space: nowrap;
-    font-weight: 400;
-    font-size: .7em;
-    margin-top: 1px;
-}*/
 .productItemBox .priceInfo .priceHeader, .hero .priceInfo .priceHeader, .productSlot .priceInfo .priceHeader, .productRow .priceInfo .priceHeader, .dependentAccessoryBox .priceInfo .priceHeader {
     color: #fff;
     float: right;
@@ -501,10 +471,12 @@
     transition: 0.5ms !important;
 }
 
+.pad-top{
+    padding-top: 15px;
+}
 .table-banner {
     width: 100%;
     max-width: 100%;
-    /*margin-bottom: 20px;*/
 }
 .padding-y-md {
     color: #264263;
@@ -536,7 +508,6 @@
 .nav-white > li > a:focus {
   text-decoration: none;
   background-color: #3498db;
-  /*border-radius: 75%;*/
   color: #fff;
   transition: 0.5s !important;
 }
@@ -557,7 +528,6 @@
 .nav-white .open > a:hover,
 .nav-white .open > a:focus {
     color: #3498db;
-    /*border: 1px solid #3498db;*/
     background: #fff;
 }
 
@@ -571,7 +541,11 @@
 .nav-white > li > a > img {
   max-width: none;
 }
-
+.navbar-nav > li > .dropdown-menu {
+    /*margin-top: 5px;*/
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
 @media (min-width: 768px) {
     .navbar-nav {
         float: left;
@@ -579,20 +553,12 @@
     }
 }
 .navbar-nav > li {
-            float: left;
-        }
+    float: left;
+}
 
 .navbar-nav > li > a {
     padding-top: 15px;
-    /*padding-bottom: 15px;*/
 }
-
-    /*.navbar-fixed-top, .navbar-fixed-bottom {
-    position: fixed !important;
-    right: 0 !important;
-    left: 0 !important;
-     z-index: 900 !important; 
-}*/
 
  /*NAVBAR COLORS*/
  .navbar-blue {
@@ -730,10 +696,10 @@ fieldset[disabled] .navbar-blue .btn-link:focus {
     z-index: 1050 !important;
     display: none;
     float: left;
-    min-width: 210px;
+    /*min-width: 210px;*/
     padding: 5px 0;
     margin: 2px 0 0;
-    font-size: 14px;
+    font-size: 0.9em;
     text-align: left;
     list-style: none;
     background-color: #fff;
@@ -745,8 +711,7 @@ fieldset[disabled] .navbar-blue .btn-link:focus {
     -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
-/*.margin-top-sm {
-margin-top: 5px!important;
+
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
 input,
@@ -941,7 +906,6 @@ textarea {
   color: #ffffff;
   font-size: 20px;
   margin-right: -55px;
-  /*padding: 10px 20px 10px 20px;*/
   text-decoration: none;
   border-radius: 0;
 }
@@ -966,9 +930,6 @@ textarea {
    background-color: #111;
    overflow: hidden !important;
    transition: 0.5s;
-   /*padding-top: 12px;*/
-   /*padding-left: 15px ;*/
-   /*display: inline-block;*/
 }
 .sidenav .li {
     float: left;
@@ -991,17 +952,14 @@ textarea {
 }
 
 .badge-blue {
-    /*font-family: Consolas;*/
     font-size: 12px;
     background-color: #264263;
 }
 .badge-blue-big {
-    /*font-family: Consolas;*/
     font-size: 16px;
     background-color: #264263;
  }
 .badge-white {
-    /*font-family: Consolas;*/
     font-size: 12px;
     background-color: #fff;
 }
@@ -1024,11 +982,9 @@ box-shadow: 0px 0px 8px #EDDCC5;
 }
 .form-control:hover {
 border:1px solid #3498db;
-/*border-radius:0px ;*/
 box-shadow: 0px 0px 8px #EDDCC5; 
 -webkit-box-shadow: 0px 0px 8px #EDDCC5; 
 -moz-box-shadow: 0px 0px 8px #EDDCC5; 
-/*transition: 0.5s !important;*/
 }
 
 .btn-xs:focus{
@@ -1041,12 +997,10 @@ box-shadow: 0px 0px 8px #EDDCC5;
 
 .btn-xs:hover {
 border:1px solid #ff6500;
-/*border-radius:0px ;*/
 box-shadow: 0px 0px 8px #EDDCC5; 
 background-color: #fff;
 -webkit-box-shadow: 0px 0px 8px #EDDCC5; 
 -moz-box-shadow: 0px 0px 8px #EDDCC5; 
-/*transition: 0.5s !important;*/
 }
 .footer-height{
     position: relative;
@@ -1067,29 +1021,6 @@ background-color: #fff;
 
 @import url("http://fonts.googleapis.com/css?family=Lato");
 
-
-/** {
-    margin: 0;
-    padding: 0;
-    @include box-sizing(border-box);
-}
-p {
-    margin-top: 200px;
-}
-  a {
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-block;
-    color: #fff;
-    padding: 5px 10px;
-    margin: 0 5px;
-    /*background-color: darken($file-upload-color, 2);
-    transition: 0.2s ease-in;
-    &:hover {
-      background-color: darken($file-upload-color, 5);
-    }
-  }
-}*/
 .custom-file-upload-hidden {
     display: none;
     visibility: hidden;
@@ -1101,34 +1032,32 @@ p {
     width: auto;
     font-size: 14px;
     margin-top: 25px;
-    /*border: 1px solid #ccc;*/
-        display: block;
-        margin-bottom: 5px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .file-upload-wrapper {
     position: relative; 
     margin-bottom: 5px;
-    /*border: 1px solid #ccc;*/
 }
 .file-upload-input {
     color: #3498db;
     text-transform: uppercase;
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     border: 2px solid #3498db;
     background: #fff;
     padding: 9px 15px;
     outline: none;    
     float: left; /* IE 9 Fix */
-        font-family: 'Open Sans', sans-serif;
+        /*font-family: 'Open Sans', sans-serif;*/
 }
 
 
-.file-upload-input :hover { 
-        background-color: #e74c3c;
-        outline: none; 
-        transition: 0.2s ease-in;
+.file-upload-input :hover {
+    background-color: #e74c3c;
+    outline: none;
+    transition: 0.2s ease-in;
 }
 .file-upload-button {
 text-transform: uppercase;
@@ -1136,8 +1065,8 @@ text-transform: uppercase;
     padding: 8px 18px;
     background: #3498db;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 1em;
+    /*font-weight: 600;*/
     font-family: 'Open Sans', sans-serif;
     border: 1px solid #3498db;
     float:left;
@@ -1291,7 +1220,6 @@ i.linkedin{
 	margin-bottom:1.45em;
 }
 .contact-section {
-	/*border-bottom: 1px solid #B9B9B9;*/
 	padding: 3em 0 2em 0;
 }
 .subscribe input[type="text"] {
@@ -1322,8 +1250,6 @@ i.linkedin{
 }
 .cards {
 	padding: 1.5em 0;
-	/*border-top: 1px solid #B9B9B9;
-	border-bottom: 1px solid #B9B9B9;*/
 }
 .copyright {
 	padding: 2em 0;
@@ -1369,7 +1295,7 @@ i.linkedin{
 	font-weight:700;
 	font-family: 'Open Sans', sans-serif;
 	text-transform:uppercase;
-	text-decoration:none;
+	text-decoration:none!important;
 }
 .different-products ul li a:hover{
 	color:#3498db;

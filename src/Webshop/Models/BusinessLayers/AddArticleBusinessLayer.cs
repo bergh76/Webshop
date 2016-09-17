@@ -97,7 +97,7 @@ namespace Webshop.Models.BusinessLayers
                     };
                     _context.Images.Add(imgExists);
                     _context.SaveChanges();
-                    article.ImageId =  _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+                    article.ImageId = _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
 
                 }
                 else
@@ -114,15 +114,16 @@ namespace Webshop.Models.BusinessLayers
                         ArticleGuid = guidID
                     };
                     _context.Images.Add(img);
+                    _context.SaveChanges();
                     article.ImageId = _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
 
                 }
+                _context.ArticleTranslations.Add(artTranslate);
+                _context.Articles.Add(article);
+                _context.SaveChanges();
             }
-            _context.ArticleTranslations.Add(artTranslate);
-            _context.Articles.Add(article);
-
-
         }
+
         private Guid CreatGuid()
         {            
             return Guid.NewGuid();

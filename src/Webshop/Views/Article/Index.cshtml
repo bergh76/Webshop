@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = Localizer["Index"];
 }
-<section class="navbar navbar-blue" id="bottom">
+@*<section class="navbar navbar-blue" id="bottom">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>*@
 <section class="container">
     <div class="col-xs-12 padding-x-off no-pad-table">
         @*@Html.Partial("_SearchArticles")*@
@@ -32,7 +32,7 @@
                     {
                         @foreach (var item in Model)
                         {
-                            @Html.HiddenFor(modelItem => item.ArticleAddDate)
+                            @*@Html.HiddenFor(modelItem => item.ArticleAddDate)*@
                             @Html.HiddenFor(modelItem => item.ArticleGuid)
                             <tr>
                                 <td>

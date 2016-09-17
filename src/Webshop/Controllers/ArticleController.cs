@@ -392,7 +392,6 @@ namespace Webshop.Controllers
             if (ModelState.IsValid)
             {
                 add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
-                _context.SaveChanges();
                 return RedirectToAction("Create");
             }
             return View(article);
