@@ -45,7 +45,7 @@
     margin-top: 8px;
     margin-right: 15px;
     margin-bottom: 8px;
-    background-color: orangered;
+    background-color: #3498db;
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -138,7 +138,7 @@
     margin-bottom: -18px !important;
 }
 .end-border{
-    border-bottom: 1px solid #ff6500 !important;
+    border-bottom: 2px solid #3498db !important;
     /*width: 100% !important;*/
 }
 .end-border-blue{
@@ -535,9 +535,9 @@
 .nav-white > li > a:hover,
 .nav-white > li > a:focus {
   text-decoration: none;
-  background-color: #eee;
+  background-color: #3498db;
   /*border-radius: 75%;*/
-  color: #ff6500;
+  color: #fff;
   transition: 0.5s !important;
 }
 
@@ -556,8 +556,9 @@
 .nav-white .open > a,
 .nav-white .open > a:hover,
 .nav-white .open > a:focus {
-  background-color: #eee;
-  border-color: #337ab7;
+    color: #3498db;
+    /*border: 1px solid #3498db;*/
+    background: #fff;
 }
 
 .nav-white .nav-white-divider {
@@ -595,7 +596,7 @@
 
  /*NAVBAR COLORS*/
  .navbar-blue {
-     background-color: rgba(16, 23, 23, 0.23);
+     background-color: #fff;
      border-bottom: 1px solid #e7e7e7;
      -webkit-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
      -moz-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
@@ -738,9 +739,8 @@ fieldset[disabled] .navbar-blue .btn-link:focus {
     background-color: #fff;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: 4px;
+    border: 1px solid #3498db;
+
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
@@ -1017,13 +1017,13 @@ tabel .td{
 }
 .form-control:focus {
 background:#FFFFFF;
-border:1px solid #ff6500;
+border:1px solid #3498db;
 box-shadow: 0px 0px 8px #EDDCC5; 
 -webkit-box-shadow: 0px 0px 8px #EDDCC5; 
 -moz-box-shadow: 0px 0px 8px #EDDCC5; 
 }
 .form-control:hover {
-border:1px solid #ff6500;
+border:1px solid #3498db;
 /*border-radius:0px ;*/
 box-shadow: 0px 0px 8px #EDDCC5; 
 -webkit-box-shadow: 0px 0px 8px #EDDCC5; 
@@ -1112,36 +1112,43 @@ p {
     /*border: 1px solid #ccc;*/
 }
 .file-upload-input {
-    color: #fff;
-    /*font-size: 16px;*/
-    padding: 11px 17px;
-    border: none;
-    background-color: #c0392b;
-    
+    color: #3498db;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 700;
+    border: 2px solid #3498db;
+    background: #fff;
+    padding: 9px 15px;
+    outline: none;    
     float: left; /* IE 9 Fix */
+        font-family: 'Open Sans', sans-serif;
 }
+
+
 .file-upload-input :hover { 
         background-color: #e74c3c;
         outline: none; 
         transition: 0.2s ease-in;
 }
 .file-upload-button {
-    cursor: pointer;
-    display: inline-block;
+text-transform: uppercase;
     color: #fff;
-    /*font-size: 16px;*/
-    text-transform: uppercase;
-    padding: 11px 20px;
-    border: none;
-    margin-left: -1px;
-    background-color: #e74c3c;
-    float: left; /* IE 9 Fix */
+    padding: 8px 18px;
+    background: #3498db;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px solid #3498db;
+    float:left;
 }
-
-.file-upload-button{
-    background-color: #e74c3c;
+.file-upload-button :hover{
+	border:2px solid #3498db;
+	background:#fff;
+	color: #3498db;
     transition: 0.2s ease-in;    
 }
+
 .pagination{
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -39,93 +39,37 @@ namespace Webshop.Controllers
         //}
 
 
-        public IActionResult Index()//string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
+        public IActionResult Index(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
         {
-            //PERHAPS CREATE A BUSINESSLOGICCLASS //
-            //var vendorList = new List<string>();
-            //var all = await _context.Articles.ToListAsync();
+            var webShopRepository = _context.Articles.Include(a => a._Category).Include(a => a._Product).Include(a => a._SubCategory).Include(a => a._Vendor);
+            //    return View(await webShopRepository.ToListAsync());
 
-            /////<summary>
-            /////Gets all the MANUFACTURES in the database
-            ///// </summary>
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
 
-            //var vndrQry = from v in _context.Vendors
-            //              orderby v.VendorName
-            //              select v.VendorName;
+            getVendorID = _context.Vendors.Where(x => x.VendorName == dropdownVendor).Select(x => x.VendorID).FirstOrDefault();
+            int vID = getVendorID;
 
-            //ViewData["dropdownVendor"] = new SelectList(vendorList);
-            //vendorList.AddRange(vndrQry.Distinct());
-            //var vendor = from v in _context.Vendors
-            //             select v;
+            getCategoryID = _context.Categories.Where(x => x.CategoryName == dropdownCategory).Select(x => x.CategoryID).FirstOrDefault();
+            var cID = getCategoryID;
 
-            /////<summary>
-            /////Gets all the CATEGORIES in the database
-            ///// </summary>
-            //var catQry = from c in _context.Categories
-            //             orderby c.CategoryName
-            //             select c.CategoryName;
+            getProductID = _context.Products.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefault();
+            var pID = getProductID;
 
-            //var catList = new List<string>();
-            //ViewData["dropdownCategory"] = new SelectList(catList);
-            //catList.AddRange(catQry.Distinct());
-            //var category = from c in _context.Categories
-            //               select c;
-
-            /////<summary>
-            /////Gets all the PRODUCTTYPE in the database
-            ///// </summary>
-            //var prdctQry = from p in _context.Products
-            //               orderby p.ProductName
-            //               select p.ProductName;
-
-            //var prdctList = new List<string>();
-            //ViewData["dropdownProduct"] = new SelectList(prdctList);
-            //prdctList.AddRange(prdctQry.Distinct());
-            //var product = from p in _context.Products
-            //              select p;
-
-            /////<summary>
-            /////Gets all the SUBPRODUCTLIST in the database
-            ///// </summary>
-            //var subPrdctQry = from s in _context.SubCategories
-            //                  orderby s.SubCategoryName
-            //                  select s.SubCategoryName;
-
-            //var subPrdctList = new List<string>();
-            //ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
-            //subPrdctList.AddRange(subPrdctQry.Distinct());
-
-            //var subProduct = from s in _context.SubCategories
-            //                 select s;
-            ////ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ////ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ////ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ////ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-
-            //vendor = vendor.Where(r => r.VendorName.Contains(dropdownVendor));
-            //var getVendorID = vendor.Where(x => x.VendorName == dropdownVendor).Select(x => x.VendorID).FirstOrDefaultAsync();
-            //vendorID = await getVendorID;
-            //var vID = vendorID;
-
-            //category = category.Where(r => r.CategoryName.Contains(dropdownCategory));
-            //var getCategoryID = category.Where(x => x.CategoryName == dropdownCategory).Select(x => x.CategoryID).FirstOrDefaultAsync();
-            //categoryID = await getCategoryID;
-            //var cID = categoryID;
-
-            //product = product.Where(r => r.ProductName.Contains(dropdownProduct));
-            //var getProductID = product.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefaultAsync();
-            //productID = await getProductID;
-            //var pID = productID;
-
-            //subProduct = subProduct.Where(s => s.SubCategoryName.Contains(dropdownSubCategory));
-            //var getsubProductID = subProduct.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefaultAsync();
-            //subProductID = await getsubProductID;
-            //var spID = subProductID;
+            getsubProductID = _context.SubCategories.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefault();
+            var spID = getsubProductID;
 
             var query = from p in _context.Articles
                         join pt in _context.ArticleTranslations on
                         new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                         equals new { pt.ArticleId, Second = pt.LangCode }
+                        where p._Vendor.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
+                        where p._Category.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
+                        where p._Product.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
+                        where p._SubCategory.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
+
                         select new ArticlesViewModel
                         {
                             ArticleID = p.ArticleId,
@@ -134,12 +78,16 @@ namespace Webshop.Controllers
                             ISActive = p.ISActive,
                             ISCampaign = p.ISCampaign,
                             ArticleName = pt.ArticleName,
-                            ArticleDescription = pt.ArticleShortText,
+                            ArticleShortText = pt.ArticleShortText,
                             ArticleFeaturesOne = pt.ArticleFeaturesOne,
                             ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
                             ArticleFeaturesThree = pt.ArticleFeaturesThree,
                             ArticleFeaturesFour = pt.ArticleFeaturesFour
                         };
+            //          where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
+            //          where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
+            //          where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
+            //          select a;
 
             //artList = from a in _context.Articles
             //          orderby a.ArticlePrice, a.ArticleName ascending
@@ -161,7 +109,9 @@ namespace Webshop.Controllers
             //    return View(artList);
             //}
             //ViewBag.NoHit = "Din sökning gav inga resultat";
+            //return View(query.ToListAsync());
             return View(query);
+
         }
 
 
@@ -187,6 +137,7 @@ namespace Webshop.Controllers
         // GET: Article/Create
         public IActionResult Create()
         {
+            //ViewData["LangCode"] = new SelectList(_context.Languages, "ID", "LangCode");
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
@@ -199,15 +150,16 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel)
+        public async Task<IActionResult> Create([Bind("ID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(articleModel);
+                _context.Add(artTranslate);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
+            //ViewData["LangCode"] = new SelectList(_context.Languages, "ID", "LangCode", artTranslate.LangCode);
             ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorId);
             ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductId);
             ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryId);
@@ -368,6 +320,7 @@ namespace Webshop.Controllers
         // GET: Articles/Create
         public IActionResult NewArticle()
         {
+            //ViewData["LangCode"] = new SelectList(_context.Languages, "ID", "LangCode");
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName");
@@ -439,6 +392,7 @@ namespace Webshop.Controllers
             if (ModelState.IsValid)
             {
                 add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
+                _context.SaveChanges();
                 return RedirectToAction("Create");
             }
             return View(article);

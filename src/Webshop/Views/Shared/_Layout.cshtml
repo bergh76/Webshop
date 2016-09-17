@@ -1,7 +1,7 @@
 ﻿@using Webshop
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-@model IEnumerable<Webshop.Models.Articles>
+
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["_Layout"];
@@ -93,31 +93,20 @@
                     <li class="">
                         @await Html.PartialAsync("_SelectLanguagePartial")
                     </li>
-
-                    @*}
-            else
-            {
-                <li class="dropdown">
-                    <a asp-area="" asp-controller="Account" asp-action="Login"><span class="fa fa-sign-in icon-padding-right"></span>Logga in</a>
-                </li>
-            }*@
                 </ul>
-
-
                 <div id="miniCart">
                     <ul class="nav-white navbar-nav pull-right" id="ko-miniCartContainer">
                         <li class="dropdown pull-right cart" data-bind="dropdown: TotalQuantity()">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart" data-bind="click: loadCartItems">
                                 <label class="hidden-xs hidden-sm" >@Localizer["Kundvagnen är tom"]</label>
                                 <label class="cartValue">@Localizer["Summa"]</label>
-                                <span class="text-muted lowerText" data-bind="text: ShowPricesInclOrExclVat">@Localizer["Inkl. moms"]</span>
+                                <span class="lowerText" data-bind="text: ShowPricesInclOrExclVat">@Localizer["Inkl. moms"]</span>
                             </a>
                             <ul class="dropdown-menu keep-open">
                                 <li data-bind="css: inProgressClass" class="hide"></li>
                                 <li class="productList-small container" data-bind="template: { name: 'miniCartItem-template', foreach: Items }"></li>
                                 <li class="col-xs-12 text-center padding-x-off">
                                     <a class="btn btn-block btn-branded toCheckout" href="/shoppingcart">
-                                       @*await Component.InvokeAsync("Cart")*@
                                     </a>
                                 </li>
                             </ul>

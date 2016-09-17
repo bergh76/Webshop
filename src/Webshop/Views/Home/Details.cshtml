@@ -1,5 +1,5 @@
-﻿@*@model IEnumerable<Webshop.Models.Articles>*@
-@model Webshop.Models.Articles
+﻿@model Webshop.ViewModels.ArticlesViewModel
+@*@model Webshop.Models.Articles*@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -21,7 +21,7 @@
                             <span class="symbol pull-left icon-superpris"></span>
                             <span class="description">-29%</span>
                         </span>
-                        <span class="price animated rubberBand">@Html.DisplayFor(model => Model.ArticlePrice)</span>
+                        <span class="price animated rubberBand">@Html.DisplayFor(model => model.ArticlePrice)</span>
                         <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div>
                         <h3 class="margin-x-md">@Html.DisplayFor(model => Model.ArticleName)</h3>
                     </div>
-                    <span class="description">@Html.DisplayFor(model => Model.ArticleShortText)</span>
+                    <span class="description">@Html.DisplayFor(model => Model.ArticleDescription)</span>
                     <ul class="list-group shortSpec">
                         <li>@Html.DisplayFor(model => Model.ArticleNumber)</li>
                         <li>@Html.DisplayFor(model => Model.ArticleFeaturesOne)</li>

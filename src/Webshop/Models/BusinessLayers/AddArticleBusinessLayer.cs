@@ -31,8 +31,10 @@ namespace Webshop.Models.BusinessLayers
             _form = form;
         }
 
-        internal void AddArticle(Articles article, ArticleTranslation artTranslate,  WebShopRepository _context, IHostingEnvironment _hostEnvironment, IStringLocalizer<ArticleController> _localizer, IFormFile file, IFormCollection form)
+        internal void AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository _context, IHostingEnvironment _hostEnvironment, IStringLocalizer<ArticleController> _localizer, IFormFile file, IFormCollection form)
         {
+            string lang = "sv-SE";
+            artTranslate.LangCode = lang;
             var date = DateTime.Now.ToLocalTime();
             int vendorID = Convert.ToInt32(form["VendorID"]);
             string vendor = _context.Vendors.Where(x => x.VendorID == vendorID).Select(x => x.VendorName).FirstOrDefault();
@@ -52,10 +54,10 @@ namespace Webshop.Models.BusinessLayers
 
             string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
             article.ArticleNumber = tempArtNr;
+            artTranslate.ArticleNumber = tempArtNr;
             Guid guidID = CreatGuid();
             article.ArticleGuid = guidID;
             article.ArticleAddDate = date;
-
             var image = IsImage(file); // check if file is a image
             if (image == true)
             {
@@ -94,7 +96,9 @@ namespace Webshop.Models.BusinessLayers
                         ArticleGuid = guidID
                     };
                     _context.Images.Add(imgExists);
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
+                    article.ImageId =  _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+
                 }
                 else
                 {
@@ -109,18 +113,16 @@ namespace Webshop.Models.BusinessLayers
                         ImagePath = String.Format("{0}", serverPath),
                         ArticleGuid = guidID
                     };
-                    //article.ArticleImgPath = string.Format("{0}{1}", serverPath + newFilename);
                     _context.Images.Add(img);
                     article.ImageId = _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
 
                 }
-
             }
+            _context.ArticleTranslations.Add(artTranslate);
             _context.Articles.Add(article);
-            _context.SaveChangesAsync();
+
+
         }
-
-
         private Guid CreatGuid()
         {            
             return Guid.NewGuid();

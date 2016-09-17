@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Webshop.Models.Articles>
-@*@model Webshop.Models.Articles*@
+﻿@model Webshop.ViewModels.ArticlesViewModel
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -7,52 +6,52 @@
 @{
     ViewData["Title"] = "Search";
 }
-<div class="search-bar">
-    <form asp-action="Index" asp-controller="Article">
-        <div class="form-group">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="btn-block">
-                @*<span class="col-searchnav control-label"> Tillverkare</span>*@
-                <div class="col-searchnav">
-                    @*<select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>*@
-
-                    @Html.DropDownList("dropdownVendor", (SelectList)ViewBag.dropdownVendor, "",new { @class = "btn btn-default btn-xs  dropdown-toggle", data_toggle = "dropdown"})
+<div class="search-bar form-horizontal">
+    @*<div class="col-md-12">*@
+    <form method="get" asp-action="Index" asp-controller="Home">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID">@Localizer["VendorPlaceholder"]</select>
                 </div>
             </div>
-
-            <div class="btn-block">
-                @*<span class="col-searchnav control-label"> Kategori</span>*@
-                <div class="col-searchnav">
-                    @*<select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>*@
-
-                    @Html.DropDownList("dropdownCategory", (SelectList)ViewBag.dropdownCategory,"", new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown"})
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="btn-block">
+                        <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID">@Localizer["Placeholder"]</select>
+                    </div>
                 </div>
             </div>
-
-            <div class="btn-block">
-                @*<span class="col-searchnav control-label"> Produkt</span>*@
-                <div class="col-searchnav">
-                    @*<select asp-for="ProductID" class="form-control" asp-items="ViewBag.ProductID"></select>*@
-
-                    @Html.DropDownList("dropdownProduct", (SelectList)ViewBag.dropdownProduct,"", new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown"})
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="btn-block">
+                        <select asp-for="ProductID" class="form-control" asp-items="ViewBag.ProductID">@Localizer["ProductPlaceholder"]</select>
+                    </div>
                 </div>
             </div>
-
-            <div class="btn-block">
-                @*<span class="col-searchnav control-label"> Produkt</span>*@
-                <div class="col-searchnav">
-                    @*<select asp-for="SubCategoryID" class="form-control" asp-items="ViewBag.SubCategoryID"></select>*@
-
-                    @Html.DropDownList("dropdownSubCategory", (SelectList)ViewBag.dropdownSubCategory,"", new { @class = "btn btn-default btn-xs dropdown-toggle", data_toggle = "dropdown" })
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="btn-block">
+                        <select asp-for="SubCategoryID" class="form-control" asp-items="ViewBag.SubCategoryID">@Localizer["SubCategoryPlaceholder"]</select>
+                    </div>
                 </div>
             </div>
-            <div class="btn-block">
-                @*<span class="col-searchnav control-label"> Produkt</span>*@
-                <div class="col-searchnav">
-                    <button type="submit" class="btn search-sm-button">
-                        <span class="ladda-label"><i class="fa fa-search"></i>@Localizer["Search"]</span>
-                    </button>
-                    <input type="submit" value=@Localizer["Search"] class="btn search-sm-button" />
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="btn-block">
+                        <button type="submit" class="btn search-sm-button">
+                            <span class="ladda-label"><i class="fa fa-search"></i>@Localizer["Search"]</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

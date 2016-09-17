@@ -1,4 +1,4 @@
-﻿@model Webshop.Models.Articles
+﻿@model Webshop.ViewModels.ArticlesViewModel
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -33,7 +33,6 @@
                                     <select asp-for="VendorID" class="form-control" asp-items="ViewBag.VendorID"></select>
                                     <!-- Button trigger modal -->
                                     <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
-
                                 </div>
                             </div>
 
@@ -148,6 +147,11 @@
                                     <input asp-for="ISCampaign" />
                                     <label asp-for="ISCampaign"></label>
                                 </div>
+                                @*<div class="checkbox">
+                                    <label asp-for="LangCode.ID" class="col-md-10 control-label"></label>
+                                    <select asp-for="LangCode.ID" class="form-control" asp-items="ViewBag.LangCode"></select>
+
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -155,8 +159,8 @@
                     <div style="height: 30px;">
                         <div class="action-row">
                             <div class="form-actions no-color">
-                                <input type="submit" value=@Localizer["Save"] class="btn btn-danger" />
-                                <a class="btn btn-success" asp-action="Index">@Localizer["Back"]</a>
+                                <input type="submit" contextmenu=@Localizer["Save"] class="btn btn-danger" />
+                                <button class="btn btn-success" asp-action="Index">@Localizer["Back"]</button>
                             </div>
                         </div>
                     </div>

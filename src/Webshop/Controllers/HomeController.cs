@@ -38,282 +38,153 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public async Task<IActionResult> Search(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
+        public IActionResult Index(string vendor, string category, string product, string subcategory)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
         {
-            //PERHAPS CREATE A BUSINESSLOGICCLASS //
-            IEnumerable<Articles> artList = new List<Articles>();
-            ///<summary>
-            ///Gets all the MANUFACTURES in the database
-            /// </summary>
-            var vendorList = new List<string>();
-            var vndrQry = from v in _context.Vendors
-                          orderby v.VendorName
-                          select v.VendorName;
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryName", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductName", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryName", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorName", "VendorName");
 
-            ViewData["dropdownVendor"] = new SelectList(vendorList);
-            vendorList.AddRange(vndrQry.Distinct());
-            var vendor = from v in _context.Vendors
-                         select v;
 
-            ///<summary>
-            ///Gets all the CATEGORIES in the database
-            /// </summary>
-            var catQry = from c in _context.Categories
-                         orderby c.CategoryName
-                         select c.CategoryName;
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ImageId equals i.ImageId
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
+                          where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
+                          where p._Product.ProductName == product || string.IsNullOrEmpty(product)
+                          where p._SubCategory.SubCategoryName == subcategory || string.IsNullOrEmpty(subcategory)
 
-            var catList = new List<string>();
-            ViewData["dropdownCategory"] = new SelectList(catList);
-            catList.AddRange(catQry.Distinct());
-            var category = from c in _context.Categories
-                           select c;
+                          select new ArticlesViewModel
+                          {
+                              ArticleID = p.ArticleId,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                          };
+            /**
+                    //orderby a.ArticlePrice, a. ascending
+                    //where a.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
+                    //where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
+                    //where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
+                    //where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
+                    //select a;
 
-            ///<summary>
-            ///Gets all the PRODUCTTYPE in the database
-            /// </summary>
-            var prdctQry = from p in _context.Products
-                           orderby p.ProductName
-                           select p.ProductName;
+                    //IEnumerable<ArticlesViewModel> list = artList.ToList();
+                    //var webShopRepository = _context..Include(a => a._Category).Include(a => a._Product).Include(a => a._SubCategory).Include(a => a._Vendor);
+                    //var isCampaign = artList.Where(x => x.ISCampaign == true);
+                    //var outCampaign = isCampaign.Count();
+                    //if (outCampaign > 10)
+                    //{
+                    //    return View(isCampaign.ToList());
+                    //}
+                    //while (artList.Count() != 0)
+                    //{
+                    //    return View(artList);
+                    //}
+                    //ViewBag.NoHit = "Din sökning gav inga resultat";
+                    //return View(artList);
+                    //var isCampaign = await webShopRepository.Where(x => x.ISCampaign == true).ToListAsync();
+                    //var outCampaign = isCampaign.Count();
+                    //if (outCampaign > 0)
+                    //{
 
-            var prdctList = new List<string>();
-            ViewData["dropdownProduct"] = new SelectList(prdctList);
-            prdctList.AddRange(prdctQry.Distinct());
-            var product = from p in _context.Products
-                          select p;
-
-            ///<summary>
-            ///Gets all the SUBPRODUCTLIST in the database
-            /// </summary>
-            var subPrdctQry = from s in _context.SubCategories
-                              orderby s.SubCategoryName
-                              select s.SubCategoryName;
-
-            var subPrdctList = new List<string>();
-            ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
-            subPrdctList.AddRange(subPrdctQry.Distinct());
-
-            var subProduct = from s in _context.SubCategories
-                             select s;
-
-            vendor = vendor.Where(r => r.VendorName.Contains(dropdownVendor));
-            var getVendorID = vendor.Where(x => x.VendorName == dropdownVendor).Select(x => x.VendorID).FirstOrDefaultAsync();
-            vendorID = await getVendorID;
-            var vID = vendorID;
-
-            category = category.Where(r => r.CategoryName.Contains(dropdownCategory));
-            var getCategoryID = category.Where(x => x.CategoryName == dropdownCategory).Select(x => x.CategoryID).FirstOrDefaultAsync();
-            categoryID = await getCategoryID;
-            var cID = categoryID;
-
-            product = product.Where(r => r.ProductName.Contains(dropdownProduct));
-            var getProductID = product.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefaultAsync();
-            productID = await getProductID;
-            var pID = productID;
-
-            subProduct = subProduct.Where(s => s.SubCategoryName.Contains(dropdownSubCategory));
-            var getsubProductID = subProduct.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefaultAsync();
-            subProductID = await getsubProductID;
-            var spID = subProductID;
-
-            //artList = from a in _context.Articles
-            //          orderby a.ArticlePrice, a.ArticleName ascending
-            //          where a.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
-            //          where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
-            //          where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
-            //          where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
-            //          select a;
-            return RedirectToAction("Details",artList);
-        
-        }
-        public async Task<IActionResult> Index()//string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory, int vendorID, int categoryID, string productID, int subProductID)
-        {
-            //PERHAPS CREATE A BUSINESSLOGICCLASS //
-            //IEnumerable<Articles> artList = new List<Articles>();
-            /////<summary>
-            /////Gets all the MANUFACTURES in the database
-            ///// </summary>
-            //var vendorList = new List<string>();
-            //var vndrQry = from v in _context.Vendors
-            //              orderby v.VendorName
-            //              select v.VendorName;
-
-            //ViewData["dropdownVendor"] = new SelectList(vendorList);
-            //vendorList.AddRange(vndrQry.Distinct());
-            //var vendor = from v in _context.Vendors
-            //             select v;
-
-            /////<summary>
-            /////Gets all the CATEGORIES in the database
-            ///// </summary>
-            //var catQry = from c in _context.Categories
-            //             orderby c.CategoryName
-            //             select c.CategoryName;
-
-            //var catList = new List<string>();
-            //ViewData["dropdownCategory"] = new SelectList(catList);
-            //catList.AddRange(catQry.Distinct());
-            //var category = from c in _context.Categories
-            //               select c;
-
-            /////<summary>
-            /////Gets all the PRODUCTTYPE in the database
-            ///// </summary>
-            //var prdctQry = from p in _context.Products
-            //               orderby p.ProductName
-            //               select p.ProductName;
-
-            //var prdctList = new List<string>();
-            //ViewData["dropdownProduct"] = new SelectList(prdctList);
-            //prdctList.AddRange(prdctQry.Distinct());
-            //var product = from p in _context.Products
-            //              select p;
-
-            /////<summary>
-            /////Gets all the SUBPRODUCTLIST in the database
-            ///// </summary>
-            //var subPrdctQry = from s in _context.SubCategories
-            //                  orderby s.SubCategoryName
-            //                  select s.SubCategoryName;
-
-            //var subPrdctList = new List<string>();
-            //ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
-            //subPrdctList.AddRange(subPrdctQry.Distinct());
-
-            //var subProduct = from s in _context.SubCategories
-            //                 select s;
-
-            //vendor = vendor.Where(r => r.VendorName.Contains(dropdownVendor));
-            //var getVendorID = vendor.Where(x => x.VendorName == dropdownVendor).Select(x => x.VendorID).FirstOrDefaultAsync();
-            //vendorID = await getVendorID;
-            //var vID = vendorID;
-
-            //category = category.Where(r => r.CategoryName.Contains(dropdownCategory));
-            //var getCategoryID = category.Where(x => x.CategoryName == dropdownCategory).Select(x => x.CategoryID).FirstOrDefaultAsync();
-            //categoryID = await getCategoryID;
-            //var cID = categoryID;
-
-            //product = product.Where(r => r.ProductName.Contains(dropdownProduct));
-            //var getProductID = product.Where(x => x.ProductName == dropdownProduct).Select(x => x.ProductID).FirstOrDefaultAsync();
-            //productID = await getProductID;
-            //var pID = productID;
-
-            //subProduct = subProduct.Where(s => s.SubCategoryName.Contains(dropdownSubCategory));
-            //var getsubProductID = subProduct.Where(x => x.SubCategoryName == dropdownSubCategory).Select(x => x.SubCategoryID).FirstOrDefaultAsync();
-            //subProductID = await getsubProductID;
-            //var spID = subProductID;
-
-            //artList = from a in _context.Articles
-            //          orderby a.ArticlePrice, a.ArticleName ascending
-            //          where a.VendorID == vID || string.IsNullOrEmpty(dropdownVendor)
-            //          where a.CategoryID == cID || string.IsNullOrEmpty(dropdownCategory)
-            //          where a.ProductID == pID || string.IsNullOrEmpty(dropdownProduct)
-            //          where a.SubCategoryID == spID || string.IsNullOrEmpty(dropdownSubCategory)
-            //          select a;
-            ////var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
-            //var isCampaign = artList.Where(x => x.ISCampaign == true);
-            //var outCampaign = isCampaign.Count();
-            //if (outCampaign > 10)
-            //{
-            //    return View(isCampaign.ToList());
-            //}
-            //while (artList.Count() != 0)
-            //{
-            //    return View(artList);
-            //}
-            //ViewBag.NoHit = "Din sökning gav inga resultat";
-            //return View(artList);
-            //var isCampaign = await webShopRepository.Where(x => x.ISCampaign == true).ToListAsync();
-            //var outCampaign = isCampaign.Count();
-            //if (outCampaign > 0)
-            //{
-
-            //    return View(isCampaign);
-            //}
-            //if (searchOut.Count() == 0)
-            //{
-            //    ViewBag.NoHit = "Din sökning gav inga resultat";
-            //    return View(webShopRepository.ToListAsync());
-            //}
-            //if (string.IsNullOrEmpty(search))
-            //{
-            //    //ViewBag.NoHit = "Din sökning gav inga resultat";
-            var query = from p in _context.Articles
-                        join i in _context.Images on p.ImageId equals i.ImageId
-                        join pt in _context.ArticleTranslations on
-                        new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
-                        equals new { pt.ArticleId, Second = pt.LangCode }
-                        select new ArticlesViewModel
-                        {
-                            ArticleID = p.ArticleId,
-                            ArticlePrice = p.ArticlePrice,
-                            ArticleStock = p.ArticleStock,
-                            ISActive = p.ISActive,
-                            ISCampaign = p.ISCampaign,
-                            ArticleName = pt.ArticleName,
-                            ArticleDescription = pt.ArticleShortText,
-                            ArticleFeaturesOne = pt.ArticleFeaturesOne,
-                            ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
-                            ArticleFeaturesThree = pt.ArticleFeaturesThree,
-                            ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                            ArticleImgPath = i.ImagePath+i.ImageName,
-                            ArticleAddDate = p.ArticleAddDate,
-                            VendorID = p.VendorId,
-                            CategoryID = p.CategoryId,
-                            ProductID = p.ProductId,
-                            SubCategoryID = p.SubCategoryId
-                        };
-            return View(query);
-            //}
-            //return RedirectToAction("Details");
-        }
-        // GET: Article/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
-            if (articleModel == null)
-            {
-                return NotFound();
-            }
-
-            //BreadCrumTracker bc = new BreadCrumTracker(_context, id);
-            //await bc.GetTracker();
-            return View(articleModel);
-        }
-
-        public IActionResult About(int id, string name, string lang)
-        {
-            ViewData["Message"] = lang +" "+  id + " " + name;
-
+                    //    return View(isCampaign);
+                    //}
+                    //if (searchOut.Count() == 0)
+                    //{
+                    //    ViewBag.NoHit = "Din sökning gav inga resultat";
+                    //    return View(webShopRepository.ToListAsync());
+                    //}
+                    //if (string.IsNullOrEmpty(search))
+                    //{
+                    //    //ViewBag.NoHit = "Din sökning gav inga resultat";
+                    //var query = from p in _context.Articles.ToList()
+                    //                            join i in _context.Images on p.ImageId equals i.ImageId
+                    //                            join pt in _context.ArticleTranslations on
+                    //                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                    //                            equals new { pt.ArticleId, Second = pt.LangCode }
+                    //                            select new ArticlesViewModel
+                    //                            {
+                    //                                ArticleID = p.ArticleId,
+                    //                                ArticlePrice = p.ArticlePrice,
+                    //                                ArticleStock = p.ArticleStock,
+                    //                                ISActive = p.ISActive,
+                    //                                ISCampaign = p.ISCampaign,
+                    //                                ArticleName = pt.ArticleName,
+                    //                                ArticleDescription = pt.ArticleShortText,
+                    //                                ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                    //                                ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                    //                                ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                    //                                ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                    //                                ArticleImgPath = i.ImagePath + i.ImageName,
+                    //                                ArticleAddDate = p.ArticleAddDate,
+                    //                                VendorID = p.VendorId,
+                    //                                CategoryID = p.CategoryId,
+                    //                                ProductID = p.ProductId,
+                    //                                SubCategoryID = p.SubCategoryId
+                    //                            };
+                    //return View(query);
+                */
             return View();
-        }
-
-        public IActionResult Contact([FromServices]IDateTime _datetime)
-        {
-            ContactViewModel vmodel = new ContactViewModel();
-            vmodel.CurrentDateAndTime = _datetime.Now.ToString();
-            vmodel.id = 0;
-            List<string> list = new List<string>();
-            list.Add("Andreas");
-            list.Add("Tjorven");
-            vmodel.Names = list;
-
-            return View(vmodel);
-        }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
-
-
-        private bool ArticleModelExists(int id)
-        {
-            return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
-        }
     }
+    // GET: Article/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
+        if (articleModel == null)
+        {
+            return NotFound();
+        }
+
+        //BreadCrumTracker bc = new BreadCrumTracker(_context, id);
+        //await bc.GetTracker();
+        return View(articleModel);
+    }
+
+    public IActionResult About(int id, string name, string lang)
+    {
+        ViewData["Message"] = lang +" "+  id + " " + name;
+
+        return View();
+    }
+
+    public IActionResult Contact([FromServices]IDateTime _datetime)
+    {
+        ContactViewModel vmodel = new ContactViewModel();
+        vmodel.CurrentDateAndTime = _datetime.Now.ToString();
+        vmodel.id = 0;
+        List<string> list = new List<string>();
+        list.Add("Andreas");
+        list.Add("Tjorven");
+        vmodel.Names = list;
+
+        return View(vmodel);
+    }
+
+    public IActionResult Error()
+    {
+        return View();
+    }
+
+
+    //private bool ArticleModelExists(int id)
+    //{
+    //    return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
+    //}
+}
 }
