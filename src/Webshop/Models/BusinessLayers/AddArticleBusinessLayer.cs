@@ -33,7 +33,7 @@ namespace Webshop.Models.BusinessLayers
 
         internal void AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository _context, IHostingEnvironment _hostEnvironment, IStringLocalizer<ArticleController> _localizer, IFormFile file, IFormCollection form)
         {
-            string lang = "sv-SE";
+            string lang = "sv";
             artTranslate.LangCode = lang;
             var date = DateTime.Now.ToLocalTime();
             int vendorID = Convert.ToInt32(form["VendorID"]);
@@ -58,6 +58,9 @@ namespace Webshop.Models.BusinessLayers
             Guid guidID = CreatGuid();
             article.ArticleGuid = guidID;
             article.ArticleAddDate = date;
+            //artTranslate.ArticleGuid = guidID;
+            artTranslate.ISTranslated = false;
+
             var image = IsImage(file); // check if file is a image
             if (image == true)
             {
@@ -118,9 +121,12 @@ namespace Webshop.Models.BusinessLayers
                     article.ImageId = _context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
 
                 }
-                _context.ArticleTranslations.Add(artTranslate);
                 _context.Articles.Add(article);
                 _context.SaveChanges();
+                artTranslate.ArticleId = _context.Articles.Where(x => x.ArticleGuid == guidID).Select(x => x.ArticleId).FirstOrDefault();
+                _context.ArticleTranslations.Add(artTranslate);
+                _context.SaveChanges();
+
             }
         }
 

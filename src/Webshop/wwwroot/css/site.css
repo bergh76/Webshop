@@ -171,7 +171,7 @@ body {
     border-bottom-left-radius: 0;
 }
 .product-artnr{
-    font-family: 'Segoe UI','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /*font-family: 'Segoe UI','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
     color: #777;
 }
 .productItemBox {
@@ -180,16 +180,16 @@ body {
     box-shadow: none;
     background-color: #fff;
     border: 1px solid #e6e8e9;
-    margin: 0 15px 15px 0;
+    /*margin: 0 15px 15px 0;*/
     padding: 15px;
     border-top-color: #f1f2f3;
-    -webkit-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
+    /*-webkit-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
     -moz-box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
-    box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);
+    box-shadow: 0px 3px 7px 0px rgba(16, 23, 23, 0.23);*/
 }
 .productItemBox .productDescription {
     overflow: hidden;
-    height: 155px;
+    /*height: 155px;*/
     padding-top: 10px;
 }
 
@@ -214,7 +214,7 @@ body {
 
 }
 .productItemBox .productImageWrap {
-    height: 130px;
+    /*height: 130px;*/
         display: -ms-flexbox;
     display: flex;
     align-items: center;
@@ -235,7 +235,9 @@ body {
     justify-content: center;
 
 }
-
+.img-justify-center{
+    justify-content: center!important;
+}
 .productItemBox .productDescription .shortSpec {
     font-size: small;
     padding: 5px 15px;
@@ -245,8 +247,9 @@ body {
 }
 .productItemBox .btn-buy {
     position: absolute;
-    bottom: 20px;
-    right: 30px;
+    margin-left: 60px;
+    /*bottom: 20px;
+    left: 30px;*/
 }
 .productItemBox .priceInfo {
     position: relative;
@@ -256,8 +259,9 @@ body {
     z-index: 2;
 }
 .productItemBox .action-row {
+    max-width: 100%;
  position: absolute;
- bottom: 20px;
+ bottom: 5px;
 }
     /*DETAILPRODUCTSTYLE*/
 .content-block{
@@ -296,7 +300,6 @@ body {
 
 .productTitle {
     font-size: 14px;
-    font-family: "Segoe UI","Helvetica neue",Arial;
     line-height: 1.3;
     font-weight: bold;
     display: inline-block;
@@ -843,6 +846,9 @@ textarea {
     top: 1px;
 }
 
+.search-button{
+
+}
 .search-sm-button {
     border: 1px solid rgba(16, 23, 23, 0.23);
     font-size: 10px;
@@ -1249,7 +1255,11 @@ i.linkedin{
 	background:#3498db;
 }
 .cards {
-	padding: 1.5em 0;
+	padding: 1.5em 1.5em 0 1.5em
+}
+.cards-align{
+        align-items: center;
+    justify-content: center;
 }
 .copyright {
 	padding: 2em 0;

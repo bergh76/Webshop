@@ -52,6 +52,7 @@ namespace Webshop.Models
         [Required(ErrorMessage = "ErrorProductdata")]
         public string ArticleFeaturesFour { get; set; }
 
-        public bool ISDefault { get; set; }
+        //public Guid ArticleGuid { get; set; }
+        public bool ISTranslated { get; set; }
     }
 }

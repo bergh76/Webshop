@@ -38,13 +38,17 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public IActionResult Index(string vendor, string category, string product, string subcategory)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
+        public IActionResult _SearchArticles()
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryName", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductName", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryName", "SubCategoryName");
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorName", "VendorName");
+            return View();
 
+        }
+        public IActionResult Index(string vendor, string category, string product, string subcategory)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
+        {
 
             var artList = from p in _context.Articles
                           //where p.ISCampaign == true
@@ -58,11 +62,10 @@ namespace Webshop.Controllers
 
                           select new ArticlesViewModel
                           {
+                              ArticleID = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
                               ArticlePrice = p.ArticlePrice,
                               ArticleStock = p.ArticleStock,
-                              //ISActive = p.ISActive,
-                              //ISCampaign = p.ISCampaign,
                               ArticleName = pt.ArticleName,
                               ArticleShortText = pt.ArticleShortText,
                               ArticleFeaturesOne = pt.ArticleFeaturesOne,
