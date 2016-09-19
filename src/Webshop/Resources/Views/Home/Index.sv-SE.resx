@@ -124,7 +124,7 @@
     <value>Ord. pris</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>st i lager</value>
+    <value>st</value>
   </data>
   <data name="TopProducts" xml:space="preserve">
     <value>Toppsäljande Produkter</value>

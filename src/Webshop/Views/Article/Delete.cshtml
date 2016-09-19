@@ -1,4 +1,4 @@
-@model Webshop.Models.Articles
+﻿@model Webshop.ViewModels.ArticlesViewModel
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -9,7 +9,10 @@
 
 <section class="container">
     <div class="col-xs-12 padding-x-off">
-        <div class="productItemDetailBox hover-show-trigger">
+        <div class="jumbotron delete-border alert-danger">
+            <h2 class="alert-danger"><i class="fa fa-warning fa-1x"></i> Du håller på att ta bort följade artikel.</h2>
+        </div>
+        <div class="productItemDetailBox delete-border alert-danger hover-show-trigger">
             <div class="col-xs-4 pull-right">
                 <div class="priceInfo super">
                     <span class="priceHeader">
@@ -41,7 +44,7 @@
                     <li>@Html.DisplayFor(model => model.ArticleFeaturesFour)</li>
                 </ul>
                 <div class="btn-group">
-                    <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omg�ende"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => model.ArticleStock) @Localizer["InStock"]</span></span>
+                    <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => model.ArticleStock) @Localizer["InStock"]</span></span>
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@ namespace Webshop.ViewModels
     public class ArticlesViewModel
     {
 
-        public int ArticleID { get; set; }
+        public int ArticleId { get; set; }
 
         [Display(Name = "ArticleName", ResourceType = typeof(Resources.ArticlesViewModel))]
         [DataType(DataType.Text)]
@@ -50,14 +50,15 @@ namespace Webshop.ViewModels
         [DataType(DataType.Currency)]
         [Range(0, 99999)]
         [Required(ErrorMessage = "ErrorArticlePrice")]
-        public decimal ArticlePrice { get; set; }
-        public string ArticleNumber { get; set;}
+        public decimal ArticlePrice { get; set; } //lang independent  
 
-        [Display(Name = "Stock", ResourceType = typeof(Resources.Articles))] //lang independent
+        public string ArticleNumber { get; set; } //lang independent  
+
+        [Display(Name = "Stock", ResourceType = typeof(Resources.Articles))] 
         [Required(ErrorMessage = "ErrorArticleStock")]
-        public int ArticleStock { get; set; }
+        public int ArticleStock { get; set; } //lang independent  
 
-        public Guid ArticleGuid { get; set; }
+
 
         public VendorModel _Vendor { get; set; }
         [Display(Name = "Brand", ResourceType = typeof(Resources.Articles))]
@@ -80,11 +81,14 @@ namespace Webshop.ViewModels
         [Required(ErrorMessage = "ErrorSubCategory")]
         public int SubCategoryID { get; set; } //lang independent
 
-        public ImageModel _Image { get; set; }
+        public ImageModel _Image { get; set; } //lang independent  
         //public int ImageID { get; set;}
-        public bool ISCampaign { get; set; }
-        public bool ISActive { get; set; }
-        public string ArticleImgPath { get; set; } //lang independent
-        //public string LangCode { get; set; }
+        public bool ISCampaign { get; set; } //lang independent  
+        public bool ISActive { get; set; } //lang independent  
+        public bool ISTranslated { get; set; }
+        public string ArticleImgPath { get; set; } //lang independent  
+        public Guid ArticleGuid { get; set; } //lang independent  
+        public int ImageId { get; set; }
+        public string LangCode { get; set; }
     }
 }

@@ -130,6 +130,6 @@
     <value>Edit</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>psc in stock</value>
+    <value>pcs</value>
   </data>
 </root>

@@ -41,10 +41,10 @@ namespace Webshop.Controllers
 
         public IActionResult Index(string vendor, string category, string product, string subcategory)
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryName", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductName", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryName", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorName", "VendorName");
+            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryName", "CategoryName");
+            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductName", "ProductName");
+            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryName", "SubCategoryName");
+            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorName", "VendorName");
 
 
             var artList = from p in _context.Articles
@@ -56,10 +56,10 @@ namespace Webshop.Controllers
                                            //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
                                            //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
                                            //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
-
+                                           where p.ISActive == true
                           select new ArticlesViewModel
                           {
-                              ArticleID = p.ArticleId,
+                              ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
                               ArticlePrice = p.ArticlePrice,
                               ArticleStock = p.ArticleStock,
@@ -82,22 +82,54 @@ namespace Webshop.Controllers
 
 
         // GET: Article/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
-            if (articleModel == null)
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          where p.ArticleId == id
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              CategoryID = p.CategoryId,
+                              VendorID = p.VendorId,
+                              ProductID = p.ProductId,
+                              SubCategoryID = p.SubCategoryId,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ImageId = i.ImageId,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleGuid = p.ArticleGuid,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
+                          };
+
+            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            if (vModel == null)
             {
                 return NotFound();
             }
-
-            //BreadCrumTracker bc = new BreadCrumTracker(_context, id);
-            //await bc.GetTracker();
-            return View(articleModel);
+            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            return View(vModel.SingleOrDefault());
         }
 
         // GET: Article/Create
@@ -116,7 +148,7 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
+        public async Task<IActionResult> Create([Bind("ArticleId,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
         {
             if (ModelState.IsValid)
             {
@@ -134,14 +166,48 @@ namespace Webshop.Controllers
         }
 
         // GET: Article/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
-            if (articleModel == null)
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                                           //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
+                                           //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
+                                           //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
+                          where p.ArticleId == id
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              CategoryID = p.CategoryId,
+                              VendorID = p.VendorId,
+                              ProductID = p.ProductId,
+                              SubCategoryID = p.SubCategoryId,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ImageId = i.ImageId,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleGuid = p.ArticleGuid,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
+                          };
+
+            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            if (vModel == null)
             {
                 return NotFound();
             }
@@ -149,7 +215,7 @@ namespace Webshop.Controllers
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            return View(articleModel);
+            return View(vModel.SingleOrDefault());
         }
 
 
@@ -158,7 +224,7 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticleID,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID,ArticleImgPath")]Articles article, EditArticleBusiness newArticle)
+        public async Task<IActionResult> Edit(int id, string ext, string newFilename, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, EditArticleBusiness newArticle)
         {
             if (id != article.ArticleId)
             {
@@ -169,8 +235,11 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                     newArticle.UpdateArticleData(article,_context);
+                    newArticle.UpdateArticleData(article, artTrans,_context,_hostEnvironment, id, ext, newFilename, file, form);
+                    //article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
+                    //artTrans = await _context.ArticleTranslations.SingleOrDefaultAsync(d => d.ArticleId == id);
                     _context.Update(article);
+                    _context.Update(artTrans);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -244,20 +313,53 @@ namespace Webshop.Controllers
         //    }
         //}
         // GET: Article/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          where p.ArticleId == id
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              CategoryID = p.CategoryId,
+                              VendorID = p.VendorId,
+                              ProductID = p.ProductId,
+                              SubCategoryID = p.SubCategoryId,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ImageId = i.ImageId,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleGuid = p.ArticleGuid,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
+                          };
 
-            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
-            if (articleModel == null)
+            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            if (vModel == null)
             {
                 return NotFound();
             }
-
-            return View(articleModel);
+            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            return View(vModel.SingleOrDefault());
         }
 
         // POST: Article/Delete/5
@@ -265,8 +367,10 @@ namespace Webshop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var articleModel = await _context.Articles.SingleOrDefaultAsync((System.Linq.Expressions.Expression<Func<Articles, bool>>)(m => m.ArticleId == id));
-            _context.Articles.Remove((Articles)articleModel);
+            var article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
+            var artTrans = await _context.ArticleTranslations.SingleOrDefaultAsync(d => d.ArticleId == id);
+            _context.ArticleTranslations.Remove(artTrans);
+            _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -552,7 +656,7 @@ namespace Webshop.Controllers
 
         private bool ArticleModelExists(int id)
         {
-            return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
+            return _context.Articles.Any(e => e.ArticleId == id);
         }
     }
 }

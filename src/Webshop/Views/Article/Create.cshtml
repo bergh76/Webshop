@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <label asp-for="ArticleShortText" class="col-md-10 control-label"></label>
-                                    <input asp-for="ArticleShortText" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleShortText) />
+                                    <textarea asp-for="ArticleShortText" translate="yes" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleShortText)> </textarea>
                                     <span asp-validation-for="ArticleShortText" class="text-danger" />
                                 </div>
                             </div>

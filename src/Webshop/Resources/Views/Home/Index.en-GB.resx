@@ -124,7 +124,7 @@
     <value>Ord. price</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>pcs in stock</value>
+    <value>pcs</value>
   </data>
   <data name="TopProducts" xml:space="preserve">
     <value>Top selling products</value>
