@@ -143,7 +143,9 @@
                                 <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green">@Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Stock"]</span></span>
 
 
-                            </div><button type="submit" class="btn submit-sm-button btn-buy">
+                            </div>
+                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId">Add to cart</a>
+                            <button type="submit" class="btn submit-sm-button btn-buy">
                                 <span><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</span>
                             </button>
                         </div>

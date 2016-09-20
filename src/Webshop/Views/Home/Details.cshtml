@@ -15,6 +15,7 @@
         </div>
         <div class="col-xs-12 padding-x-off">
             <div class="productItemDetailBox hover-show-trigger">
+
                 <div class="col-xs-4 pull-right">
                     <div class="priceInfo super">
                         <span class="priceHeader">
@@ -38,6 +39,7 @@
                     <div>
                         <h3 class="margin-x-md">@Html.DisplayFor(model => Model.ArticleName)</h3>
                     </div>
+
                     <span class="description">@Html.DisplayFor(model => Model.ArticleShortText)</span>
                     <ul class="list-group shortSpec">
                         <li>@Html.DisplayFor(model => Model.ArticleNumber)</li>
@@ -50,6 +52,7 @@
                         <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => Model.ArticleStock) @Localizer["In Stock"]</span></span>
                     </div>
                 </div>
+
                 <div style="height: 30px;">
                     <div class="action-row">
                     </div>

@@ -15,99 +15,100 @@
         </div>
     </section>*@
 <section class="container">
+
     <div class="col-xs-12 padding-x-off no-pad-table">
         <form method="get" asp-action="Detail" asp-controller="Article">
+            <div class="row">
+                <table class="table margin-y-off" border="0">
+                    <tbody>
 
-            <table class="table margin-y-off" border="0">
-                <tbody>
-
-                    @{  var count = Model.Count();
-                        if (count == 0)
-                        {
-                            <tr>
-                                <td>
-                                    <div class="image-container text-center bg-white"> <img src="~/images/no-record-found.png" /></div>@*<h3 id="fof">@ViewBag.NoHit</h3>*@
-                                </td>
-                            </tr>
-                        }
-                        else
-                        {
-                            @foreach (var item in Model)
+                        @{  var count = Model.Count();
+                            if (count == 0)
                             {
-                                @*@Html.HiddenFor(modelItem => item.ArticleAddDate)*@
-                                @Html.HiddenFor(modelItem => item.ArticleGuid)
                                 <tr>
                                     <td>
-                                        <div class="productItemDetailBox">
-                                            <div class="priceInfo super">
-                                                <span class="price animated">@Html.DisplayFor(modelItem => item.ArticlePrice)</span>
-                                                <span class="small right"></span>
-                                            </div>
-                                            <div class="image-container">
-                                                <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" /></a>
-                                            </div>
-                                            <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId">
-                                                <div class="content-block">
-                                                    <div class="text-vendor">
-                                                        <h2>@Html.DisplayFor(modelItem => item.ArticleName)</h2>
-                                                        <div class="review">
-                                                            <span class="review-rating">
-                                                                <script language="javascript">
-                                                                    function scrollToReviews(activeTab) {
-                                                                        if (activeTab != null && activeTab != '') {
-                                                                            $('.nav-tabs a[href="#' + activeTab + '"]').tab('show');
-                                                                        }
-                                                                        $('html, body').animate({ scrollTop: $('#alaTestContainer').offset().top }, 1000);
-                                                                    }
-                                                                </script>
-                                                                <div class="review-summary">
-                                                                    <a href="javascript:;" title="4.1 av 5" onclick="return false; ">
-                                                                        <span class="fa fa-star"></span>
-                                                                        <span class="fa fa-star"></span>
-                                                                        <span class="fa fa-star"></span>
-                                                                        <span class="fa fa-star"></span>
-                                                                        <span class="fa fa-star-o"></span>
-                                                                    </a>
-                                                                </div>
-                                                            </span>
-                                                        </div>
-                                                        <div class="text-container">
-                                                            <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesOne)</p>
-                                                            <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesTwo)</p>
-                                                            <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesThree)</p>
-                                                            <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesFour)</p>
-                                                        </div>
-
-                                                        @*<div class="product-artnr small">
-                                                                Art. nr: <span>@Html.DisplayFor(modelItem => item.ArticleNumber)</span>
-                                                            </div>*@
-                                                    </div>
-                                                    <div class="box-bottom ">
-                                                        <div class="stockstatus">
-                                                            @*<i class="fa-colored-check-square-green"></i>*@
-                                                            <span class="fa fa-check-square-o lime-green icon-padding-right"><span class="small text-muted">  + @Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Stock"]</span></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <div class="priceInfo">
-                                            <span class="small ">
-                                                <a asp-action="Delete" asp-controller="Article" class="btn btn-danger pull-left" asp-route-id="@item.ArticleId">@Localizer["Delete"]</a>
-                                                <a asp-action="Edit" asp-controller="Article" class="btn btn-warning pull-right" asp-route-id="@item.ArticleId">@Localizer["Edit"]</a>
-                                                <a asp-action="Details" asp-controller="Article" class="btn btn-info pull-right" asp-route-id="@item.ArticleId">@Localizer["Details"]</a>
-                                            </span>
-                                        </div>
+                                        <div class="image-container text-center bg-white"> <img src="~/images/no-record-found.png" /></div>@*<h3 id="fof">@ViewBag.NoHit</h3>*@
                                     </td>
                                 </tr>
                             }
+                            else
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    @Html.HiddenFor(modelItem => item.ArticleGuid)
+                                    <tr>
+                                        <td>
+                                            <div class="productItemDetailBox">
+                                                <div class="priceInfo super">
+                                                    <span class="price animated">@Html.DisplayFor(modelItem => item.ArticlePrice)</span>
+                                                    <span class="small right"></span>
+                                                </div>
+                                                <div class="image-container">
+                                                    <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" /></a>
+                                                </div>
+                                                <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId">
+                                                    <div class="content-block">
+                                                        <div class="text-vendor">
+                                                            <h2>@Html.DisplayFor(modelItem => item.ArticleName)</h2>
+                                                            <div class="review">
+                                                                <span class="review-rating">
+                                                                    <script language="javascript">
+                                                                        function scrollToReviews(activeTab) {
+                                                                            if (activeTab != null && activeTab != '') {
+                                                                                $('.nav-tabs a[href="#' + activeTab + '"]').tab('show');
+                                                                            }
+                                                                            $('html, body').animate({ scrollTop: $('#alaTestContainer').offset().top }, 1000);
+                                                                        }
+                                                                    </script>
+                                                                    <div class="review-summary">
+                                                                        <a href="javascript:;" title="4.1 av 5" onclick="return false; ">
+                                                                            <span class="fa fa-star"></span>
+                                                                            <span class="fa fa-star"></span>
+                                                                            <span class="fa fa-star"></span>
+                                                                            <span class="fa fa-star"></span>
+                                                                            <span class="fa fa-star-o"></span>
+                                                                        </a>
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="text-container">
+                                                                <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesOne)</p>
+                                                                <p class="info-text"> <i class="fa fa-bookmark-o orange"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesTwo)</p>
+                                                                <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesThree)</p>
+                                                                <p class="info-text"> <i class="fa fa-bookmark-o lime-green"></i> @Html.DisplayFor(modelItem => item.ArticleFeaturesFour)</p>
+                                                            </div>
+
+                                                            @*<div class="product-artnr small">
+                                                                    Art. nr: <span>@Html.DisplayFor(modelItem => item.ArticleNumber)</span>
+                                                                </div>*@
+                                                        </div>
+                                                        <div class="box-bottom ">
+                                                            <div class="stockstatus">
+                                                                @*<i class="fa-colored-check-square-green"></i>*@
+                                                                <span class="fa fa-check-square-o lime-green icon-padding-right"><span class="small text-muted">  + @Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Stock"]</span></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="priceInfo">
+                                                <span class="small ">
+                                                    <a asp-action="Delete" asp-controller="Article" class="btn btn-danger pull-left" asp-route-id="@item.ArticleId">@Localizer["Delete"]</a>
+                                                    <a asp-action="Edit" asp-controller="Article" class="btn btn-warning pull-right" asp-route-id="@item.ArticleId">@Localizer["Edit"]</a>
+                                                    <a asp-action="Details" asp-controller="Article" class="btn btn-info pull-right" asp-route-id="@item.ArticleId">@Localizer["Details"]</a>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
                         }
 
-                    }
 
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </form>
     </div>
     @{  var count2 = Model.Count();

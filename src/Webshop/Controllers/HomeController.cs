@@ -4,13 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Webshop.Interfaces;
 using Webshop.Models;
+using Webshop.Models.BusinessLayers;
 using Webshop.ViewModels;
 
 namespace Webshop.Controllers
@@ -19,11 +22,13 @@ namespace Webshop.Controllers
     {
         private WebShopRepository _context;
         private readonly IStringLocalizer<HomeController> _localizer;
-        public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer)
+        private readonly ILogger<ShoppingCartController> _logger;
+
+        public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<ShoppingCartController> logger)
         {
             _context = context;
             _localizer = localizer;
-            //_datetime = datetime;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -189,7 +194,74 @@ namespace Webshop.Controllers
             return View();
         }
 
+        public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
+        {
+            // Retrieve the album from the database
+            var addedArticle = await _context.Articles
+                .SingleAsync(article => article.ArticleId == id);
 
+            // Add it to the shopping cart
+            var cart = ShoppingCart.GetCart(_context, HttpContext);
+
+            await cart.AddToCart(addedArticle);
+
+            await _context.SaveChangesAsync(requestAborted);
+            _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);
+
+            // Go back to the main store page for more shopping
+            return RedirectToAction("Index");
+        }
+
+        //
+        // AJAX: /ShoppingCart/RemoveFromCart/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFromCart(
+            int id,
+            CancellationToken requestAborted)
+        {
+            // Retrieve the current user's shopping cart
+            var cart = ShoppingCart.GetCart(_context, HttpContext);
+
+            // Get the name of the album to display confirmation
+            var cartItem = await _context.CartItems
+                .Where(item => item.CartItemId == id)
+                .Include(c => c.ArticleId)
+                .SingleOrDefaultAsync();
+
+            string message;
+            int itemCount;
+            if (cartItem != null)
+            {
+                // Remove from cart
+                itemCount = cart.RemoveFromCart(id);
+
+                await _context.SaveChangesAsync(requestAborted);
+
+                string removed = (itemCount > 0) ? " 1 copy of " : string.Empty;
+                message = removed + cartItem.ArticleTranslation.ArticleName + " has been removed from your shopping cart.";
+            }
+            else
+            {
+                itemCount = 0;
+                message = "Could not find this item, nothing has been removed from your shopping cart.";
+            }
+
+            // Display the confirmation message
+
+            var results = new ShoppingCartRemoveViewModel
+            {
+                Message = message,
+                CartTotal = await cart.GetTotal(),
+                CartCount = await cart.GetCount(),
+                ItemCount = itemCount,
+                DeleteId = id
+            };
+
+            _logger.LogInformation("Album {id} was removed from a cart.", id);
+
+            return Json(results);
+        }
         //private bool ArticleModelExists(int id)
         //{
         //    return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
