@@ -81,8 +81,6 @@
                             <li><span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-cogs icon-padding-right"></span>@Localizer["Kontoinställningar"]</button></li>
                             <li>
                                 <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                                    @*<a asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm"><span class="fa fa-sign-in icon-padding-right"></span>Logga Ut</a>*@
-                                    @*<span><i class="fa fa-sign-out icon-padding-right"></i>@await ActionLink("Logga Ut", "LogOff", "Account")</span>*@
                                     <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-sign-out icon-padding-right" type="submit" id="logoutForm"></span>@Localizer["Logga Ut"]</button>
                                 </form>
                             </li>
@@ -96,17 +94,21 @@
                 <div id="miniCart">
                     <ul class="nav-white navbar-nav pull-right" id="ko-miniCartContainer">
                         <li class="dropdown pull-right cart" data-bind="dropdown: TotalQuantity()">
-                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart" data-bind="click: loadCartItems">
-                                <label class="hidden-xs hidden-sm" >@Localizer["Kundvagnen är tom"]</label>
-                                <label class="cartValue">@Localizer["Summa"]</label>
-                                <span class="lowerText" data-bind="text: ShowPricesInclOrExclVat">@Localizer["Inkl. moms"]</span>
+                            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart">
+                                @if(ViewBag.Sum == 0)
+                                {
+                                    <label class="hidden-xs hidden-sm">@Localizer["Kundvagnen är tom"]</label>
+                                }
+                                else
+                                {
+                                    <label class="cartValue">@Localizer["Summa"]</label><span class="lowerText">@ViewBag.Sum @Localizer["Inkl. moms"]</span>
+                                }
                             </a>
                             <ul class="dropdown-menu keep-open">
                                 <li data-bind="css: inProgressClass" class="hide"></li>
-                                <li class="productList-small container" data-bind="template: { name: 'miniCartItem-template', foreach: Items }"></li>
+                                <li class="productList-small container"></li>
                                 <li class="col-xs-12 text-center padding-x-off">
-                                    <a class="btn btn-block btn-branded toCheckout" href="/shoppingcart">
-                                    </a>
+                                    @await Component.InvokeAsync("CartSummary")
                                 </li>
                             </ul>
                         </li>

@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,6 +16,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Webshop.Interfaces;
+
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
 using Webshop.ViewModels;
@@ -23,12 +28,14 @@ namespace Webshop.Controllers
         private WebShopRepository _context;
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly ILogger<ShoppingCartController> _logger;
+        private readonly AppSettings _appSettings;
 
         public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<ShoppingCartController> logger)
         {
             _context = context;
             _localizer = localizer;
             _logger = logger;
+            //_appSettings = options.Value;
         }
 
         [HttpPost]
@@ -175,7 +182,6 @@ namespace Webshop.Controllers
             return View(vModel.SingleOrDefault());
         }
 
-
         public IActionResult Contact([FromServices]IDateTime _datetime)
         {
             ContactViewModel vmodel = new ContactViewModel();
@@ -194,16 +200,34 @@ namespace Webshop.Controllers
             return View();
         }
 
+        // GET: /ShoppingCart/
+        public async Task<IActionResult> CartIndex()
+        {
+            var cart = ShoppingCart.GetCart(_context, HttpContext); // gets all items from context.CartItems
+
+            // Set up our ViewModel
+            var viewModel = new ShoppingCartViewModel
+            {
+                CartItems = await cart.GetCartItems(),
+                CartTotal = await cart.GetTotal()
+            };
+
+            // Return the view
+            return View("ShoppingCart", viewModel);
+        }
         public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
         {
             // Retrieve the album from the database
             var addedArticle = await _context.Articles
                 .SingleAsync(article => article.ArticleId == id);
 
+            var addedArticleName = await _context.ArticleTranslations
+               .SingleAsync(artT => artT.ArticleId == id);
+
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
 
-            await cart.AddToCart(addedArticle);
+            await cart.AddToCart(addedArticle, addedArticleName);
 
             await _context.SaveChangesAsync(requestAborted);
             _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);
@@ -235,9 +259,7 @@ namespace Webshop.Controllers
             {
                 // Remove from cart
                 itemCount = cart.RemoveFromCart(id);
-
                 await _context.SaveChangesAsync(requestAborted);
-
                 string removed = (itemCount > 0) ? " 1 copy of " : string.Empty;
                 message = removed + cartItem.ArticleTranslation.ArticleName + " has been removed from your shopping cart.";
             }
@@ -266,5 +288,28 @@ namespace Webshop.Controllers
         //{
         //    return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
         //}
+        public async Task<IActionResult> CartDetails(
+            [FromServices] IMemoryCache cache,
+            int id)
+        {
+            var cacheKey = string.Format("album_{0}", id);
+            //Articles article;
+            ArticleTranslation artT;
+            if (!cache.TryGetValue(cacheKey, out artT))
+            {
+                artT = await _context.ArticleTranslations                                        
+                                .Where(a => a.ArticleId == id)
+                                .Include(a => a.ArticleName)
+                                .FirstOrDefaultAsync();
+
+            }
+
+            if (artT == null)
+            {
+                return NotFound();
+            }
+
+            return View(artT);
+        }
     }
 }

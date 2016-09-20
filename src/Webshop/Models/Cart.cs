@@ -13,12 +13,14 @@ namespace Webshop.Models
 
         [Required]
         public string CartId { get; set; }
-        public int ArticleId { get; set; }
+        public int ArticleId { get; set; }     
+        public string ArticleName { get; set; }   
+        //public string ArticleName { get; set; }
         public int Count { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; }
-
+         public bool ISCheckedOut { get; set; }
         public virtual Articles Article { get; set; }
         public virtual ArticleTranslation ArticleTranslation { get; set; }
     }

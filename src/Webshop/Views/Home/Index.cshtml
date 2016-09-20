@@ -144,10 +144,10 @@
 
 
                             </div>
-                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId">Add to cart</a>
-                            <button type="submit" class="btn submit-sm-button btn-buy">
-                                <span><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</span>
-                            </button>
+                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
+                            @*<button type="submit" class="btn submit-sm-button btn-buy">
+                                @*<span><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</span>
+                            </button>*@
                         </div>
                     </div>
                 }

@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20160920131943_ShoppingCart2")]
+    partial class ShoppingCart2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -113,8 +114,6 @@ namespace Webshop.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ArticleId");
-
-                    b.Property<string>("ArticleName");
 
                     b.Property<int?>("ArticleTranslationArticleId");
 

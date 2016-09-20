@@ -44,7 +44,7 @@ namespace Webshop.Controllers
         //
         // GET: /ShoppingCart/AddToCart/5
 
-        public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
+        public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted, ArticleTranslation artT)
         {
             // Retrieve the album from the database
             var addedArticle = await _context.Articles
@@ -53,7 +53,7 @@ namespace Webshop.Controllers
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
 
-            await cart.AddToCart(addedArticle);
+            await cart.AddToCart(addedArticle, artT);
 
             await _context.SaveChangesAsync(requestAborted);
             _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);

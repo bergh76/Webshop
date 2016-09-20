@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using Webshop.Controllers;
 using Webshop.Interfaces;
 using Webshop.Models;
 
@@ -31,9 +32,12 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddLocalization(option => option.ResourcesPath = "Resources");
             var connection = @"Server=(localdb)\mssqllocaldb;Database=Webshop;Trusted_Connection=True;";
             services.AddDbContext<WebShopRepository>(options => options.UseSqlServer(connection));
+            // Add session related services.
+            services.AddSession();
 
             // Add framework services.
             services.AddSingleton<IDateTime, SystemDateTime>();
@@ -82,6 +86,8 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Configure Session.
+            app.UseSession();
             var supportedCultures = new[]
             {
                 new CultureInfo("sv-SE"),

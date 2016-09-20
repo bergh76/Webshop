@@ -1,11 +1,60 @@
 ﻿@if (ViewBag.CartCount > 0)
 {
-    <li>
-        <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" title="@ViewBag.CartSummary">
-            <span class="glyphicon glyphicon-shopping-cart"></span>
-            <span id="cart-status">
-                @ViewBag.CartCount
-            </span>
-        </a>
-    </li>
+    <a asp-area="" asp-controller="Home" asp-action="CartIndex" title="@ViewBag.CartSummary">
+
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> ID </th>
+                        <th> Antal </th>
+                        <th> Artikel </th>
+                        <th> Pris </th>
+                        <th> Radsumma </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.List)
+                {
+                        <tr class="left">
+                            <td>
+                                @item
+                            </td>
+                            <td>
+                                @ViewBag.CartCount
+                            </td>
+                            <td>
+                                @item
+                            </td>
+                            <td>
+                                @item
+                            </td>
+                            <td>
+                                @item
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="pull-right">
+                <p>Sa: </p>
+                <p>Moms: </p>
+                <p>Total:@ViewBag.Sum</p>
+            </div>
+        </div>
+    </a>
 }
+
+        @*<li>
+                <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" title="@ViewBag.CartSummary">
+                    <div id="cart-status">
+                        @foreach (var item in ViewBag.List)
+                        {
+                            <div><span class="fa fa-check-square"><h4>@item</h4></span></div>
+                        }
+                        @ViewBag.CartCount
+                    </div>
+                </a>
+            </li>*@
+

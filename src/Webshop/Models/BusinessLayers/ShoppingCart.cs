@@ -13,9 +13,9 @@ namespace Webshop.Models.BusinessLayers
         private readonly WebShopRepository _context;
         private readonly string _shoppingCartId;
 
-        private ShoppingCart(WebShopRepository context, string id)
+        private ShoppingCart(WebShopRepository db, string id)
         {
-            _context = context;
+            _context = db;
             _shoppingCartId = id;
         }
 
@@ -25,12 +25,14 @@ namespace Webshop.Models.BusinessLayers
         public static ShoppingCart GetCart(WebShopRepository db, string cartId)
             => new ShoppingCart(db, cartId);
 
-        public async Task AddToCart(Articles article)
+        public async Task AddToCart(Articles article, ArticleTranslation artT)
         {
             // Get the matching cart and album instances
             var cartItem = await _context.CartItems.SingleOrDefaultAsync(
                 c => c.CartId == _shoppingCartId
                 && c.ArticleId == article.ArticleId);
+                //&& c.ArticleId == artT.ArticleId);
+
 
             if (cartItem == null)
             {
@@ -38,6 +40,7 @@ namespace Webshop.Models.BusinessLayers
                 cartItem = new CartItem
                 {
                     ArticleId = article.ArticleId,
+                    ArticleName = artT.ArticleName,
                     CartId = _shoppingCartId,
                     Count = 1,
                     DateCreated = DateTime.Now
@@ -93,6 +96,7 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Where(cart => cart.CartId == _shoppingCartId)
                 .Include(c => c.Article)
+                //.Include(c => c.ArticleTranslation)
                 .ToListAsync();
         }
 
@@ -101,7 +105,7 @@ namespace Webshop.Models.BusinessLayers
             return _context
                 .CartItems
                 .Where(cart => cart.CartId == _shoppingCartId)
-                .Select(c => c.ArticleTranslation.ArticleName)
+                .Select(c => c.ArticleName)
                 .OrderBy(n => n)
                 .ToListAsync();
         }
@@ -133,7 +137,6 @@ namespace Webshop.Models.BusinessLayers
         public async Task<int> CreateOrder(Order order)
         {
             decimal orderTotal = 0;
-
             var cartItems = await GetCartItems();
 
             // Iterate over the items in the cart, adding the order details for each
@@ -170,7 +173,7 @@ namespace Webshop.Models.BusinessLayers
         private static string GetCartId(HttpContext context)
         {
             var cartId = context.Session.GetString("Session");
-
+            //var isCheckout = context.Session.IsAvailable;
             if (cartId == null)
             {
                 //A GUID to hold the cartId. 
@@ -179,7 +182,6 @@ namespace Webshop.Models.BusinessLayers
                 // Send cart Id as a cookie to the client.
                 context.Session.SetString("Session", cartId);
             }
-
             return cartId;
         }
     }
