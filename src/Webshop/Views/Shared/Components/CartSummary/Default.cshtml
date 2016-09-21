@@ -50,7 +50,7 @@
     }
 @if (ViewBag.CartCount > 0)
 {
-        <div>
+        <div class="col-md-12">
             <table class="table">
                 <thead>
                     <tr>
@@ -85,8 +85,8 @@
                                 @sum
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
-                                    <i class="fa fa-remove small"></i>
+                                <button class="RemoveLink btn btn-xs btn-danger" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
+                                    <i class="fa fa-remove "></i>
                                 </button>
                             </td>
                         </tr>
@@ -97,14 +97,16 @@
             <div class="col-md-12">
                 <div class="col-md-10"></div>
                 <div class="col-md-2 pull-left">
-                    <p>Sa: </p>
-                    <p>Moms: </p>
+                    @*<p>Sa: </p>
+                    <p>Moms: </p>*@
                     <p>Totalt: @ViewBag.Sum
                     </p>
                 </div>
             </div>
+            <div class="md-col-12">
+                <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-info pull-right">Till Kassan</a>
+            </div>
         </div>
-        <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-info pull-right">Till Kassan</a>
 
 
 }

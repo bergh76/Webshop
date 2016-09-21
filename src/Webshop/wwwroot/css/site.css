@@ -713,7 +713,7 @@ fieldset[disabled] .navbar-blue .btn-link:focus {
     z-index: 1050 !important;
     display: none;
     float: left;
-    /*min-width: 210px;*/
+    min-width: 450px;
     padding: 5px 0;
     margin: 2px 0 0;
     font-size: 0.9em;
