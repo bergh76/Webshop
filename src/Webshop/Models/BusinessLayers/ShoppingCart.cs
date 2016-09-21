@@ -86,7 +86,6 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Where(cart => cart.CartId == _shoppingCartId)
                 .ToArrayAsync();
-
             _context.CartItems.RemoveRange(cartItems);
         }
 
@@ -96,7 +95,6 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Where(cart => cart.CartId == _shoppingCartId)
                 .Include(c => c.Article)
-                //.Include(c => c.ArticleTranslation)
                 .ToListAsync();
         }
 

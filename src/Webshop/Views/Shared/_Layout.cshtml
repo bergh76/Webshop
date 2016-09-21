@@ -107,7 +107,7 @@
                             <ul class="dropdown-menu keep-open">
                                 <li data-bind="css: inProgressClass" class="hide"></li>
                                 <li class="productList-small container"></li>
-                                <li class="col-xs-12 text-center padding-x-off">
+                                <li class="col-xs-12 padding-x-off">
                                     @await Component.InvokeAsync("CartSummary")
                                 </li>
                             </ul>
@@ -115,7 +115,7 @@
                     </ul>
                 </div>
                 <!-- SHOPINGCART-->
-                <script type="text/html" id="miniCartItem-template">
+                @*<script type="text/html" id="miniCartItem-template">
                     <div class="itemRow row">
                         <div class="col-xs-2">
                             <a data-bind="visible: !RemoveOnly(), attr: { href: Product.ProductUrl, title: Product.DisplayName }">
@@ -129,7 +129,7 @@
                             </a>
                             <div data-bind="visible: RemoveOnly"><span class="text-muted" data-bind="text: Product.Manufacturer"></span> <strong data-bind="text: Product.DisplayName"></strong> <span class="text-muted" data-bind="text: Product.Specification"></span></div>
                         </div>
-                        <div class="col-xs-2 text-center nowrap-simple">
+                        <div class="col-xs-2 nowrap-simple">
                             <!-- ko if: Product.AvailableForSale() && !RemoveOnly() -->
                             <a href="#" class="btn btn-xs" data-bind="click: $parent.removeOne, attr: { title: DisplayMinQuantity() }" data-quantity-modifier="true">&minus;</a>
                             <span data-bind="text: Quantity"></span>
@@ -146,9 +146,9 @@
                         <div class="col-xs-2"></div>
                         <div class="col-xs-10"><strong data-bind="text: Product.LifeCycleStateMessage"></strong></div>
                     </div>
-                </script>
+                </script>*@
 
-                <script type="text/html" id="miniCartAccessory-template">
+                @*<script type="text/html" id="miniCartAccessory-template">
                     <div class="col-xs-2"></div>
                     <div class="col-xs-6">
                         <a data-bind="attr: { href: ProductUrl, title: DisplayName }">
@@ -157,14 +157,8 @@
                     </div>
                     <div class="col-xs-2 text-center" data-bind="text: Quantity"></div>
                     <div class="col-xs-2 text-right" data-bind="text: RowPrice"></div>
-                </script>
+                </script>*@
 
-                <script type="text/javascript">
-                    $(function () {
-                        miniCartViewModel = new MiniCartViewModel({ "Id": 0, "Items": [], "TotalValue": "0 kr", "TotalQuantity": 0, "ShowPricesInclOrExclVat": "Inkl. moms" }, '/shoppingcart/setquantity', '/shoppingcart/remove', '/shoppingcart/getminicartmodel');
-                        ko.applyBindings(miniCartViewModel, document.getElementById("ko-miniCartContainer"));
-                    });
-                </script>
                 <!-- SHOPINGCART END-->
             </div>
         </div>
@@ -200,7 +194,7 @@
                 <div class="wrap">
                     <div class="contact-section">
                         <div class="col-md-4 different-products">
-                            <ul>
+                            @*<ul>
                                 <li class="first"> Shop </li> -
                                 <li><a href=""> Mobiles </a></li> |
                                 <li><a href=""> Laptops </a></li> |
@@ -208,7 +202,7 @@
                                 <li><a href=""> Clothing </a></li> |
                                 <li><a href=""> Footwear </a></li> |
                                 <li><a href=""> Jewellery </a></li>
-                            </ul>
+                            </ul>*@
                             <ul>
                                 <li class="first"> Help </li> -
                                 <li><a href=""> Faqs </a></li> |

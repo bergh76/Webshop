@@ -1,0 +1,68 @@
+﻿@model Webshop.ViewModels.ShoppingCartViewModel
+
+@if (ViewBag.CartCount > 0)
+{
+    @*<a asp-area="" asp-controller="Home" asp-action="CartIndex" title="@ViewBag.CartSummary">*@
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> ID </th>
+                    <th> Antal </th>
+                    <th> Artikel </th>
+                    <th> Pris </th>
+                    <th> Radsumma </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr class="left">
+                        <td>
+                            @item.ArticleId
+                        </td>
+                        <td>
+                            @item.ArticleTranslation.ArticleName
+                        </td>
+                        <td>
+                            @item.Article.ArticlePrice
+                        </td>
+                        <td id="item-count-@item.CartItemId">
+                            @item.Count
+                        </td>
+                        <td>
+                            @item
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                                <i class="fa fa-remove small"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-info pull-right">Till Kassan</a>
+
+        <div class="pull-right">
+            <p>Sa: </p>
+            <p>Moms: </p>
+            <p>Total:@ViewBag.Sum</p>
+        </div>
+    </div>
+
+}
+
+    @*<li>
+            <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" title="@ViewBag.CartSummary">
+                <div id="cart-status">
+                    @foreach (var item in ViewBag.List)
+                    {
+                        <div><span class="fa fa-check-square"><h4>@item</h4></span></div>
+                    }
+                    @ViewBag.CartCount
+                </div>
+            </a>
+        </li>*@
+

@@ -58,7 +58,7 @@
     <div class="container">
         <div id="update-message">
         </div>
-        <table id="cart-summary" class="table table-bordered table-responsive table-hover table-striped">
+        <table id="cart-summary" class="table table-responsive table-hover table-striped">
             <tr>
                 <th>
                     Artikelnamn
@@ -74,6 +74,8 @@
             @foreach (var item in Model.CartItems)
             {
                 <tr id="row-@item.CartItemId">
+                    @*<td><img class="img-responsive" src="~/@Html.UrlEncoder.Encode(item.Article..ArticleImgPath) />@item.Article.ImageId</td>
+                    *@
                     <td>
                         <a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
                     </td>
@@ -84,23 +86,21 @@
                         @item.Count
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                        <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
                             <i class="fa fa-remove small"></i>
                         </button>
                     </td>
                 </tr>
             }
             <tr>
-                <td>
-                    Total
-                </td>
                 <td></td>
                 <td></td>
-                <td id="cart-total">
-                    @Model.CartTotal
+                <td></td>
+                <td class="pull-right" id="cart-total">
+                    <h4>Total: @Model.CartTotal</h4>
                 </td>
             </tr>
         </table>
     </div>
-    <a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-info pull-right">Checkout</a>
+    <a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-success pull-right">Checkout</a>
 </section>

@@ -21,13 +21,18 @@ namespace Webshop.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            
             var cart = ShoppingCart.GetCart(_context, HttpContext);
 
             var cartItems = await cart.GetCartArticleTitles();
 
+            var listItems = await cart.GetCartItems();
+
             ViewBag.CartCount = cartItems.Count;
             ViewBag.CartSummary = string.Join("\n", cartItems.Distinct());
-            ViewBag.List = cartItems.ToList();
+            ViewBag.List = listItems.ToList();
+            var artCount = await cart.GetCount();
+            ViewBag.ArtCount = artCount;
             var sum = await cart.GetTotal();
             ViewBag.Sum = sum.ToString();
             return View();
