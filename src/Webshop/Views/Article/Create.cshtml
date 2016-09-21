@@ -14,7 +14,7 @@
             </div>
         </div>*@
         <form asp-action="NewArticle" enctype="multipart/form-data">
-            <div class="col-xs-12 padding-x-off content-box">
+            <div class="col-xs-12 padding-x-off pad-top content-box">
                 <div class="col-xs-12">
                     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
                     <div class="col-md-4 pull-left">
@@ -158,14 +158,13 @@
                 </div>
                     <div style="height: 30px;">
                         <div class="action-row">
-                            <div class="form-actions no-color">
-                                <a class="btn btn-success" onclick="history.go(-1);"><span class="modal-pointer">@Localizer["Back"]</span></a>
-                                <input type="submit" value=@Localizer["Save"] class="btn btn-danger pull-right" />
+                            <div>                                
+                                <input type="button" value="@Localizer["Back"]" class="btn btn-sm btn-success margin-bottom pull-right" onclick="history.go(-1);" />
+                                <input type="submit" value=@Localizer["Save"] class="btn btn-sm btn-danger margin-bottom pull-right" />
                             </div>
                         </div>
                     </div>
                 </div>
-
         </form>
 
 

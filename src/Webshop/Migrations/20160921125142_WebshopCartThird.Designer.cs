@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20160921125142_WebshopCartThird")]
+    partial class WebshopCartThird
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -98,7 +99,7 @@ namespace Webshop.Migrations
 
                     b.Property<string>("ArticleShortText")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 80);
+                        .HasAnnotation("MaxLength", 40);
 
                     b.Property<bool>("ISTranslated");
 

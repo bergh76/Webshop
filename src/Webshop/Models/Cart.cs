@@ -15,7 +15,7 @@ namespace Webshop.Models
         public string CartId { get; set; }
         public int ArticleId { get; set; }     
         public string ArticleName { get; set; }   
-        //public string ArticleName { get; set; }
+
         public int Count { get; set; }
 
         [DataType(DataType.DateTime)]

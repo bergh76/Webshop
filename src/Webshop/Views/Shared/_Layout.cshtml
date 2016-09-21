@@ -1,6 +1,54 @@
 ﻿@using Webshop
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions
+{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            // Document.ready -> link up remove event handler
+            $(".RemoveLink").click(function () {
+                // Get the id from the link
+                var recordToDelete = $(this).attr("data-id");
+                var PostToUrl = $(this).attr("data-url");
+                if (recordToDelete != '') {
+
+                    // Perform the ajax post
+                    $.ajax(PostToUrl, {
+                        type: "post",
+                        data: {
+                            "id": recordToDelete
+                        },
+                        dataType: "json",
+                        headers: {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        }
+                    }).done(function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.DeleteId).fadeOut('slow');
+                        } else {
+                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                        }
+
+                        $('#cart-total').text(data.CartTotal);
+                        $('#update-message').text(data.Message);
+                        $('#cart-status').text(data.CartCount);
+                    });
+                }
+            });
+
+        });
+    </script>
+}
 
 @inject IViewLocalizer Localizer
 @{
@@ -87,22 +135,13 @@
                             <li class="divider"></li>
                         </ul>
                     </li>
-                    <li >@await Html.PartialAsync("_SelectLanguagePartial")</li>
-
-
+                    <li>@await Html.PartialAsync("_SelectLanguagePartial")</li>
                 </ul>
-                <div id="miniCart">
-                    <ul class="nav-white navbar-nav pull-right" id="ko-miniCartContainer">
-                        <li class="dropdown pull-right cart" data-bind="dropdown: TotalQuantity()">
+                <div>
+                    <ul class="nav-white navbar-nav pull-right">
+                        <li class="dropdown pull-right cart">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart">
-                                @if(ViewBag.Sum == 0)
-                                {
-                                    <label class="hidden-xs hidden-sm">@Localizer["Kundvagnen är tom"]</label>
-                                }
-                                else
-                                {
-                                    <label class="cartValue">@Localizer["Summa"]</label><span class="lowerText">@ViewBag.Sum @Localizer["Inkl. moms"]</span>
-                                }
+                                <label class="cartValue">@Localizer["Summa"]</label><span class="lowerText">@ViewBag.Sum @Localizer["Inkl. moms"]</span>
                             </a>
                             <ul class="dropdown-menu keep-open">
                                 <li class="hide"></li>
@@ -114,52 +153,6 @@
                         </li>
                     </ul>
                 </div>
-                <!-- SHOPINGCART-->
-                @*<script type="text/html" id="miniCartItem-template">
-                    <div class="itemRow row">
-                        <div class="col-xs-2">
-                            <a data-bind="visible: !RemoveOnly(), attr: { href: Product.ProductUrl, title: Product.DisplayName }">
-                                <img data-bind="attr: { 'src': Product.SmallImageUrl, alt: Product.DisplayName }" alt="" />
-                            </a>
-                            <img data-bind="visible: RemoveOnly, attr: { 'src': Product.SmallImageUrl, alt: Product.DisplayName }" alt="" />
-                        </div>
-                        <div class="col-xs-6">
-                            <a data-bind="visible: !RemoveOnly(), attr: { href: Product.ProductUrl, title: Product.DisplayName }">
-                                <span class="text-muted" data-bind="text: Product.Manufacturer"></span> <strong data-bind="text: Product.DisplayName"></strong> <span class="text-muted" data-bind="text: Product.Specification"></span>
-                            </a>
-                            <div data-bind="visible: RemoveOnly"><span class="text-muted" data-bind="text: Product.Manufacturer"></span> <strong data-bind="text: Product.DisplayName"></strong> <span class="text-muted" data-bind="text: Product.Specification"></span></div>
-                        </div>
-                        <div class="col-xs-2 nowrap-simple">
-                            <!-- ko if: Product.AvailableForSale() && !RemoveOnly() -->
-                            <a href="#" class="btn btn-xs" data-bind="click: $parent.removeOne, attr: { title: DisplayMinQuantity() }" data-quantity-modifier="true">&minus;</a>
-                            <span data-bind="text: Quantity"></span>
-                            <a href="#" class="btn btn-xs" data-bind="click: $parent.addOne, attr: { title: DisplayMaxQuantity() }" data-quantity-modifier="true">+</a>
-                            <!-- /ko -->
-                            <!-- ko if: !Product.AvailableForSale() || RemoveOnly() -->
-                            <a href="#" class="btn btn-xs" data-bind="click: $parent.removeAll">Ta bort</a>
-                            <!-- /ko -->
-                        </div>
-                        <div class="col-xs-2 text-right nowrap" data-bind="text: RowPrice, highlight: RowPrice, css: { 'text-muted': !Product.AvailableForSale() }"></div>
-                    </div>
-                    <div class="hidden accessories row" data-bind="visible: Product.AvailableForSale() && Accessories().length > 0, css: { hidden: false }, template: { name: 'miniCartAccessory-template', foreach: Accessories }"></div>
-                    <div class="hidden accessories row" data-bind="visible: !Product.AvailableForSale(), css: { hidden: false }">
-                        <div class="col-xs-2"></div>
-                        <div class="col-xs-10"><strong data-bind="text: Product.LifeCycleStateMessage"></strong></div>
-                    </div>
-                </script>*@
-
-                @*<script type="text/html" id="miniCartAccessory-template">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-6">
-                        <a data-bind="attr: { href: ProductUrl, title: DisplayName }">
-                            <span class="text-muted" data-bind="text: Manufacturer"></span> <strong data-bind="text: DisplayName"></strong>
-                        </a>
-                    </div>
-                    <div class="col-xs-2 text-center" data-bind="text: Quantity"></div>
-                    <div class="col-xs-2 text-right" data-bind="text: RowPrice"></div>
-                </script>*@
-
-                <!-- SHOPINGCART END-->
             </div>
         </div>
     </section>

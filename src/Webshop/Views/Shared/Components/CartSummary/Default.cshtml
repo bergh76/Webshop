@@ -51,7 +51,7 @@
 @if (ViewBag.CartCount > 0)
 {
         <div class="col-md-12">
-            <table class="table">
+            <table class="table table-responsive table-hover table-striped">
                 <thead>
                     <tr>
                         @*<th> ID </th>*@
@@ -72,7 +72,7 @@
                                 @item.Count
                             </td>
                             <td>
-                                @item.ArticleName
+                               @item.ArticleName
                             </td>
                             <td>
                                 @item.Article.ArticlePrice
@@ -85,7 +85,7 @@
                                 @sum
                             </td>
                             <td>
-                                <button class="RemoveLink btn btn-xs btn-danger" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
+                                <button class="RemoveLink btn btn-sm btn-danger small" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
                                     <i class="fa fa-remove "></i>
                                 </button>
                             </td>
@@ -95,17 +95,18 @@
             </table>
 
             <div class="col-md-12">
-                <div class="col-md-10"></div>
-                <div class="col-md-2 pull-left">
+                <div class="col-md-9"></div>
+                <div class="col-md-3 pull-left">
                     @*<p>Sa: </p>
                     <p>Moms: </p>*@
                     <p>Totalt: @ViewBag.Sum
                     </p>
                 </div>
             </div>
-            <div class="md-col-12">
-                <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-info pull-right">Till Kassan</a>
+            <div class="col-md-12">
+                <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-sm btn-success pull-right">Till Kassan</a>
             </div>
+
         </div>
 
 

@@ -30,8 +30,8 @@ namespace Webshop.Models.BusinessLayers
             // Get the matching cart and album instances
             var cartItem = await _context.CartItems.SingleOrDefaultAsync(
                 c => c.CartId == _shoppingCartId
-                && c.ArticleId == article.ArticleId);
-                //&& c.ArticleId == artT.ArticleId);
+                && c.ArticleId == article.ArticleId
+                && c.ArticleId == artT.ArticleId);
 
 
             if (cartItem == null)
@@ -41,9 +41,10 @@ namespace Webshop.Models.BusinessLayers
                 {
                     ArticleId = article.ArticleId,
                     ArticleName = artT.ArticleName,
-                    CartId = _shoppingCartId,
+                    CartId = _shoppingCartId,                    
                     Count = 1,
                     DateCreated = DateTime.Now
+                    
                 };
 
                 _context.CartItems.Add(cartItem);
@@ -95,6 +96,7 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Where(cart => cart.CartId == _shoppingCartId)
                 .Include(c => c.Article)
+                .Include(C => C.ArticleTranslation)
                 .ToListAsync();
         }
 
@@ -146,6 +148,8 @@ namespace Webshop.Models.BusinessLayers
                 var orderDetail = new OrderDetail
                 {
                     ArticleId = item.ArticleId,
+                    //Article = item.ArticleName,
+
                     OrderId = order.OrderId,
                     UnitPrice = article.ArticlePrice,
                     Quantity = item.Count,

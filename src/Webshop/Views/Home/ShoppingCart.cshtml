@@ -49,58 +49,56 @@
         });
     </script>
 }
-<section class="container-white">
+<section class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 pad-top content-box">
             <h3>Aktuell kundkorg: @*@Localizer["TopProducts"]*@</h3>
-        </div>
-    </div>
-    <div class="container">
-        <div id="update-message">
-        </div>
-        <table id="cart-summary" class="table table-responsive table-hover table-striped">
-            <tr>
-                <th>
-                    Artikelnamn
-                </th>
-                <th>
-                    Pris(st)
-                </th>
-                <th>
-                    Antal
-                </th>
-                <th></th>
-            </tr>
-            @foreach (var item in Model.CartItems)
+            <div id="update-message">
+            </div>
+            <table id="cart-summary" class="table table-responsive table-hover table-striped">
+                <tr>
+                    <th>
+                        Artikelnamn
+                    </th>
+                    <th>
+                        Pris(st)
+                    </th>
+                    <th>
+                        Antal
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.CartItems)
             {
-                <tr id="row-@item.CartItemId">
-                    @*<td><img class="img-responsive" src="~/@Html.UrlEncoder.Encode(item.Article..ArticleImgPath) />@item.Article.ImageId</td>
-                    *@
-                    <td>
-                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
-                    </td>
-                    <td>
-                        @item.Article.ArticlePrice
-                    </td>
-                    <td id="item-count-@item.CartItemId">
-                        @item.Count
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
-                            <i class="fa fa-remove small"></i>
-                        </button>
+                    <tr id="row-@item.CartItemId">
+                        @*<td><img class="img-responsive" src="~/@Html.UrlEncoder.Encode(item.Article..ArticleImgPath) />@item.Article.ImageId</td>
+                        *@
+                        <td>
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
+                        </td>
+                        <td>
+                            @item.Article.ArticlePrice
+                        </td>
+                        <td id="item-count-@item.CartItemId">
+                            @item.Count
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                                <i class="fa fa-remove small"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="pull-right" id="cart-total">
+                        <h4>Total: @Model.CartTotal</h4>
                     </td>
                 </tr>
-            }
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="pull-right" id="cart-total">
-                    <h4>Total: @Model.CartTotal</h4>
-                </td>
-            </tr>
-        </table>
+            </table>
+            <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">Checkout</a><p>&nbsp;</p></div>
+        </div>
     </div>
-    <a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-success pull-right">Checkout</a>
 </section>
