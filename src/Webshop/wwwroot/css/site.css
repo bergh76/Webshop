@@ -1434,3 +1434,10 @@ i.linkedin{
 	padding:7px 5px 7px 38px; 
 }
 
+.placeholder{color: grey;}
+select option:first-child{
+    color: rgba(16, 23, 23, 0.23); 
+    display: none;
+
+}
+select option{color: #555;} /*bootstrap default color*/

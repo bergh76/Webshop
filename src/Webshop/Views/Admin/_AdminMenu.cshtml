@@ -1,0 +1,64 @@
+﻿@*@using Microsoft.AspNetCore.Identity*@
+@using Webshop.Models
+@model IEnumerable<Webshop.Models.Articles>
+
+@*@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager*@
+     <!--await Html.PartialAsync("_LoginPartial")-->
+    <div class="nav-white navbar-fixed-top end-border">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Superprodukter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav-white navbar-nav">
+                <li class="active">
+                    <a href="#">Productum Ipsum</a>
+                </li>
+                <li class="">
+                    <a href="">Lorem Kundsum</a>
+                </li>
+                @*@if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/login">
+                            <span>Du är inloggad som:</span>
+                            <i class="fa fa-user"></i><span> @UserManager.GetUserName(User)!</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="NewArticle"><span class="fa fa-plus-circle lime-green icon-padding-right"></span>Lägg till Artikel</a>
+                            </li>
+            
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="NewVendor"><span class="fa fa-minus-circle red icon-padding-right"></span>Lägg Till Tillverkare</a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="NewCategory"><span class="fa fa-minus-circle red icon-padding-right"></span>Lägg Till Kategori</a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="NewProduct"><span class="fa fa-minus-circle red icon-padding-right"></span>Lägg Till Produkttyp</a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="NewSubCategory"><span class="fa fa-minus-circle red icon-padding-right"></span>Lägg Till Produkt</a>
+                            </li>
+                            @*<li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Delete"><span class="fa fa-minus-circle red icon-padding-right"></span>Ta bort artikel</a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Edit"><span class="fa fa-edit orange icon-padding-right"></span>Editera artikel</a>
+                            </li>*@
+                        </ul>
+                    </li>
+                }*@
+            </ul>
+        </div>
+    </div>
+</div>

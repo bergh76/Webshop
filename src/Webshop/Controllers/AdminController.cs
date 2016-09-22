@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +18,14 @@ using Webshop.ViewModels;
 
 namespace Webshop.Controllers
 {
-    public class ArticleController : Controller
+    public class AdminController : Controller
     {
+
         private readonly WebShopRepository _context;
-        private readonly IStringLocalizer<ArticleController> _localizer;
+        private readonly IStringLocalizer<AdminController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment;
 
-        public ArticleController(WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
+        public AdminController(WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<AdminController> localizer)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
@@ -46,16 +47,16 @@ namespace Webshop.Controllers
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
 
+
             var artList = from p in _context.Articles
                               //where p.ISCampaign == true
                           join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-                          //where p.VendorId == vID || string.IsNullOrEmpty(dropdownVendor)
-                          //where p.CategoryId == cID || string.IsNullOrEmpty(dropdownCategory)
-                          //where p.ProductId == pID || string.IsNullOrEmpty(dropdownProduct)
-                          //where p.SubCategoryId == spID || string.IsNullOrEmpty(dropdownSubCategory)
+                                           //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
+                                           //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
+                                           //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
                           where p.ISActive == true
                           select new ArticlesViewModel
                           {
@@ -75,7 +76,6 @@ namespace Webshop.Controllers
                           };
 
             IEnumerable<ArticlesViewModel> vModel = artList.ToList();
-
             return View(vModel);
 
         }
@@ -235,7 +235,7 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    newArticle.UpdateArticleData(article, artTrans,_context,_hostEnvironment, id, ext, newFilename, file, form);
+                    newArticle.UpdateArticleData(article, artTrans, _context, _hostEnvironment, id, ext, newFilename, file, form);
                     //article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
                     //artTrans = await _context.ArticleTranslations.SingleOrDefaultAsync(d => d.ArticleId == id);
                     _context.Update(article);
@@ -317,7 +317,7 @@ namespace Webshop.Controllers
             //return RedirectToAction("NewArticle");
         }
 
-  
+
         // GET: Article/Delete/5
         public IActionResult Delete(int? id)
         {
@@ -388,7 +388,7 @@ namespace Webshop.Controllers
         //    var hitlist = _context.Articles.Where((System.Linq.Expressions.Expression<Func<Articles, bool>>)(x => (bool)x.ArticleName.Contains(search)));
         //    if(hitlist.Count() == 0)
         //    {
-        //        ViewBag.NoHit = "Din sökning gav inga resultat";
+        //        ViewBag.NoHit = "Din s�kning gav inga resultat";
         //    }
         //    return RedirectToAction("Index", hitlist);
         //}
@@ -463,21 +463,21 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        //public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleTranslationBusinessLayer trans, AddArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
-        //        //var translate = _context.ArticleTranslations.Where(x => x.ISTranslated == false).Count();
-        //        //do while (translate != 0)
-        //        //    {
-        //        //        return RedirectToAction("ArticleTranslation", translate);
-        //        //    }
-        //        //while (translate == 0);
-        //        return RedirectToAction("Create");
-        //    }
-        //    return View(article);
-        //}
+        public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleTranslationBusinessLayer trans, AddArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        {
+            if (ModelState.IsValid)
+            {
+                add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
+                //var translate = _context.ArticleTranslations.Where(x => x.ISTranslated == false).Count();
+                //do while (translate != 0)
+                //    {
+                //        return RedirectToAction("ArticleTranslation", translate);
+                //    }
+                //while (translate == 0);
+                return RedirectToAction("Create");
+            }
+            return View(article);
+        }
 
         public IActionResult NewVendor()
         {
@@ -664,7 +664,7 @@ namespace Webshop.Controllers
             }
             return View(subCategory);
         }
-    
+
 
         private bool ArticleModelExists(int id)
         {

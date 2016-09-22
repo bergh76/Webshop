@@ -16,13 +16,13 @@ namespace Webshop.Models.BusinessLayers
         private static readonly string[] _imageFileExtensions = { ".jpg", ".png", ".gif", ".jpeg" };
         private readonly WebShopRepository _context;
         private readonly IHostingEnvironment _hostEnvironment;
-        private readonly IStringLocalizer<ArticleController> _localizer;
+        private readonly IStringLocalizer<AdminController> _localizer;
 
         private IFormFile _file;
         private IFormCollection _form;
 
         public AddArticleBusinessLayer() { }
-        public AddArticleBusinessLayer(IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, WebShopRepository context, IFormFile file, IFormCollection form)
+        public AddArticleBusinessLayer(IHostingEnvironment hostEnvironment, IStringLocalizer<AdminController> localizer, WebShopRepository context, IFormFile file, IFormCollection form)
         {
             _hostEnvironment = hostEnvironment;
             _context = context;
@@ -31,7 +31,7 @@ namespace Webshop.Models.BusinessLayers
             _form = form;
         }
 
-        internal void AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> _localizer, IFormFile file, IFormCollection form)
+        internal void AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<AdminController> localizer, IFormFile file, IFormCollection form)
         {
             string lang = "sv";
             artTranslate.LangCode = lang;

@@ -120,13 +120,25 @@
   <data name="Buy" xml:space="preserve">
     <value>Köp</value>
   </data>
+  <data name="CategoryPlaceholder" xml:space="preserve">
+    <value>- Välj Kategori -</value>
+  </data>
   <data name="Ord.Price" xml:space="preserve">
     <value>Ord. pris</value>
+  </data>
+  <data name="ProductPlaceholder" xml:space="preserve">
+    <value>- Välj Produkt -</value>
   </data>
   <data name="Stock" xml:space="preserve">
     <value>st</value>
   </data>
+  <data name="SubCategoryPlaceholder" xml:space="preserve">
+    <value>- Välj Produkttyp -</value>
+  </data>
   <data name="TopProducts" xml:space="preserve">
     <value>Toppsäljande Produkter</value>
+  </data>
+  <data name="VendorPlaceholder" xml:space="preserve">
+    <value>- Välj Tillverkare -</value>
   </data>
 </root>

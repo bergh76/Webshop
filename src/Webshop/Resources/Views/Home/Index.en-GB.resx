@@ -120,13 +120,25 @@
   <data name="Buy" xml:space="preserve">
     <value>Buy</value>
   </data>
+  <data name="CategoryPlaceholder" xml:space="preserve">
+    <value>- Choose a Category -</value>
+  </data>
   <data name="Ord.Price" xml:space="preserve">
     <value>Ord. price</value>
+  </data>
+  <data name="ProductPlaceholder" xml:space="preserve">
+    <value>- Choose a Product -</value>
   </data>
   <data name="Stock" xml:space="preserve">
     <value>pcs</value>
   </data>
+  <data name="SubCategoryPlaceholder" xml:space="preserve">
+    <value>- Choose a Product category -</value>
+  </data>
   <data name="TopProducts" xml:space="preserve">
     <value>Top selling products</value>
+  </data>
+  <data name="VendorPlaceholder" xml:space="preserve">
+    <value>- Choose a Brand -</value>
   </data>
 </root>

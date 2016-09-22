@@ -50,68 +50,23 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public IActionResult _SearchArticles(string vendor, string category, string product, string subproduct)
+        [HttpPost]
+        public IActionResult Index(int vendor, int category, string product, int subproduct)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
         {
-
-
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             var artList = from p in _context.Articles
-                              //where p.ISCampaign == true
+                          where p.VendorId == vendor || vendor == 0
+                          where p.CategoryId == category || category == 0
+                          where p.ProductId == product || string.IsNullOrEmpty(product)
+                          where p.SubCategoryId == subproduct || subproduct == 0
                           join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-                          where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
-                          where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
-                          where p._Product.ProductName == product || string.IsNullOrEmpty(product)
-                          where p._SubCategory.SubCategoryName == subproduct || string.IsNullOrEmpty(subproduct)
 
-                          select new ArticlesViewModel
-                          {
-                              ArticleId = p.ArticleId,
-                              ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
-                              ArticleStock = p.ArticleStock,
-                              CategoryID = p.CategoryId,
-                              VendorID = p.VendorId,
-                              ProductID = p.ProductId,
-                              SubCategoryID = p.SubCategoryId,
-                              ArticleName = pt.ArticleName,
-                              ArticleShortText = pt.ArticleShortText,
-                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
-                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
-                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
-                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                              ImageId = i.ImageId,
-                              ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
-                              LangCode = pt.LangCode,
-                              ISTranslated = pt.ISTranslated,
-                              ISActive = p.ISActive,
-                              ISCampaign = p.ISCampaign
-                          };
-
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryName", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductName", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryName", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorName", "VendorName");
-
-
-            return View(vModel.FirstOrDefault());
-
-        }
-        public IActionResult Index(string vendor, string category, string product, string subcategory)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
-        {
-
-            var artList = from p in _context.Articles
-                          where p.ISCampaign == true
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
-                          join pt in _context.ArticleTranslations on
-                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
-                                           equals new { pt.ArticleId, Second = pt.LangCode }
-                          //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
-                          //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
-                          //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
 
                           select new ArticlesViewModel
                           {
@@ -132,6 +87,7 @@ namespace Webshop.Controllers
 
             return View(vModel);
         }
+
         // GET: Article/Details/5
         public IActionResult Details(int? id)
         {

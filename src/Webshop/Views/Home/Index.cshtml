@@ -1,21 +1,75 @@
 ﻿@model IEnumerable<Webshop.ViewModels.ArticlesViewModel>
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-
+@using Microsoft.Extensions.Options
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Index"];
 }
-<!--Create a carousel for special offers-->
-@*<section class="navbar navbar-blue" id="bottom">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="search-bar">@Html.Partial("_SearchArticles")</div>
-            </div>
+<section class="navbar bg-primary end-border">
+    <div class="container search-bar form-horizontal">
+        <div class="col-md-12 none-radius no-pad-col no-pad-table">
+            <form id="selectSearch" method="post" asp-action="Index" asp-controller="Home" role="form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <select name="vendor" class="form-control placeholder" asp-items="ViewBag.VendorID">
+                                <option value="">@Localizer["VendorPlaceholder"]</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-block">
+                                <select name="category" tex class="form-control placeholder" asp-items="ViewBag.CategoryID">
+                                    <option value="">@Localizer["CategoryPlaceholder"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-block">
+                                <select name="product" class="form-control placeholder" asp-items="ViewBag.ProductID">
+                                    <option value="">@Localizer["ProductPlaceholder"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-block">
+                                <select name="subproduct" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
+                                    <option value="">@Localizer["SubCategoryPlaceholder"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="btn-block">
+                                <button type="submit" class="btn search-sm-button">
+                                    <span class="ladda-label"><i class="fa fa-search"></i>@Localizer["Search"]</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</section>*@
+</section>
+
+<!--Create a carousel for special offers-->
 <section id="myCarousel" class="carousel slide img-responsive" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>

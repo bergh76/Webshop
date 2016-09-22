@@ -6,8 +6,17 @@ function openNav() {
 (function () {
     $("#selectLanguage select").change(function () {
         $(this).parent().submit();
+        //console.log("Dropdown val")
+
     });
 }());
+(function () {
+    $("#selectSearch select").change(function () {
+        $(this).parent().submit();
+        //console.log("Dropdown val")
+    });
+}());
+
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
@@ -143,3 +152,11 @@ $('input[type=file]').customFile();
 //$(function () {
 //    $('[data-toggle="tooltip"]').tooltip()
 //})
+
+$('select').change(function () {
+    if ($(this).children('option:first-child').is(':selected')) {
+        $(this).addClass('placeholder');
+    } else {
+        $(this).removeClass('placeholder');
+    }
+});
