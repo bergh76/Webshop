@@ -268,4 +268,8 @@ namespace Webshop.Controllers
             return View(artT);
         }
     }
+
+    internal class AppSettings
+    {
+    }
 }

@@ -117,16 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CategoryPlaceholder" xml:space="preserve">
-    <value>- Välj Kategori -</value>
+  <data name="Language:" xml:space="preserve">
+    <value>Langue:</value>
   </data>
-  <data name="ProductPlaceholder" xml:space="preserve">
-    <value>- Välj Produkt -</value>
-  </data>
-  <data name="SubCategoryPlaceholder" xml:space="preserve">
-    <value>- Välj Produkttyp -</value>
-  </data>
-  <data name="VendorPlaceholder" xml:space="preserve">
-    <value>- Välj Tillverkare -</value>
+  <data name="Request culture provider:" xml:space="preserve">
+    <value>Demande fournisseur de la culture:</value>
   </data>
 </root>
