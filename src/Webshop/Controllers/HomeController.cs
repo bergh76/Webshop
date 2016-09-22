@@ -50,7 +50,7 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        [HttpPost]
+
         public IActionResult Index(int vendor, int category, string product, int subproduct)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
