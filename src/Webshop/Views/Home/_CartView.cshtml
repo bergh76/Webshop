@@ -1,4 +1,18 @@
 ﻿@model Webshop.ViewModels.ShoppingCartViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+@functions
+{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+
 
 @if (ViewBag.CartCount > 0)
 {
@@ -35,9 +49,11 @@
                             @item
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                            <a type="button" class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#"
+                               data-id="@item.CartItemId"
+                               data-url='@Url.Content("~/Home/RemoveFromCart")'>
                                 <i class="fa fa-remove small"></i>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 }
@@ -53,16 +69,52 @@
     </div>
 
 }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    @*<li>
-            <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" title="@ViewBag.CartSummary">
-                <div id="cart-status">
-                    @foreach (var item in ViewBag.List)
-                    {
-                        <div><span class="fa fa-check-square"><h4>@item</h4></span></div>
-                    }
-                    @ViewBag.CartCount
-                </div>
-            </a>
-        </li>*@
 
+    <script type="text/javascript">
+        $(function () {
+            // Document.ready -> link up remove event handler
+            $(".RemoveLink").click(function () {
+                // Get the id from the link
+                console.log("Button activations:\n")
+                var recordToDelete = $(this).attr("data-id");
+                var PostToUrl = $(this).attr("data-url");
+                if (recordToDelete != '') {
+
+                    // Perform the ajax post
+                    $.ajax(PostToUrl, {
+                        type: "post",
+                        data: {
+                            "id": recordToDelete
+                        },
+                        dataType: "json",
+                        headers: {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        }
+                    }).done(function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.DeleteId).fadeOut('slow');
+                            console.log("DeleteID:\n{0}", data.DeleteId)
+
+                        } else {
+                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                            console.log("Itme-Count after DeleteID:\n", data.ItemCount)
+                        }
+
+                        $('#cart-total').text(data.CartTotal);
+                        console.log("CartTotal:\n{0}", data.CartTotal)
+                        $('#update-message').text(data.Message);
+                        console.log("Messge after deletion:\n{0}", data.Message)
+                        $('#cart-status').text(data.CartCount);
+                        console.log("Script run done:\n{0}", data)
+                    });
+                }
+            });
+
+        });
+    </script>
+}

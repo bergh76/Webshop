@@ -24,7 +24,7 @@ namespace Webshop.Models
 
         [Display(Name = "Description", ResourceType = typeof(Resources.ArticlesTranslation))]
         [DataType(DataType.Text)]
-        [StringLength(80)]
+        [StringLength(110)]
         [Required(ErrorMessage = "ErrorArticleDescription")]
         public string ArticleShortText { get; set; }
 

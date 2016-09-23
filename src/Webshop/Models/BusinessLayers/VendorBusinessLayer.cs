@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Webshop.Controllers;
 using Webshop.Models;
 
-namespace Webshop.BusinessLayers
+namespace Webshop.Models.BusinessLayers
 {
     public class VendorBusinessLayer
     {

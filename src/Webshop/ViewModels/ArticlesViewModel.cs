@@ -19,7 +19,7 @@ namespace Webshop.ViewModels
 
         [Display(Name = "Description", ResourceType = typeof(Resources.ArticlesViewModel))]
         [DataType(DataType.Text)]
-        [StringLength(40)]
+        [StringLength(110)]
         [Required(ErrorMessage = "ErrorArticleDescription")]
         public string ArticleShortText { get; set; }
 

@@ -11,7 +11,7 @@ using Webshop.Resources;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Webshop.BusinessLayers
+namespace Webshop.Models.BusinessLayers
 {
     public class EditArticleBusiness
     {

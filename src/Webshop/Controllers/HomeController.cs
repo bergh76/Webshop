@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Webshop.HelperClasses;
 using Webshop.Interfaces;
 
 using Webshop.Models;
@@ -171,6 +172,7 @@ namespace Webshop.Controllers
             // Return the view
             return View("ShoppingCart", viewModel);
         }
+
         public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
         {
             // Retrieve the album from the database
@@ -196,9 +198,8 @@ namespace Webshop.Controllers
         // AJAX: /ShoppingCart/RemoveFromCart/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveFromCart(
-            int id,
-            CancellationToken requestAborted)
+        [AjaxOnly]
+        public async Task<IActionResult> RemoveFromCart(int id, CancellationToken requestAborted)
         {
             // Retrieve the current user's shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
@@ -206,7 +207,7 @@ namespace Webshop.Controllers
             // Get the name of the album to display confirmation
             var cartItem = await _context.CartItems
                 .Where(item => item.CartItemId == id)
-                .Include(c => c.ArticleId)
+                .Include(x => x.Article)
                 .SingleOrDefaultAsync();
 
             string message;
@@ -217,7 +218,7 @@ namespace Webshop.Controllers
                 itemCount = cart.RemoveFromCart(id);
                 await _context.SaveChangesAsync(requestAborted);
                 string removed = (itemCount > 0) ? " 1 copy of " : string.Empty;
-                message = removed + cartItem.ArticleTranslation.ArticleName + " has been removed from your shopping cart.";
+                message = removed + cartItem.ArticleName + " has been removed from your shopping cart.";
             }
             else
             {
@@ -237,36 +238,34 @@ namespace Webshop.Controllers
             };
 
             _logger.LogInformation("Album {id} was removed from a cart.", id);
-
+            ViewData["Message"] = message;
             return Json(results);
         }
-        //private bool ArticleModelExists(int id)
+
+
+        //public async Task<IActionResult> CartDetails(
+        //    [FromServices] IMemoryCache cache,
+        //    int id)
         //{
-        //    return _context.Articles.Any((System.Linq.Expressions.Expression<Func<Articles, bool>>)(e => e.ArticleId == id));
+        //    var cacheKey = string.Format("album_{0}", id);
+        //    //Articles article;
+        //    ArticleTranslation artT;
+        //    if (!cache.TryGetValue(cacheKey, out artT))
+        //    {
+        //        artT = await _context.ArticleTranslations                                        
+        //                        .Where(a => a.ArticleId == id)
+        //                        .Include(a => a.ArticleName)
+        //                        .FirstOrDefaultAsync();
+
+        //    }
+
+        //    if (artT == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(artT);
         //}
-        public async Task<IActionResult> CartDetails(
-            [FromServices] IMemoryCache cache,
-            int id)
-        {
-            var cacheKey = string.Format("album_{0}", id);
-            //Articles article;
-            ArticleTranslation artT;
-            if (!cache.TryGetValue(cacheKey, out artT))
-            {
-                artT = await _context.ArticleTranslations                                        
-                                .Where(a => a.ArticleId == id)
-                                .Include(a => a.ArticleName)
-                                .FirstOrDefaultAsync();
-
-            }
-
-            if (artT == null)
-            {
-                return NotFound();
-            }
-
-            return View(artT);
-        }
     }
 
     internal class AppSettings

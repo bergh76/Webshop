@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +8,8 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Webshop.BusinessLayers;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
 using Webshop.ViewModels;
@@ -463,21 +461,21 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        //public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleTranslationBusinessLayer trans, AddArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
-        //        //var translate = _context.ArticleTranslations.Where(x => x.ISTranslated == false).Count();
-        //        //do while (translate != 0)
-        //        //    {
-        //        //        return RedirectToAction("ArticleTranslation", translate);
-        //        //    }
-        //        //while (translate == 0);
-        //        return RedirectToAction("Create");
-        //    }
-        //    return View(article);
-        //}
+        public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleTranslationBusinessLayer trans, AddArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        {
+            if (ModelState.IsValid)
+            {
+                add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
+                //var translate = _context.ArticleTranslations.Where(x => x.ISTranslated == false).Count();
+                //do while (translate != 0)
+                //    {
+                //        return RedirectToAction("ArticleTranslation", translate);
+                //    }
+                //while (translate == 0);
+                return RedirectToAction("Create");
+            }
+            return View(article);
+        }
 
         public IActionResult NewVendor()
         {

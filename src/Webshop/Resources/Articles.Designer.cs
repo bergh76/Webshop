@@ -69,11 +69,65 @@ namespace Webshop.Resources {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to - Välj Kategori -.
+        /// </summary>
+        public static string AddCategory1 {
+            get {
+                return ResourceManager.GetString("AddCategory1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to - Välj Produkt -.
+        /// </summary>
+        public static string AddProduct1 {
+            get {
+                return ResourceManager.GetString("AddProduct1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to - Välj Produkttyp -.
+        /// </summary>
+        public static string AddProductType1 {
+            get {
+                return ResourceManager.GetString("AddProductType1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to - Välj Tillverkare -.
+        /// </summary>
+        public static string AddVendor1 {
+            get {
+                return ResourceManager.GetString("AddVendor1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Artikelnamn.
         /// </summary>
         public static string ArticleName {
             get {
                 return ResourceManager.GetString("ArticleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Tillbaka.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Lägg till nya artiklar i webshopen.
+        /// </summary>
+        public static string BadgeHeader {
+            get {
+                return ResourceManager.GetString("BadgeHeader", resourceCulture);
             }
         }
         
@@ -231,15 +285,6 @@ namespace Webshop.Resources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Ballan Allan.
-        /// </summary>
-        public static string name {
-            get {
-                return ResourceManager.GetString("name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///    Looks up a localized string similar to Pris.
         /// </summary>
         public static string Price {
@@ -254,6 +299,15 @@ namespace Webshop.Resources {
         public static string Product {
             get {
                 return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Spara.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

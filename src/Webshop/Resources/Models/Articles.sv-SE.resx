@@ -189,4 +189,25 @@
   <data name="ErrorVendorName" xml:space="preserve">
     <value>Fältet får inte vara tomt</value>
   </data>
+  <data name="AddCategory1" xml:space="preserve">
+    <value>- Välj Kategori -</value>
+  </data>
+  <data name="AddProduct1" xml:space="preserve">
+    <value>- Välj Produkt -</value>
+  </data>
+  <data name="AddProductType1" xml:space="preserve">
+    <value>- Välj Produkttyp -</value>
+  </data>
+  <data name="AddVendor1" xml:space="preserve">
+    <value>- Välj Tillverkare -</value>
+  </data>
+  <data name="Back1" xml:space="preserve">
+    <value>Tillbaka</value>
+  </data>
+  <data name="BadgeHeader1" xml:space="preserve">
+    <value>Lägg till nya artiklar i webshopen</value>
+  </data>
+  <data name="Save1" xml:space="preserve">
+    <value>Spara</value>
+  </data>
 </root>

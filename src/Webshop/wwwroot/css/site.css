@@ -90,6 +90,12 @@ body {
   .container-white {
     width: 750px;
   }
+  /*.container-details-wide{
+      margin-top: 100px;
+  }
+  .select{
+      width: 100%;
+  }*/
 }
 @media (min-width: 992px) {
   .container-white {
@@ -100,6 +106,8 @@ body {
   margin-right: auto!important;
   margin-left: auto!important;
   }
+  
+
 }
 @media (min-width: 1200px) {
 .container{

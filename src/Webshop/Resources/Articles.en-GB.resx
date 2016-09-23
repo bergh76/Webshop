@@ -174,9 +174,6 @@
   <data name="Feature4" xml:space="preserve">
     <value>Feature 4</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Allan Ballan</value>
-  </data>
   <data name="Price" xml:space="preserve">
     <value>Price</value>
   </data>
@@ -191,5 +188,26 @@
   </data>
   <data name="Spara Artikel" xml:space="preserve">
     <value>Save Article</value>
+  </data>
+  <data name="AddCategory1" xml:space="preserve">
+    <value>- Choose Category -</value>
+  </data>
+  <data name="AddProduct1" xml:space="preserve">
+    <value>- Choose Product -</value>
+  </data>
+  <data name="AddProductType1" xml:space="preserve">
+    <value>- Choose Product Type -</value>
+  </data>
+  <data name="AddVendor1" xml:space="preserve">
+    <value>- Choose Vendor -</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="BadgeHeader" xml:space="preserve">
+    <value>Add new Articles to the webshop</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>

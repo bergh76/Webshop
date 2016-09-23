@@ -33,94 +33,87 @@
                         // Update the page elements
                         if (data.ItemCount == 0) {
                             $('#row-' + data.DeleteId).fadeOut('slow');
+                            window.location.reload();
+
                         } else {
                             $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                            //window.location.reload();
                         }
 
                         $('#cart-total').text(data.CartTotal);
                         $('#update-message').text(data.Message);
                         $('#cart-status').text(data.CartCount);
-                        $('#row-sum').text(data.ItemCount)
+                        console.log("Borttaget\n", PostToUrl, "\n")
+                        console.log("Data \n", data, "\n")
+                        console.log("Borttaget", data.DeleteId)
+                        window.location.reload();
                     });
                 }
             });
 
         });
-    </script>
-    }
-@if (ViewBag.CartCount > 0)
-{
-        <div class="col-md-12">
-            <table class="table table-responsive table-hover table-striped">
-                <thead>
-                    <tr>
-                        @*<th> ID </th>*@
-                        <th> Antal </th>
-                        <th> Artikel </th>
-                        <th> Pris </th>
-                        <th> Radsumma </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.List)
-                    {
-                        <tr class="left">
-                            @*<td>
-                                @item.ArticleId
-                            </td>*@
-                            <td id="item-count-@item.CartItemId">
-                                @item.Count
-                            </td>
-                            <td>
-                               @item.ArticleName
-                            </td>
-                            <td>
-                                @item.Article.ArticlePrice
-                            </td>
-                            <td >
-                                @{var price = item.Article.ArticlePrice;
-                                    var i = item.Count;
-                                    var sum = Convert.ToDecimal(price * i);
-                                        }
-                                @sum
-                            </td>
-                            <td>
-                                <button class="RemoveLink btn btn-sm btn-danger small" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
-                                    <i class="fa fa-remove "></i>
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            <div class="col-md-12">
-                <div class="col-md-9"></div>
-                <div class="col-md-3 pull-left">
-                    @*<p>Sa: </p>
-                    <p>Moms: </p>*@
-                    <p>Totalt: @ViewBag.Sum
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-sm btn-success pull-right">Till Kassan</a>
-            </div>
-
-        </div>
-
-
+</script>
 }
 
-        @*<li>
-                <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" title="@ViewBag.CartSummary">
-                    <div id="cart-status">
-                        @foreach (var item in ViewBag.List)
-                        {
-                            <div><span class="fa fa-check-square"><h4>@item</h4></span></div>
-                        }
-                        @ViewBag.CartCount
-                    </div>
-                </a>
-            </li>*@
 
+@if (ViewBag.CartCount > 0)
+{
+    <div class="col-md-12">
+        <table class="table table-responsive table-hover table-striped">
+            <thead>
+                <tr>
+                    @*<th> ID </th>*@
+                    <th> Antal </th>
+                    <th> Artikel </th>
+                    <th> Pris </th>
+                    <th> Radsumma </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.List)
+                {
+                    <tr class="left">
+                        @*<td>
+                                @item.ArticleId
+                            </td>*@
+                        <td id="item-count-@item.CartItemId">
+                            @item.Count
+                        </td>
+                        <td>
+                            @item.ArticleName
+                        </td>
+                        <td>
+                            @item.Article.ArticlePrice
+                        </td>
+                        <td>
+                            @{var price = item.Article.ArticlePrice;
+                                var i = item.Count;
+                                var sum = Convert.ToDecimal(price * i);
+                            }
+                            @sum
+                        </td>
+                        <td>
+                            <button class="RemoveLink btn btn-sm btn-danger small" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                                <i class="fa fa-remove "></i>
+                            </button>
+                        </td>
+                    </tr>
+                                }
+            </tbody>
+        </table>
+        <div class="col-md-12">
+            <div class="col-md-9"></div>
+            <div class="col-md-3 pull-left">
+                @*<p>Sa: </p>
+                    <p>Moms: </p>*@
+                <p>
+                    Totalt: @ViewBag.Sum
+                </p>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <a asp-area="" asp-controller="Home" asp-action="CartIndex" class="btn btn-sm btn-success pull-right">Till Kassan</a>
+        </div>
+    </div>
+}
+                                
