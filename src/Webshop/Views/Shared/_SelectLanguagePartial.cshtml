@@ -12,8 +12,14 @@
         .ToList();
 }
 <div>
-    <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="pad-top" role="form">
-        <select class="dropdown-menu-left" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems">
+    <form id="selectLanguage" 
+          asp-controller="Home" 
+          asp-action="SetLanguage" 
+          asp-route-returnUrl="@Context.Request.Path" 
+          method="post" class="pad-top" role="form">
+        <select class="dropdown-menu-left" name="culture" 
+                asp-for="@requestCulture.RequestCulture.UICulture.Name" 
+                asp-items="cultureItems">
             <option value="@Localizer["Language"]"></option>
         </select>
     </form>

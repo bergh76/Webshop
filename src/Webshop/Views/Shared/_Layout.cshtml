@@ -81,7 +81,7 @@
 
 <body>
 
-    <!--await Html.PartialAsync("_LoginPartial")-->
+    @*@await Html.PartialAsync("_LoginPartial")*@
     <section class="nav-white navbar-fixed-top end-border">
         <div class="container">
             <div class="navbar-header">
@@ -93,8 +93,6 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Superprodukter</a>
             </div>
-
-
             <div class="navbar-collapse collapse">
                 <ul class="nav-white navbar-nav">
                     <li class="">
@@ -158,11 +156,6 @@
         </div>
     </section>
 
-
-
-    <!--INFOBANNER START -->
-
-    <!--INFOBANNER END -->
     <!--SMALL MODAL LOGIN-->
     @*<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
             <div class="modal-dialog modal-sm">
@@ -179,7 +172,6 @@
                 </div>
             </div>
         </div>*@
-
     <div class="container-details-wide">
         @RenderBody()
         <section class="nav-white bottom">

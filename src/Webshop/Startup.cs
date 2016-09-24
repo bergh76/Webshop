@@ -120,21 +120,22 @@ namespace Webshop
             app.UseMvc(routes =>
             {
                 //routes.MapRoute("areaRoute", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
-
+                //routes.MapRoute(
+                //    name: "lang",
+                //    template: "{country}-{lang}/{controller}/{action}/{id?}");
                 routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Home}/{action=Index}/{id?}");
-
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
                 //routes.MapRoute(
                 //    name: "culture",
                 //    template: "{language:regex(^[a-z]{{2}}(-[A-Z]{{2}})*$)}/{ controller = Home}/{ action = Index}/{ id ?}");
                 //routes.MapRoute(
                 //    name: "default", template: "{controller=Home}/{action=Index}/{id?}");
 
-                    
-                //routes.MapRoute(
-                //    name: "language",
-                //    template: "{lang=se}/{controller=Home}/{action=About}/"); //direktsökning via urlsträngen
+
+                routes.MapRoute(
+                    name: "language",
+                    template: "{lang=se}/{controller=Home}/{action=About}/"); //direktsökning via urlsträngen
 
                 //routes.MapRoute(
                 //   name: "longroute",

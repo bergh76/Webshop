@@ -1,14 +1,10 @@
-﻿
-
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Webshop.HelperClasses;
 using Webshop.Interfaces;
-
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
 using Webshop.ViewModels;
@@ -51,18 +46,20 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-
-        public IActionResult Index(int vendor, int category, string product, int subproduct)//, int getVendorID, int getCategoryID, string getProductID, int getsubProductID)
+        public async Task<IActionResult> Index(/*int vendor, int category, string product, int subproduct*/)
         {
+            //var webShopRepository = _context.Articles.Include(a => a.).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
+            //    return View(await webShopRepository.ToListAsync());
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             var artList = from p in _context.Articles
-                          where p.VendorId == vendor || vendor == 0
-                          where p.CategoryId == category || category == 0
-                          where p.ProductId == product || string.IsNullOrEmpty(product)
-                          where p.SubCategoryId == subproduct || subproduct == 0
+                          where  p.ISCampaign == true
+                          //where p.VendorId == vendor || vendor == 0
+                          //where p.CategoryId == category || category == 0
+                          //where p.ProductId == product || string.IsNullOrEmpty(product)
+                          //where p.SubCategoryId == subproduct || subproduct == 0
                           join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
@@ -75,6 +72,8 @@ namespace Webshop.Controllers
                               ArticleNumber = p.ArticleNumber,
                               ArticlePrice = p.ArticlePrice,
                               ArticleStock = p.ArticleStock,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign,
                               ArticleName = pt.ArticleName,
                               ArticleShortText = pt.ArticleShortText,
                               ArticleFeaturesOne = pt.ArticleFeaturesOne,
@@ -84,13 +83,14 @@ namespace Webshop.Controllers
                               ArticleImgPath = i.ImagePath + i.ImageName,
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
 
             return View(vModel);
         }
 
+        [HttpGet]
         // GET: Article/Details/5
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -119,7 +119,7 @@ namespace Webshop.Controllers
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
-                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleImgPath = i.ImagePath + i.ImageName.ToString(),
                               ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
@@ -127,7 +127,7 @@ namespace Webshop.Controllers
                               ISCampaign = p.ISCampaign
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
                 return NotFound();
@@ -137,6 +137,53 @@ namespace Webshop.Controllers
             //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
             //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
+        }
+
+        //[AjaxOnly]
+        public async Task<IActionResult> SearchArticles(int vendor, int category, string product, int subproduct)
+        {
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            var artList = from p in _context.Articles
+                          where p.VendorId == vendor || vendor == 0
+                          where p.CategoryId == category || category == 0
+                          where p.ProductId == product || string.IsNullOrEmpty(product)
+                          where p.SubCategoryId == subproduct || subproduct == 0
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                          };
+
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
+
+            return View(vModel.ToList());
+        }
+
+        public IActionResult _SearchBar()
+        {
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            return View();
         }
 
         public IActionResult Contact([FromServices]IDateTime _datetime)

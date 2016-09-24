@@ -207,10 +207,14 @@ body {
 }
 .productItemBox .productDescription {
     overflow: hidden;
-    /*height: 155px;*/
-    padding-top: 10px;
+    height: 80px;
+    /*padding-top: 10px;*/
 }
-
+.productItemBox .productDescriptionList {
+    overflow: hidden;
+    height: 110px;
+    /*padding-top: 10px;*/
+}
 .productItemBox .priceInfo .priceHeader, .hero .priceInfo .priceHeader, .productSlot .priceInfo .priceHeader, .productRow .priceInfo .priceHeader, .dependentAccessoryBox .priceInfo .priceHeader {
     color: #fff;
     float: right;
@@ -232,7 +236,7 @@ body {
 
 }
 .productItemBox .productImageWrap {
-    /*min-height: 180px;*/
+    min-height: 180px;
         display: -ms-flexbox;
     display: flex;
     align-items: center;

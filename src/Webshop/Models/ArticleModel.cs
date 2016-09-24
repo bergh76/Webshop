@@ -64,8 +64,8 @@ namespace Webshop.Models
         public ImageModel _Image { get; set; }
         public int ImageId { get; set; } //lang independent
 
-        //[Required]
-        //public virtual ICollection<ArticleTranslation> Translations { get; set; }
+        [Required]
+        public virtual ICollection<ArticleTranslation> Translations { get; set; }
 
     }
 }

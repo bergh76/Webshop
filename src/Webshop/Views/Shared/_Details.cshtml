@@ -1,36 +1,30 @@
-﻿@*@model Webshop.ViewModels.ArticlesViewModel*@
-@model Webshop.ViewModels.ArticlesViewModel
+﻿@model Webshop.ViewModels.ArticlesViewModel
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
+@*@using Microsoft.Extensions.Options*@
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["Details"];
+    ViewData["Title"] = Localizer["Index"];
 }
-<section class="container">
-    <div class="col-xs-12 padding-x-off">
-        <div class="col-md-4">
-            <div class="col-md-12">
-
-            </div>
-        </div>
+<div class="col-md-12">
+    <form method="get" asp-action="Index" asp-controller="Home">
         <div class="productItemDetailBox hover-show-trigger">
-
             <div class="col-xs-4 pull-right">
                 <div class="priceInfo super">
                     <span class="priceHeader">
                         <span class="symbol pull-left icon-superpris"></span>
                         <span class="description">-29%</span>
                     </span>
-                    <span class="price animated rubberBand">@Html.DisplayFor(model => Model.ArticlePrice)</span>
+                    <span class="price animated rubberBand">@Html.DisplayFor(model => model.ArticlePrice)</span>
                     <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
                 </div>
             </div>
 
             <div class="col-xs-4 padding-x-off">
                 <div class="productDetailImageWrap">
-                    @*<a asp-action="Details" asp-controller="Article" asp-route-id="@Model.ArticleId class="clear">*@
+                    <a href="#" class="clear">
                         <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="~/@Html.UrlEncoder.Encode(Model.ArticleImgPath)" />
-                    @*</a>*@
+                    </a>
                 </div>
             </div>
 
@@ -61,22 +55,17 @@
                             <button class="btn submit-button" type="button"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</button>
                         </span>
                         <input type="number" class="form-control" />
+
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div>
-
         </div>
-
         <div style="height: 30px;">
-            <div class="action-row pull-right">
+            <div class="action-row">
                 <div class="form-actions no-color">
                     <a class="btn btn-success" onclick="history.go(-1);"><span class="modal-pointer">@Localizer["Back"]</span></a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        </form>
+</div>
