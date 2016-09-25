@@ -10,26 +10,26 @@ function openNav() {
 
     });
 }());
-(function () {
-    $('.AddToCart').on('click', function () {
-        console.log("Click:")
-    var getItemId = parseInt($(this).closest('td').prop('id'));
-    //var getUserName = $('.divName').html();
-    $.ajax({
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        url: '/Home/AddToCart',
-        data: "{ 'itemId':' " + getItemId + "' }",
-        success: function (data) {
-            $('#spnCart').html(data)
-        },
-        error: function (data) {
-            alert(data);
-        }
-    });
-    console.log("Data:", data, "\n")
-    });
-});
+//(function () {
+//    $('.AddToCart').on('click', function () {
+//        console.log("Click:")
+//    var getItemId = parseInt($(this).closest('td').prop('id'));
+//    //var getUserName = $('.divName').html();
+//    $.ajax({
+//        type: 'POST',
+//        contentType: 'application/json; charset=utf-8',
+//        url: '/Home/AddToCart',
+//        data: "{ 'itemId':' " + getItemId + "' }",
+//        success: function (data) {
+//            $('#spnCart').html(data)
+//        },
+//        error: function (data) {
+//            alert(data);
+//        }
+//    });
+//    console.log("Data:", data, "\n")
+//    });
+//});
 
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";

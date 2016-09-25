@@ -1,0 +1,9 @@
+﻿@model Webshop.Components.CartTotalSumComponent
+@if (ViewBag.Items == 0)
+{
+    <span>Din Kundvagn <span class="badge">@ViewBag.Items </span></span>
+}
+else
+{
+<span class="cartValue">Summa @ViewBag.Sum <span class="badge">@ViewBag.Items </span></span>
+}

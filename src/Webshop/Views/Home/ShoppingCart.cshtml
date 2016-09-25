@@ -3,15 +3,15 @@
 @{
     ViewBag.Title = "Shopping Cart";
 }
-
-
 @functions
 {
     public string GetAntiXsrfRequestToken()
     {
         return Xsrf.GetAndStoreTokens(Context).RequestToken;
     }
-}@section Scripts {
+}
+
+@section Scripts {
     <script type="text/javascript">
         $(function () {
             // Document.ready -> link up remove event handler
@@ -24,23 +24,18 @@
                     // Perform the ajax post
                     $.ajax(PostToUrl, {
                         type: "post",
-                        data: {
-                            "id": recordToDelete
-                        },
+                        data: { "id": recordToDelete },
                         dataType: "json",
-                        headers: {
-                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
-                        }
+                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }
                     }).done(function (data) {
                         // Successful requests get here
                         // Update the page elements
                         if (data.ItemCount == 0) {
                             $('#row-' + data.DeleteId).fadeOut('slow');
-                            window.location.reload().fadeOut("fast");
-
+                            window.location.reload().fadeOut("fast")
                         } else {
                             $('#item-count-' + data.DeleteId).text(data.ItemCount);
-                            window.location.reload().fadeOut("fast");
+                            window.location.reload().fadeOut("fast")
                         }
 
                         $('#cart-total').text(data.CartTotal);
@@ -64,31 +59,29 @@
             <p id="update-message"> </p>
             <table id="cart-summary" class="table table-responsive table-hover table-striped">
                 <tr>
-                    <th>
-                        Artikelnamn
-                    </th>
-                    <th>
-                        Pris(st)
-                    </th>
-                    <th>
-                        Antal
-                    </th>
-                    <th></th>
+                    <th> </th>
+                    
+                    <th>Artikelnamn</th>
+
+                    <th>Antal</th>
+
+                    <th>Pris(st)</th>
+
+                    <th> </th>
                 </tr>
                 @foreach (var item in Model.CartItems)
                 {
                     <tr id="row-@item.CartItemId">
+                        <td><img class="img-responsive" alt="@item.ArticleName" /></td>
+
+                        <td><a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></td>
+
+                        <td id="item-count-@item.CartItemId">@item.Count</td>
+
+                        <td>@item.Article.ArticlePrice</td>
+
                         <td>
-                            <a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
-                        </td>
-                        <td>
-                            @item.Article.ArticlePrice
-                        </td>
-                        <td id="item-count-@item.CartItemId">
-                            @item.Count
-                        </td>
-                        <td>
-                            <a class="btn btn-sm btn-danger fa-pull-right RemoveLink" href="#"
+                            <a class="delete-button-sm pull-right RemoveLink" href="#"
                                data-id="@item.CartItemId"
                                data-url='@Url.Content("~/Home/RemoveFromCart")'>
                                 <i class="fa fa-remove small"></i>
@@ -96,15 +89,10 @@
                         </td>
                     </tr>
                 }
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="pull-right" id="cart-total">
-                        <h4>Total: @Model.CartTotal</h4>
-                    </td>
-                </tr>
             </table>
+            <div class="pull-right" id="cart-total">
+                <h4>Total: @Model.CartTotal</h4>
+            </div>
             <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">Checkout</a><p>&nbsp;</p></div>
         </div>
     </div>

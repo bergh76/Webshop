@@ -20,8 +20,7 @@ namespace Webshop.Components
         private WebShopRepository _context { get; }
 
         public async Task<IViewComponentResult> InvokeAsync()
-        {
-            
+        {            
             var cart = ShoppingCart.GetCart(_context, HttpContext);
             var cartItems = await cart.GetCartArticleTitles();
             var listItems = await cart.GetCartItems();

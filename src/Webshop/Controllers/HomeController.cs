@@ -205,7 +205,7 @@ namespace Webshop.Controllers
         }
 
         // GET: /ShoppingCart/
-        public async Task<IActionResult> CartIndex()
+        public async Task<IActionResult> Cart()
         {
             var cart = ShoppingCart.GetCart(_context, HttpContext); // gets all items from context.CartItems
 
@@ -220,6 +220,12 @@ namespace Webshop.Controllers
             return View("ShoppingCart", viewModel);
         }
 
+        //public async Task<IActionResult> _Layout()
+        //{
+        //    var sum = ShoppingCart.GetCart(_context, HttpContext);
+        //    ViewBag.Sum = await sum.GetTotal();
+        //    return View();
+        //}
         //[AjaxOnly]
         public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
         {

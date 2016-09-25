@@ -37,7 +37,26 @@ body {
     margin-top: 1px;
 }
 
+.delete-button-sm {
+ -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  background: #d93434;
+  padding: 1px 6px 2px 6px;
+  text-decoration: none;
+}
 
+.delete-button-sm:hover {
+      color: #ffffff;
+  background: #bd0000;
+  text-decoration: none;
+}
+.table-width{
+    width: 800px;
+}
 .navbar-toggle {
     position: relative;
     float: right;
