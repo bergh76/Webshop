@@ -220,6 +220,7 @@ namespace Webshop.Controllers
             return View("ShoppingCart", viewModel);
         }
 
+        //[AjaxOnly]
         public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
         {
             // Retrieve the album from the database
@@ -228,6 +229,8 @@ namespace Webshop.Controllers
 
             var addedArticleName = await _context.ArticleTranslations
                .SingleAsync(artT => artT.ArticleId == id);
+
+            //var addedImagePath = await _context.Articles.SingleAsync(x => x.ImageId == x._Image.ImageId);
 
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
@@ -238,7 +241,7 @@ namespace Webshop.Controllers
             _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);
 
             // Go back to the main store page for more shopping
-            return RedirectToAction("Index");
+            return RedirectToAction("SearchArticles");
         }
 
         //

@@ -1,93 +1,79 @@
 ﻿@model IEnumerable<Webshop.ViewModels.ArticlesViewModel>
-@using Microsoft.AspNetCore.Localization
+@*@using Microsoft.AspNetCore.Localization*@
 @using Microsoft.AspNetCore.Mvc.Localization
-@*@using Microsoft.Extensions.Options*@
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Index"];
 }
-    @{  var count = Model.Select(x => x.ArticleId).Count();
-            if (count == 0)
-            {
-            <div class="image-container text-center"> <img src="~/images/no-record-found.png" /></div>@*<h3 id="fof">@ViewBag.NoHit</h3>*@
-        }
-        else
+@{  var count = Model.Select(x => x.ArticleId).Count();
+if (count == 0)
+{
+        <div class="image-container text-center"> <img src="~/images/no-record-found.png" /></div>
+    }
+    else
+    {
+        foreach (var item in Model)
         {
-            foreach (var item in Model)
-            {
-                <section class="container">
-                    <div class="container-white">
-                        <div class="row">
-                        </div>
-                        <div class="col-xs-12 padding-x-off">
-                            <div class="col-md-2">
-                                <div class="col-md-12">
-                                    <!--Crate listobject for vendor, articles based on vendorschoice and so on-->
-                                </div>
-                            </div>
-                            <div class="col-md-10">
-                                @*@await Html.PartialAsync("_Details")*@
-                                <div class="col-md-12">
-                                    <div class="productItemDetailBox hover-show-trigger">
-                                        <div class="col-xs-4 pull-right">
-                                            <div class="priceInfo super">
-                                                <span class="priceHeader">
-                                                    <span class="symbol pull-left icon-superpris"></span>
-                                                    <span class="description">-29%</span>
-                                                </span>
-                                                <span class="price animated rubberBand">@Html.DisplayFor(model => item.ArticlePrice)</span>
-                                                <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
-                                            </div>
-                                        </div>
+            <div class="row"></div>
+            <div class="col-xs-12 padding-x-off">
+                <div class="col-md-2">
+                    <div class="col-md-12">
+                        <div class="container">
+                            <div class="container-white">
 
-                                        <div class="col-xs-4 padding-x-off">
-                                            <div class="productDetailImageWrap">
-                                                <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
-                                                    <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@Html.UrlEncoder.Encode(item.ArticleImgPath)" />
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="productDetailDescription">
-                                            <div>
-                                                <h3 class="margin-x-md">@Html.DisplayFor(model => item.ArticleName)</h3>
-                                            </div>
-
-                                            <span class="description">@Html.DisplayFor(model => item.ArticleShortText)</span>
-                                            <ul class="list-group shortSpec">
-                                                <li>@Html.DisplayFor(model => item.ArticleNumber)</li>
-                                                <li>@Html.DisplayFor(model => item.ArticleFeaturesOne)</li>
-                                                <li>@Html.DisplayFor(model => item.ArticleFeaturesTwo) </li>
-                                                <li>@Html.DisplayFor(model => item.ArticleFeaturesThree)</li>
-                                                <li>@Html.DisplayFor(model => item.ArticleFeaturesFour)</li>
-                                            </ul>
-                                            <div class="btn-group">
-                                                <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående"><span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => item.ArticleStock) @Localizer["In Stock"]</span></span>
-                                            </div>
-                                        </div>
-
-                                        <div style="height: 30px;">
-                                            <div class="action-row">
-                                            </div>
-                                            <div class="col-xs-2 pull-right text-field-margin-right">
-                                                <div class="input-group">
-                                                    <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
-                                                </div><!-- /input-group -->
-                                            </div><!-- /.col-lg-6 -->
-                                        </div>
-                                    </div>
-                                    <div style="height: 30px;">
-                                        <div class="action-row">
-                                            <div class="form-actions no-color">
-                                                <a class="btn btn-success" onclick="history.go(-1);"><span class="modal-pointer">@Localizer["Back"]</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="productItemDetailBox">
+                            <div class="col-xs-4 pull-right">
+                                <div class="priceInfo super">
+                                    <span class="priceHeader">
+                                        <span class="symbol pull-left icon-superpris"></span>
+                                        <span class="description">-29%</span>
+                                    </span>
+                                    <span class="price animated rubberBand">@Html.DisplayFor(model => item.ArticlePrice)</span>
+                                    <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 padding-x-off">
+                                <div class="productDetailImageWrap">
+                                    <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
+                                        <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@Html.UrlEncoder.Encode(item.ArticleImgPath)" />
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="productDetailDescription">
+                                <div>
+                                    <h3 class="margin-x-md">@Html.DisplayFor(model => item.ArticleName)</h3>
+                                </div>
+
+                                <span class="description">@Html.DisplayFor(model => item.ArticleShortText)</span>
+                                <ul class="list-group shortSpec">
+                                    <li>@Html.DisplayFor(model => item.ArticleNumber)</li>
+                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesOne)</li>
+                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesTwo) </li>
+                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesThree)</li>
+                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesFour)</li>
+                                </ul>
+                                <div class="btn-group">
+                                    <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående">
+                                        <span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => item.ArticleStock) @Localizer["In Stock"]</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <a id="AddT" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             }
         }
     }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

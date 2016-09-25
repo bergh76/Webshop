@@ -7,13 +7,11 @@
 }
 
 <section class="container">
-
     <div class="col-xs-12 padding-x-off no-pad-table">
         <form method="get" asp-action="Detail" asp-controller="Article">
             <div class="row">
                 <table class="table margin-y-off" border="0">
                     <tbody>
-
                         @{  var count = Model.Count();
                             if (count == 0)
                             {
@@ -94,10 +92,7 @@
                                     </tr>
                                 }
                             }
-
                         }
-
-
                     </tbody>
                 </table>
             </div>

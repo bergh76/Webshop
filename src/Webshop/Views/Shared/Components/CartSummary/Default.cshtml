@@ -54,8 +54,6 @@
         });
 </script>
 }
-
-
 @if (ViewBag.CartCount > 0)
 {
     <div class="col-md-12">
@@ -73,9 +71,12 @@
                 @foreach (var item in ViewBag.List)
                 {
                     <tr class="left">
-                        @*<td>
+                        <td class="img-responsive">
+                            <img class="img-responsive" alt="@item.ArticleName)"  />
+                        </td>
+                        <td>
                                 @item.ArticleId
-                            </td>*@
+                            </td>
                         <td id="item-count-@item.CartItemId">
                             @item.Count
                         </td>

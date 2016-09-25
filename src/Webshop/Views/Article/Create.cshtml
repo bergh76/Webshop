@@ -7,256 +7,249 @@
 }
 
 <section class="container">
-    @*<div class="container-white">
-        <div class="row">
+    <form asp-controller="Article" asp-action="NewArticle" enctype="multipart/form-data">
+        <div class="col-xs-12 padding-x-off pad-top content-box">
             <div class="col-xs-12">
-                <h3><span class="badge badge-blue-big">@Localizer["BadgeHeader"]</span></h3>
-            </div>
-        </div>*@
-        <form asp-controller="Article" asp-action="NewArticle" enctype="multipart/form-data">
-            <div class="col-xs-12 padding-x-off pad-top content-box">
-                <div class="col-xs-12">
-                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-                    <div class="col-md-4 pull-left">
-                        <div class="col-xs-12">
-                            <div class="custom-file-upload pull-left">
-                                <input type="file" name="file" multiple />
+                <div class="col-md-4 pull-left">
+                    <div class="col-xs-12">
+                        <div class="custom-file-upload pull-left">
+                            <input type="file" name="file" multiple />
+                        </div>
+                    </div>
+                </div>
+                <div class="productImageWrap">
+                </div>
+
+                <div class="col-md-8 padding-x-off">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="VendorID" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <select asp-for="VendorID" class="form-control placeholder" asp-items="ViewBag.VendorID">
+                                        @*<option value="">@Localizer["AddVendor1"]</option>*@
+                                    </select>
+                                    <!-- Button trigger modal -->
+                                    <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="CategoryID" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <select asp-for="CategoryID" class="form-control placeholder" asp-items="ViewBag.CategoryID">
+                                        @*<option value="">@Localizer["AddCategory1"]</option>*@
+                                    </select>
+                                    <!-- Button trigger modal -->
+                                    <a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="CategoryID"></label></span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ProductID" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <select asp-for="ProductID" class="form-control placeholder" asp-items="ViewBag.ProductID">
+                                        @*<option value="">@Localizer["AddProduct1"]</option>*@
+                                    </select>
+                                    <!-- Button trigger modal -->
+                                    <a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="ProductID"></label></span></a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="SubCategoryID" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <select asp-for="SubCategoryID" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
+                                        @*<option value="">@Localizer["AddProductType1"]</option>*@
+                                    </select>
+                                    <!-- Button trigger modal -->
+                                    <a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="SubCategoryID"></label></span></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="productImageWrap">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleStock" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <input asp-for="ArticleStock" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleStock) />
+                                    <span asp-validation-for="ArticleStock" class="text-danger" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticlePrice" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <input asp-for="ArticlePrice" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticlePrice) />
+                                    <span asp-validation-for="ArticlePrice" class="text-danger" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleName" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <input asp-for="ArticleName" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleName) />
+                                    <span asp-validation-for="ArticleName" class="text-danger" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleShortText" class="col-md-10 control-label"></label>
+                                <div class="col-md-12">
+                                    <textarea asp-for="ArticleShortText" translate="yes" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleShortText)> </textarea>
+                                    <span asp-validation-for="ArticleShortText" class="text-danger" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-8 padding-x-off">
-                        <div class="col-md-4">
-                            <div class="form-group">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleFeaturesOne" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
-                                    <label asp-for="VendorID" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <select asp-for="VendorID" class="form-control placeholder" asp-items="ViewBag.VendorID">
-                                            @*<option value="">@Localizer["AddVendor1"]</option>*@
-                                        </select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="CategoryID" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <select asp-for="CategoryID" class="form-control placeholder" asp-items="ViewBag.CategoryID">
-                                            @*<option value="">@Localizer["AddCategory1"]</option>*@
-                                        </select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="CategoryID"></label></span></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="ProductID" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <select asp-for="ProductID" class="form-control placeholder" asp-items="ViewBag.ProductID">
-                                            @*<option value="">@Localizer["AddProduct1"]</option>*@
-                                        </select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="ProductID"></label></span></a>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="SubCategoryID" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <select asp-for="SubCategoryID" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
-                                            @*<option value="">@Localizer["AddProductType1"]</option>*@
-                                        </select>
-                                        <!-- Button trigger modal -->
-                                        <a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="SubCategoryID"></label></span></a>
-                                    </div>
+                                    <input asp-for="ArticleFeaturesOne" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesOne) />
+                                    <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleFeaturesTwo" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
-                                    <label asp-for="ArticleStock" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticleStock" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleStock) />
-                                        <span asp-validation-for="ArticleStock" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="ArticlePrice" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticlePrice" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticlePrice) />
-                                        <span asp-validation-for="ArticlePrice" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="ArticleName" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticleName" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleName) />
-                                        <span asp-validation-for="ArticleName" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="ArticleShortText" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <textarea asp-for="ArticleShortText" translate="yes" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleShortText)> </textarea>
-                                        <span asp-validation-for="ArticleShortText" class="text-danger" />
-                                    </div>
+                                    <input asp-for="ArticleFeaturesTwo" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesTwo) />
+                                    <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleFeaturesThree" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
-                                    <label asp-for="ArticleFeaturesOne" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticleFeaturesOne" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesOne) />
-                                        <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
-                                    </div>
+                                    <input asp-for="ArticleFeaturesThree" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesThree) />
+                                    <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="ArticleFeaturesFour" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
-                                    <label asp-for="ArticleFeaturesTwo" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticleFeaturesTwo" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesTwo) />
-                                        <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="ArticleFeaturesThree" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticleFeaturesThree" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesThree) />
-                                        <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label asp-for="ArticleFeaturesFour" class="col-md-10 control-label"></label>
-                                    <div class="col-md-12">
-                                        <input asp-for="ArticleFeaturesFour" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesFour) />
-                                        <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
-                                    </div>
+                                    <input asp-for="ArticleFeaturesFour" class="form-control" placeholder=@Html.DisplayNameFor(x => x.ArticleFeaturesFour) />
+                                    <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 ">
-                    <div class="col-md-9 pull-right">
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <div class="checkbox">
-                                    <input checked="checked" asp-for="ISActive" />
-                                    <label asp-for="ISActive"></label>
-                                </div>
-                                <div class="checkbox">
-                                    <input asp-for="ISCampaign" />
-                                    <label asp-for="ISCampaign"></label>
-                                </div>
-                                @*<div class="checkbox">
+            </div>
+            <div class="col-md-12 ">
+                <div class="col-md-9 pull-right">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                <input checked="checked" asp-for="ISActive" />
+                                <label asp-for="ISActive"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input asp-for="ISCampaign" />
+                                <label asp-for="ISCampaign"></label>
+                            </div>
+                            @*<div class="checkbox">
                                     <label asp-for="LangCode.ID" class="col-md-10 control-label"></label>
                                     <select asp-for="LangCode.ID" class="form-control" asp-items="ViewBag.LangCode"></select>
 
                                 </div>*@
-                            </div>
                         </div>
                     </div>
                 </div>
-                    <div style="height: 30px;">
-                        <div class="action-row">
-                            <div>                                
-                                <input type="button" value="@Localizer["Back"]" class="btn btn-sm btn-success margin-bottom pull-right" onclick="history.go(-1);" />
-                                <input type="submit" value=@Localizer["Save"] class="btn btn-sm btn-danger margin-bottom pull-right" />
-                            </div>
-                        </div>
+            </div>
+            <div style="height: 30px;">
+                <div class="action-row">
+                    <div>
+                        <input type="button" value="@Localizer["Back"]" class="btn btn-sm btn-success margin-bottom pull-right" onclick="history.go(-1);" />
+                        <input type="submit" value=@Localizer["Save"] class="btn btn-sm btn-danger margin-bottom pull-right" />
                     </div>
                 </div>
-        </form>
+            </div>
+        </div>
+    </form>
 
 
-        <!-- Modal NewVendor-->
-        <div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddVendor"]</h4>
-                    </div>
-                    <div class="modal-body">
-                        @Html.Partial("NewVendor")
-                    </div>
+    <!-- Modal NewVendor-->
+    <div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Localizer["AddVendor"]</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("NewVendor")
                 </div>
             </div>
         </div>
-        <!-- Modal NewCategory-->
-        <div class="modal fade" id="NewCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddCategory"]</h4>
-                    </div>
-                    <div class="modal-body">
-                        @Html.Partial("NewCategory")
-                    </div>
+    </div>
+    <!-- Modal NewCategory-->
+    <div class="modal fade" id="NewCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Localizer["AddCategory"]</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("NewCategory")
                 </div>
             </div>
         </div>
-        <!-- Modal NewProduct-->
-        <div class="modal fade" id="NewProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddProduct"]</h4>
-                    </div>
-                    <div class="modal-body">
-                        @Html.Partial("NewProduct")
-                    </div>
+    </div>
+    <!-- Modal NewProduct-->
+    <div class="modal fade" id="NewProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Localizer["AddProduct"]</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("NewProduct")
                 </div>
             </div>
         </div>
-        <!-- Modal NewSubCategory-->
-        <div class="modal fade" id="NewSubCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Localizer["AddProductType"]</h4>
-                    </div>
-                    <div class="modal-body">
-                        @Html.Partial("NewSubCategory")
-                    </div>
+    </div>
+    <!-- Modal NewSubCategory-->
+    <div class="modal fade" id="NewSubCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Localizer["AddProductType"]</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("NewSubCategory")
                 </div>
             </div>
         </div>
+    </div>
 
     @*</div>*@
 </section>

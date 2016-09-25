@@ -23,9 +23,7 @@ namespace Webshop.Components
         {
             
             var cart = ShoppingCart.GetCart(_context, HttpContext);
-
             var cartItems = await cart.GetCartArticleTitles();
-
             var listItems = await cart.GetCartItems();
 
             ViewBag.CartCount = cartItems.Count;

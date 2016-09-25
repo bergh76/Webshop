@@ -390,9 +390,14 @@ body {
     color: #999;
 }
 .productItemDetailBox .btn-buy {
-    position: absolute;
+    /*position: page;
     bottom: 5px;
-    right: 20px;
+    right: 20px;*/
+        z-index: 999;
+    position: page;
+    /*margin-right: 70px;*/
+    bottom: 5px;
+    /*float: left;*/
 }
 .productItemDetailBox .priceInfo {
     position: relative;

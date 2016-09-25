@@ -11,27 +11,36 @@ function openNav() {
     });
 }());
 (function () {
-    $("#selectSearch select").change(function () {
-        $(this).parent().submit();
-        console.log("Dropdown val:", parent);
+    $('.AddToCart').on('click', function () {
+        console.log("Click:")
+    var getItemId = parseInt($(this).closest('td').prop('id'));
+    //var getUserName = $('.divName').html();
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        url: '/Home/AddToCart',
+        data: "{ 'itemId':' " + getItemId + "' }",
+        success: function (data) {
+            $('#spnCart').html(data)
+        },
+        error: function (data) {
+            alert(data);
+        }
     });
-}());
-
+    console.log("Data:", data, "\n")
+    });
+});
 
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 //***** CUSTOM FILEUPLOADER *****//
 (function ($) {
-
     // Browser supports HTML5 multiple file?
     var multipleSupport = typeof $('<input/>')[0].multiple !== 'undefined',
         isIE = /msie/i.test(navigator.userAgent);
-
     $.fn.customFile = function () {
-
         return this.each(function () {
-
             var $file = $(this).addClass('custom-file-upload-hidden'), // the original file input
                 $wrap = $('<div class="file-upload-wrapper">'),
                 $input = $('<input type="text" class="file-upload-input" readonly />'),
@@ -46,22 +55,16 @@ function closeNav() {
                 position: 'absolute',
                 left: '-9999px'
             });
-
             $wrap.insertAfter($file)
-              .append($file, $input, (isIE ? $label : $button));
-
+                .append($file, $input, (isIE ? $label : $button));
             // Prevent focus
             $file.attr('tabIndex', -1);
             $button.attr('tabIndex', -1);
-
             $button.click(function () {
                 $file.focus().click(); // Open dialog
             });
-
             $file.change(function () {
-
                 var files = [], fileArr, filename;
-
                 // If multiple is supported then extract
                 // all filenames from the file array
                 if (multipleSupport) {
@@ -70,18 +73,15 @@ function closeNav() {
                         files.push(fileArr[i].name);
                     }
                     filename = files.join(', ');
-
                     // If not supported then just take the value
                     // and remove the path to just show the filename
                 } else {
                     filename = $file.val().split('\\').pop();
                 }
-
                 $input.val(filename) // Set the value
-		        .attr('title', filename) // Show filename in title tootlip
-		        .focus(); // Regain focus
+                    .attr('title', filename) // Show filename in title tootlip
+                    .focus(); // Regain focus
             });
-
             $input.on({
                 blur: function () { $file.trigger('blur'); },
                 keydown: function (e) {
@@ -101,15 +101,11 @@ function closeNav() {
                     }
                 }
             });
-
         });
-
     };
-
     // Old browser fallback
     if (!multipleSupport) {
         $(document).on('change', 'input.customfile', function () {
-
             var $this = $(this),
                 // Create a unique ID so we
                 // can attach the label to the input
@@ -118,8 +114,7 @@ function closeNav() {
 
                 // Filter empty input
                 $inputs = $wrap.siblings().find('.file-upload-input')
-                  .filter(function () { return !this.value }),
-
+                .filter(function () { return !this.value }),
                 $file = $('<input type="file" id="' + uniqId + '" name="' + $this.attr('name') + '"/>');
 
             // 1ms timeout so it runs after all other events
@@ -141,14 +136,10 @@ function closeNav() {
                     $wrap.find('input').focus();
                 }
             }, 1);
-
         });
     }
-
 }(jQuery));
-
 $('input[type=file]').customFile();
-
 //Slider
 //$(function () {
 //    $('[data-toggle="tooltip"]').tooltip()

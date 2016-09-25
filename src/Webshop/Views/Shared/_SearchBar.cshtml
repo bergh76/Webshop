@@ -1,89 +1,88 @@
 ﻿@*@model Webshop.ViewModels.ArticlesViewModel*@
 @model IEnumerable<Webshop.ViewModels.ArticlesViewModel>
-    @using Microsoft.AspNetCore.Localization
-    @using Microsoft.AspNetCore.Mvc.Localization
-    @inject IViewLocalizer Localizer
-
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
     @{
         ViewData["Title"] = "Search";
     }
-    <section class="row">
-    <div class="container-white">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <section class="navbar-collapse collapse">
-            <div nav-white navbar-nav>
-                <div class="col-md-12 none-radius no-pad-col no-pad-table">
-                    <form id="selectSearch" 
-                          method="get" 
-                          asp-action="SearchArticles" 
-                          asp-controller="Home" 
-                          role="form">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <select name="vendor" class="form-control placeholder" asp-items="ViewBag.VendorID">
-                                        <option value="">@Localizer["VendorPlaceholder"]</option>
+<section class="row">
+<div class="container-white">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <section class="navbar-collapse collapse">
+        <div nav-white navbar-nav>
+            <div class="col-md-12 none-radius no-pad-col no-pad-table">
+                <form id="selectSearch"
+                      method="get"
+                      asp-action="SearchArticles"
+                      asp-controller="Home"
+                      role="form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <select name="vendor" class="form-control placeholder" asp-items="ViewBag.VendorID">
+                                    <option value="">@Localizer["VendorPlaceholder"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="btn-block">
+                                    <select name="category" tex class="form-control placeholder" asp-items="ViewBag.CategoryID">
+                                        <option value="">@Localizer["CategoryPlaceholder"]</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="btn-block">
-                                        <select name="category" tex class="form-control placeholder" asp-items="ViewBag.CategoryID">
-                                            <option value="">@Localizer["CategoryPlaceholder"]</option>
-                                        </select>
-                                    </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="btn-block">
+                                    <select name="product" class="form-control placeholder" asp-items="ViewBag.ProductID">
+                                        <option value="">@Localizer["ProductPlaceholder"]</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="btn-block">
-                                        <select name="product" class="form-control placeholder" asp-items="ViewBag.ProductID">
-                                            <option value="">@Localizer["ProductPlaceholder"]</option>
-                                        </select>
-                                    </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="btn-block">
+                                    <select name="subproduct" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
+                                        <option value="">@Localizer["SubCategoryPlaceholder"]</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="btn-block">
-                                        <select name="subproduct" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
-                                            <option value="">@Localizer["SubCategoryPlaceholder"]</option>
-                                        </select>
-                                    </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="btn-block">
+                                    <button type="submit" class="btn search-sm-button">
+                                        <span class="ladda-label"><i class="fa fa-search"></i>@Localizer["Search"]</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="btn-block">
-                                        <button type="submit" class="btn search-sm-button">
-                                            <span class="ladda-label"><i class="fa fa-search"></i>@Localizer["Search"]</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 </section>
 
     @section Scripts {
