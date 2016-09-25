@@ -1,9 +1,21 @@
 ﻿@model Webshop.Components.CartTotalSumComponent
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@*@using Microsoft.Extensions.Options*@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Index"];
+}
 @if (ViewBag.Items == 0)
 {
-    <span>Din Kundvagn <span class="badge">@ViewBag.Items </span></span>
+    <label>@Localizer["CartStatus"]</label>
 }
 else
 {
-<span class="cartValue">Summa @ViewBag.Sum <span class="badge">@ViewBag.Items </span></span>
+        <span class="pad-top-5">@Localizer["Sum"] @ViewBag.Sum @Localizer["Currency"]</span>
+        <span class="fa fa-shopping-basket basket-lined fa-1x orange">
+            <div class="badge">
+                <span class="text-xs">@ViewBag.Items</span>
+            </div>
+        </span>
 }

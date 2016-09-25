@@ -11,8 +11,6 @@
 
 @section Scripts {
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
     <script type="text/javascript">
         $(function () {
             // Document.ready -> link up remove event handler
@@ -56,7 +54,7 @@
 @if (ViewBag.CartCount > 0)
 {
     <div class="col-md-12">
-        <table id="cart-summary" class="table-width table table-responsive table-hover table-striped">
+        <table id="cart-summary" class="table table-responsive table-hover table-striped">
             <thead>
                 <tr>
                     <th> Bild </th>

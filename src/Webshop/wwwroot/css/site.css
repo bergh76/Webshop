@@ -12,6 +12,23 @@ body {
   color: #333;
   background-color: #fff;
 }
+.basket-lined {
+    font-size: 3em;
+    line-height: 0;
+    color: #333;
+    position: absolute;
+    top: 22px;
+    right: -10px;
+}
+.basket-lined >.badge {
+    position: absolute;
+    left: 10px;
+    top: -10px;
+}
+.text-xs{
+    font-family: 'Robot';
+    font-size: 0.7em;
+}
 .control-label {
     display: inline-block;
     max-width: 100%;
@@ -527,7 +544,9 @@ body {
     width: 100%;
     transition: 0.5ms !important;
 }
-
+.pad-top-5{
+    padding-top: 5px;
+}
 .pad-top{
     padding-top: 15px;
 }
