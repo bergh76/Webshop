@@ -75,13 +75,41 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
     </environment>
+    @*<script type="text/javascript">
+    $(function () {
+        if (document.cookie.indexOf("cookies") < 0) {
+            $('#cookie-consent').slideDown('slow');
+        }
+        $('#consent').on('click', function () {
+            document.cookie = "cookies=yes; max-age=" + (5*365*24*60*60);
+            $('#cookie-consent').slideUp('slow');
+        });
+        $('#learn-more').on('click', function () {
+            location.href = '/privacy';
+        })
+    });
+    </script>*@
+    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+    <script type="text/javascript">
+    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"light-bottom"};
+    </script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
+    <!-- End Cookie Consent plugin -->
 
 </head>
 
 <body>
 
     @*@await Html.PartialAsync("_LoginPartial")*@
+
     <section class="nav-white navbar-fixed-top end-border">
+        @*<div id="cookie-consent" class="alert-warning">
+            <div class="container">
+                <span>My site uses cookies to personalise content and adverts, to provide social media features and to analyse traffic.</span>
+                <a class="btn btn-xs btn-success" id="consent">I'm happy with this</a> <a class="btn btn-xs btn-danger" id="learn-more">Learn more</a>
+            </div>
+        </div>*@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
