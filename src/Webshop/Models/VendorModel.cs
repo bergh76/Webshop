@@ -14,6 +14,8 @@ namespace Webshop.Models
         public string VendorWebPage { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Resources.VendorModel))]
         public bool ISActive { get; set; }
+        public string LangCode { get; set; }
+
 
     }
 }

@@ -118,27 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Amount" xml:space="preserve">
-    <value>Antal</value>
+    <value>Amount</value>
   </data>
   <data name="Article" xml:space="preserve">
-    <value>Artikel</value>
+    <value>Article</value>
+  </data>
+  <data name="CartHeader" xml:space="preserve">
+    <value>Your shoppingcart</value>
   </data>
   <data name="CartTotal" xml:space="preserve">
     <value>Total: </value>
   </data>
-  <data name="EmptyCart" xml:space="preserve">
-    <value>Din kundvagn är tom</value>
-  </data>
-  <data name="Image" xml:space="preserve">
-    <value />
+  <data name="Checkout" xml:space="preserve">
+    <value>Checkout</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Pris (kr)</value>
+    <value>Price (£)</value>
   </data>
   <data name="RowTotal" xml:space="preserve">
-    <value>Radsumma</value>
-  </data>
-  <data name="ShowCart" xml:space="preserve">
-    <value>Visa kundvagn</value>
+    <value>Row total</value>
   </data>
 </root>

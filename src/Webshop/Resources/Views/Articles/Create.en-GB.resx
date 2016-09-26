@@ -135,6 +135,9 @@
   <data name="BadgeHeader1" xml:space="preserve">
     <value>Add new Articles to the webshop</value>
   </data>
+  <data name="Image" xml:space="preserve">
+    <value>Choose image</value>
+  </data>
   <data name="Save1" xml:space="preserve">
     <value>Save</value>
   </data>

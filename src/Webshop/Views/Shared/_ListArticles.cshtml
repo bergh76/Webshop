@@ -34,7 +34,7 @@ if (count == 0)
                                         <span class="symbol pull-left icon-superpris"></span>
                                         <span class="description">-29%</span>
                                     </span>
-                                    <span class="price animated rubberBand">@Html.DisplayFor(model => item.ArticlePrice)</span>
+                                    <span class="price animated">@Html.DisplayFor(model => item.ArticlePrice)</span>
                                     <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@ if (count == 0)
                                     </span>
                                 </div>
                             </div>
-                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
+                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy rubberBand"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
                         </div>
                     </div>
                 </div>

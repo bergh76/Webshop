@@ -12,5 +12,7 @@ namespace Webshop.Models
         public string SubCategoryName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Resources.SubCategoryModel))]
         public bool ISActive { get; set; }
+        public string LangCode { get; set; }
+
     }
 }

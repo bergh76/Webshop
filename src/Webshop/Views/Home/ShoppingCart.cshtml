@@ -1,4 +1,11 @@
 ﻿@model Webshop.ViewModels.ShoppingCartViewModel
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@*@using Microsoft.Extensions.Options*@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Index"];
+}
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @{
     ViewBag.Title = "Shopping Cart";
@@ -55,17 +62,19 @@
 <section class="container">
     <div class="row">
         <div class="col-xs-12 pad-top content-box">
-            <h3>Aktuell kundkorg: @*@Localizer["TopProducts"]*@</h3>
+            <h3>@Localizer["CartHeader"]</h3>
             <p id="update-message"> </p>
             <table id="cart-summary" class="table table-responsive table-hover table-striped">
                 <tr>
                     <th> </th>
                     
-                    <th>Artikelnamn</th>
+                    <th>@Localizer["Article"]</th>
 
-                    <th>Antal</th>
+                    <th>@Localizer["Amount"]</th>
 
-                    <th>Pris(st)</th>
+                    <th>@Localizer["Price"]</th>
+
+                    <th>@Localizer["RowTotal"]</th>
 
                     <th> </th>
                 </tr>
@@ -79,7 +88,12 @@
                         <td id="item-count-@item.CartItemId">@item.Count</td>
 
                         <td>@item.Article.ArticlePrice</td>
-
+                        <td>
+                            @{var price = item.Article.ArticlePrice;
+                                var i = item.Count;
+                                var sum = Convert.ToDecimal(price * i);}
+                            @sum
+                        </td>
                         <td>
                             <a class="delete-button-sm pull-right RemoveLink" href="#"
                                data-id="@item.CartItemId"
@@ -91,9 +105,9 @@
                 }
             </table>
             <div class="pull-right" id="cart-total">
-                <h4>Total: @Model.CartTotal</h4>
+                <h4>@Localizer["CartTotal"] @Model.CartTotal</h4>
             </div>
-            <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">Checkout</a><p>&nbsp;</p></div>
+            <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
         </div>
     </div>
 </section>

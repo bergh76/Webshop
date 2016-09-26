@@ -11,8 +11,9 @@
         <div class="col-xs-12 padding-x-off pad-top content-box">
             <div class="col-xs-12">
                 <div class="col-md-4 pull-left">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12"><label class="col-md-10 control-label">@Localizer["Image"]</label>
                         <div class="custom-file-upload pull-left">
+
                             <input type="file" name="file" multiple />
                         </div>
                     </div>
@@ -27,7 +28,7 @@
                                 <label asp-for="VendorID" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
                                     <select asp-for="VendorID" class="form-control placeholder" asp-items="ViewBag.VendorID">
-                                        @*<option value="">@Localizer["AddVendor1"]</option>*@
+                                        <option value="">@Localizer["AddVendor1"]</option>
                                     </select>
                                     <!-- Button trigger modal -->
                                     <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
@@ -40,7 +41,7 @@
                                 <label asp-for="CategoryID" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
                                     <select asp-for="CategoryID" class="form-control placeholder" asp-items="ViewBag.CategoryID">
-                                        @*<option value="">@Localizer["AddCategory1"]</option>*@
+                                        <option value="">@Localizer["AddCategory1"]</option>
                                     </select>
                                     <!-- Button trigger modal -->
                                     <a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="CategoryID"></label></span></a>
@@ -53,7 +54,7 @@
                                 <label asp-for="ProductID" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
                                     <select asp-for="ProductID" class="form-control placeholder" asp-items="ViewBag.ProductID">
-                                        @*<option value="">@Localizer["AddProduct1"]</option>*@
+                                        <option value="">@Localizer["AddProduct1"]</option>
                                     </select>
                                     <!-- Button trigger modal -->
                                     <a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="ProductID"></label></span></a>
@@ -66,7 +67,7 @@
                                 <label asp-for="SubCategoryID" class="col-md-10 control-label"></label>
                                 <div class="col-md-12">
                                     <select asp-for="SubCategoryID" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
-                                        @*<option value="">@Localizer["AddProductType1"]</option>*@
+                                        <option value="">@Localizer["AddProductType1"]</option>
                                     </select>
                                     <!-- Button trigger modal -->
                                     <a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="SubCategoryID"></label></span></a>
@@ -185,8 +186,8 @@
             <div style="height: 30px;">
                 <div class="action-row">
                     <div>
-                        <input type="button" value="@Localizer["Back"]" class="btn btn-sm btn-success margin-bottom pull-right" onclick="history.go(-1);" />
-                        <input type="submit" value=@Localizer["Save"] class="btn btn-sm btn-danger margin-bottom pull-right" />
+                        <button class="btn btn-sm btn-success margin-bottom pull-right" onclick="history.go(-1);">@Localizer["Back1"]</button>
+                        <input type="submit" value=@Localizer["Save1"] class="btn btn-sm btn-danger margin-bottom pull-right" />
                     </div>
                 </div>
             </div>

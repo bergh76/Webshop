@@ -135,6 +135,9 @@
   <data name="BadgeHeader1" xml:space="preserve">
     <value>Lägg till nya artiklar i webshopen</value>
   </data>
+  <data name="Image" xml:space="preserve">
+    <value>Välj bild</value>
+  </data>
   <data name="Save1" xml:space="preserve">
     <value>Spara</value>
   </data>

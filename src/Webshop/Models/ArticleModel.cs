@@ -36,31 +36,26 @@ namespace Webshop.Models
 
         public Guid ArticleGuid { get; set; } //lang independent
 
-        //[ForeignKey("VendorForeignKey")]
         public VendorModel _Vendor { get; set; }
         [Display(Name = "Brand", ResourceType = typeof(Resources.Articles))]
         [Required(ErrorMessage = "ErrorVendorName")]
         public int VendorId { get; set; } //lang independent
 
-        //[ForeignKey("ProductForeignKey")]
         public ProductModel _Product { get; set; }
         [Display(Name = "Product", ResourceType = typeof(Resources.Articles))]
         [Required(ErrorMessage = "ErrorProductName")]
         public string ProductId { get; set; } //lang independent
 
-        //[ForeignKey("CategoryForeignKey")]
         public CategoryModel _Category { get; set; }
         [Display(Name = "Category", ResourceType = typeof(Resources.Articles))]
         [Required(ErrorMessage = "ErrorCategoryName")]
         public int CategoryId { get; set; } //lang independent
 
-        //[ForeignKey("SubCatForeignKey")]
         public SubCategoryModel _SubCategory { get; set; }
         [Display(Name = "SubCategoryType", ResourceType = typeof(Resources.Articles))]
         [Required(ErrorMessage = "ErrorSubCategory")]
         public int SubCategoryId { get; set; } //lang independent
 
-        //[ForeignKey("ImageForeignKey")]
         public ImageModel _Image { get; set; }
         public int ImageId { get; set; } //lang independent
 

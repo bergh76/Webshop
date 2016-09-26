@@ -1,4 +1,13 @@
 ﻿@model Webshop.Components.CartSummaryComponent
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@*@using Microsoft.Extensions.Options*@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Index"];
+}
+
+
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @functions
 {
@@ -57,11 +66,11 @@
         <table id="cart-summary" class="table table-responsive table-hover table-striped">
             <thead>
                 <tr>
-                    <th> Bild </th>
-                    <th> Artikel </th>
-                    <th> Antal </th>
-                    <th> Pris </th>
-                    <th> Radsumma </th>
+                    <th>@Localizer["Image"]</th>
+                    <th>@Localizer["Article"]</th>
+                    <th>@Localizer["Amount"]</th>
+                    <th>@Localizer["Price"]</th>
+                    <th>@Localizer["RowTotal"]</th>
                     <th>   </th>
                 </tr>
             </thead>
@@ -97,18 +106,18 @@
             <div class="col-md-9"></div>
             <div class="col-md-3 pull-left">
                 <p>
-                    Totalt: @ViewBag.Sum
+                    @Localizer["CartTotal"] @ViewBag.Sum
                 </p>
             </div>
         </div>
         <div class="col-md-12">
-            <a asp-area="" asp-controller="Home" asp-action="Cart" class="btn btn-sm btn-success pull-right">Visa Kundkorg</a>
+            <a asp-area="" asp-controller="Home" asp-action="Cart" class="btn btn-sm btn-success pull-right">@Localizer["ShowCart"]</a>
         </div>
     </div>
  }
  else
  {
-     <div class="col-md-12"><span class="alert-info">Din kundkorg är tom</span></div>
+     <div class="col-md-12"><span class="alert-info">@Localizer["EmptyCart"]</span></div>
 
  }
                                 

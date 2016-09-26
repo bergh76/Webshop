@@ -23,6 +23,14 @@ namespace Webshop.Models
         {
             modelBuilder.Entity<ArticleTranslation>()
                 .HasKey(c => new { c.ArticleId, c.LangCode });
+            //modelBuilder.Entity<VendorModel>()
+            //    .HasKey(c => new { c.VendorID, c.LangCode });
+            //modelBuilder.Entity<ProductModel>()
+            //   .HasKey(c => new { c.ProductID, c.LangCode });
+            //modelBuilder.Entity<CategoryModel>()
+            //   .HasKey(c => new { c.CategoryID, c.LangCode });
+            //modelBuilder.Entity<SubCategoryModel>()
+            //   .HasKey(c => new { c.SubCategoryID, c.LangCode });
         }
     }
 }

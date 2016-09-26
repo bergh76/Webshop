@@ -123,22 +123,19 @@
   <data name="Article" xml:space="preserve">
     <value>Artikel</value>
   </data>
+  <data name="CartHeader" xml:space="preserve">
+    <value>Aktuell kundkorg</value>
+  </data>
   <data name="CartTotal" xml:space="preserve">
     <value>Total: </value>
   </data>
-  <data name="EmptyCart" xml:space="preserve">
-    <value>Din kundvagn är tom</value>
-  </data>
-  <data name="Image" xml:space="preserve">
-    <value />
+  <data name="Checkout" xml:space="preserve">
+    <value>Checkout</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Pris (kr)</value>
   </data>
   <data name="RowTotal" xml:space="preserve">
     <value>Radsumma</value>
-  </data>
-  <data name="ShowCart" xml:space="preserve">
-    <value>Visa kundvagn</value>
   </data>
 </root>

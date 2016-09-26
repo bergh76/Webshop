@@ -5,7 +5,7 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
   /*font-family: 'Trebuchet MS','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
-  font-family: 'Roboto';
+  font-family: 'Raleway','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    /*font-family: Corbel, Tahoma, Geneva, Verdana, sans-serif!important;*/
   /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;*/
   line-height: 1.42857143;
@@ -15,20 +15,27 @@ body {
 .basket-lined {
     font-size: 3em;
     line-height: 0;
-    color: #333;
+    color: #fff;
     position: absolute;
-    top: 22px;
-    right: -10px;
+    top: 18px;
+    right: 10px;
+}
+.badge-blue{
+    /*border: 1px solid #000;*/
+    color: #fff;
+    background-color: #3498db;
 }
 .basket-lined >.badge {
     position: absolute;
     left: 10px;
-    top: -10px;
+    top: -8px;
 }
 .text-xs{
-    font-family: 'Robot';
-    font-size: 0.7em;
+    font-family: 'Raleway';
+    font-size: 1.0em;
+    font-weight: bold;
 }
+
 .control-label {
     display: inline-block;
     max-width: 100%;
@@ -219,10 +226,12 @@ body {
     padding-left: 0!important;
     padding-right: 0!important;
 }
-
+.dropdown-toggle-cart{
+    padding-right: 20px;
+}
 .none-radius{
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-radius: 0;
+    /*border-bottom-left-radius: 0;*/
 }
 .product-artnr{
     /*font-family: 'Segoe UI','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;*/
@@ -904,10 +913,11 @@ textarea {
 }
 
 .submit-sm-button {
+    color: #000;
     font-size: 12px;
     font-family: Corbel;
     font-weight: normal;
-        padding: 3px 9px;
+    padding: 3px 9px;
     background-color: #ffcb00;
 }
 
@@ -930,7 +940,7 @@ textarea {
     font-size: 10px;
     font-family: Corbel;
     font-weight: normal;
-        padding: 3px 9px;
+    padding: 3px 9px;
     background-color: #fff;
 }
 
@@ -1033,10 +1043,10 @@ textarea {
     color: rgba(221, 23, 38, 0.5);
 }
 
-.badge-blue {
+/*.badge-blue {
     font-size: 12px;
     background-color: #264263;
-}
+}*/
 .badge-blue-big {
     font-size: 16px;
     background-color: #264263;
@@ -1113,7 +1123,7 @@ background-color: #fff;
     display: block;
     width: auto;
     font-size: 14px;
-    margin-top: 25px;
+    /*margin-top: 25px;*/
     display: block;
     margin-bottom: 5px;
 }

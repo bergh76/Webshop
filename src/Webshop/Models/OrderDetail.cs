@@ -14,5 +14,6 @@ namespace Webshop.Models
         public decimal UnitPrice { get; set; }
         public virtual Articles Article { get; set; }
         public virtual Order Order { get; set; }
+
     }
 }
