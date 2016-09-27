@@ -11,6 +11,7 @@ using System.Globalization;
 using Webshop.Controllers;
 using Webshop.Interfaces;
 using Webshop.Models;
+using Webshop.Models.BusinessLayers;
 
 namespace Webshop
 {
@@ -47,7 +48,6 @@ namespace Webshop
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
                 .AddDataAnnotationsLocalization();
-
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {

@@ -41,7 +41,7 @@ namespace Webshop.Areas.Admin.Controllers
         //}
 
 
-        public IActionResult Index(string vendor, string category, string product, string subcategory)
+        public async Task<IActionResult> Index(string vendor, string category, string product, string subcategory)
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
@@ -55,9 +55,6 @@ namespace Webshop.Areas.Admin.Controllers
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-                                               //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
-                                               //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
-                                               //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
                           where p.ISActive == true
                           select new ArticlesViewModel
                           {
@@ -65,8 +62,6 @@ namespace Webshop.Areas.Admin.Controllers
                               ArticleNumber = p.ArticleNumber,
                               ArticlePrice = p.ArticlePrice,
                               ArticleStock = p.ArticleStock,
-                              //ISActive = p.ISActive,
-                              //ISCampaign = p.ISCampaign,
                               ArticleName = pt.ArticleName,
                               ArticleShortText = pt.ArticleShortText,
                               ArticleFeaturesOne = pt.ArticleFeaturesOne,
@@ -76,7 +71,7 @@ namespace Webshop.Areas.Admin.Controllers
                               ArticleImgPath = i.ImagePath + i.ImageName,
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             return View(vModel);
 
         }
@@ -236,12 +231,8 @@ namespace Webshop.Areas.Admin.Controllers
             {
                 try
                 {
-                    newArticle.UpdateArticleData(article, artTrans, _context, _hostEnvironment, id, ext, newFilename, file, form);
-                    //article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
-                    //artTrans = await _context.ArticleTranslations.SingleOrDefaultAsync(d => d.ArticleId == id);
-                    _context.Update(article);
-                    _context.Update(artTrans);
-                    await _context.SaveChangesAsync();
+                    await newArticle.EditArticle(article, artTrans, _context, _hostEnvironment, id, ext, newFilename, file, form);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -394,11 +385,11 @@ namespace Webshop.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        public async Task<IActionResult> NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
         {
             if (ModelState.IsValid)
             {
-                add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
+                await add.AddArticle(article, artTranslate, _context, form);
                 return RedirectToAction("Create");
             }
             return View(article);
@@ -589,7 +580,6 @@ namespace Webshop.Areas.Admin.Controllers
             }
             return View(subCategory);
         }
-
 
         private bool ArticleModelExists(int id)
         {

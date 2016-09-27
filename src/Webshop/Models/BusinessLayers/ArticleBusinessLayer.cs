@@ -20,12 +20,20 @@ namespace Webshop.Models.BusinessLayers
         private IFormFile _file;
         private IFormCollection _form;
 
+        DateTime date = DateTime.Now.ToLocalTime();
+        public Guid guidID;
+        string tempArtNr;
+        private int vendorID;
+        private int categoryID;
+        private int productID;
+        private int subproductID;
         private int _vendorID;
         private int _categoryID;
         private string _productID;
         private int _subproductID;
 
         public ArticleBusinessLayer() { }
+
         public ArticleBusinessLayer(IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, WebShopRepository context, IFormFile file, IFormCollection form)
         {
             _hostEnvironment = hostEnvironment;
@@ -35,31 +43,38 @@ namespace Webshop.Models.BusinessLayers
             _form = form;
         }
 
-        internal void AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, IFormFile file, IFormCollection form)
+        internal async Task AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository context, IFormCollection form)
         {
             string lang = "sv";
             artTranslate.LangCode = lang;
-            var date = DateTime.Now.ToLocalTime();
-            int vendorID = Convert.ToInt32(form["VendorID"]);
+
+            vendorID = Convert.ToInt32(form["VendorID"]);
             article.VendorId = Convert.ToInt32(vendorID);
 
-            int categoryID = Convert.ToInt32(form["CategoryID"]);
+            categoryID = Convert.ToInt32(form["CategoryID"]);
             article.CategoryId = categoryID;
 
             string productID = form["ProductID"];
             article.ProductId = productID;
 
-            int subproductID = Convert.ToInt32(form["SubCategoryID"]);
+            subproductID = Convert.ToInt32(form["SubCategoryID"]);
             article.SubCategoryId = subproductID;
 
-            string tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
+            tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
             article.ArticleNumber = tempArtNr;
             artTranslate.ArticleNumber = tempArtNr;
             Guid guidID = CreatGuid();
             article.ArticleGuid = guidID;
             article.ArticleAddDate = date;
             artTranslate.ISTranslated = false;
-
+            context.Articles.Add(article);
+            await context.SaveChangesAsync();
+            artTranslate.ArticleId = context.Articles.Where(x => x.ArticleGuid == guidID).Select(x => x.ArticleId).FirstOrDefault();
+            context.ArticleTranslations.Add(artTranslate);
+            await context.SaveChangesAsync();
+        }
+        public void Image(WebShopRepository context, Articles article, IFormFile file, IFormCollection form, IHostingEnvironment hostEnvironment)
+        {
             var image = IsImage(file); // check if file is a image
             if (image == true)
             {
@@ -95,7 +110,7 @@ namespace Webshop.Models.BusinessLayers
                         ArticleGuid = guidID
                     };
                     context.Images.Add(imgExists);
-                    context.SaveChanges();
+                    context.SaveChangesAsync();
                     article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
 
                 }
@@ -115,17 +130,11 @@ namespace Webshop.Models.BusinessLayers
                     context.Images.Add(img);
                     context.SaveChanges();
                     article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
-
                 }
-                context.Articles.Add(article);
-                context.SaveChanges();
-                artTranslate.ArticleId = context.Articles.Where(x => x.ArticleGuid == guidID).Select(x => x.ArticleId).FirstOrDefault();
-                context.ArticleTranslations.Add(artTranslate);
-                context.SaveChanges();
-
             }
         }
-        internal void UpdateArticleData(Models.Articles article, ArticleTranslation artTrans, WebShopRepository context, IHostingEnvironment hostEnvironment, int id, string ext, string newFilename, IFormFile file, IFormCollection form)
+
+        internal async Task EditArticle(Models.Articles article, ArticleTranslation artTrans, WebShopRepository context, IHostingEnvironment hostEnvironment, int id, string ext, string newFilename, IFormFile file, IFormCollection form)
         {
             var image = IsImage(file);
             if (image == true)
@@ -149,7 +158,7 @@ namespace Webshop.Models.BusinessLayers
                 newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
                 using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
                 {
-                    file.CopyToAsync(fileStream);
+                    await file.CopyToAsync(fileStream);
                 }
                 ImageModel img = new ImageModel
                 {
@@ -161,13 +170,16 @@ namespace Webshop.Models.BusinessLayers
                 context.Images.Add(img);
                 context.SaveChanges();
                 article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
-
+                _context.Update(article);
+                _context.Update(artTrans);
+                await _context.SaveChangesAsync();
             }
         }
 
         private Guid CreatGuid()
         {
-            return Guid.NewGuid();
+            guidID = Guid.NewGuid();
+            return guidID;
         }
 
         private static bool IsImage(IFormFile file)

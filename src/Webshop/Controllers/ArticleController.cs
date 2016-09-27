@@ -219,12 +219,7 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    newArticle.UpdateArticleData(article, artTrans,_context,_hostEnvironment, id, ext, newFilename, file, form);
-                    //article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
-                    //artTrans = await _context.ArticleTranslations.SingleOrDefaultAsync(d => d.ArticleId == id);
-                    _context.Update(article);
-                    _context.Update(artTrans);
-                    await _context.SaveChangesAsync();
+                    await newArticle.EditArticle(article, artTrans,_context,_hostEnvironment, id, ext, newFilename, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -371,11 +366,11 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        public async Task<IActionResult> NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
         {
             if (ModelState.IsValid)
             {
-                add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
+                await add.AddArticle(article, artTranslate, _context, form);
                 return RedirectToAction("Create");
             }
             return View(article);
