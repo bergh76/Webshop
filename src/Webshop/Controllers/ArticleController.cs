@@ -50,10 +50,6 @@ namespace Webshop.Controllers
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-                          //where p.VendorId == vID || string.IsNullOrEmpty(dropdownVendor)
-                          //where p.CategoryId == cID || string.IsNullOrEmpty(dropdownCategory)
-                          //where p.ProductId == pID || string.IsNullOrEmpty(dropdownProduct)
-                          //where p.SubCategoryId == spID || string.IsNullOrEmpty(dropdownSubCategory)
                           where p.ISActive == true
                           select new ArticlesViewModel
                           {
@@ -61,8 +57,6 @@ namespace Webshop.Controllers
                               ArticleNumber = p.ArticleNumber,
                               ArticlePrice = p.ArticlePrice,
                               ArticleStock = p.ArticleStock,
-                              //ISActive = p.ISActive,
-                              //ISCampaign = p.ISCampaign,
                               ArticleName = pt.ArticleName,
                               ArticleShortText = pt.ArticleShortText,
                               ArticleFeaturesOne = pt.ArticleFeaturesOne,
@@ -123,10 +117,6 @@ namespace Webshop.Controllers
             {
                 return NotFound();
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
         }
 
@@ -155,7 +145,6 @@ namespace Webshop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            //ViewData["LangCode"] = new SelectList(_context.Languages, "ID", "LangCode", artTranslate.LangCode);
             ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorId);
             ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductId);
             ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryId);
@@ -175,9 +164,6 @@ namespace Webshop.Controllers
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-                                           //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
-                                           //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
-                                           //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
                           where p.ArticleId == id
                           select new ArticlesViewModel
                           {
@@ -222,7 +208,7 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string ext, string newFilename, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, EditArticleBusiness newArticle)
+        public async Task<IActionResult> Edit(int id, string ext, string newFilename, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
         {
             if (id != article.ArticleId)
             {
@@ -272,9 +258,6 @@ namespace Webshop.Controllers
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-                                           //where p._Vendor.VendorName == vendor || string.IsNullOrEmpty(vendor)
-                                           //where p._Category.CategoryName == category || string.IsNullOrEmpty(category)
-                                           //where p._Product.ProductName == product || string.IsNullOrEmpty(product)
                           where p.ArticleId == id
                           select new ArticlesViewModel
                           {
@@ -311,8 +294,6 @@ namespace Webshop.Controllers
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
-            //trans.TranslateArticleData(artTranslate, article, _context, form);
-            //return RedirectToAction("NewArticle");
         }
 
   
@@ -359,10 +340,6 @@ namespace Webshop.Controllers
             {
                 return NotFound();
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
         }
 
@@ -379,17 +356,6 @@ namespace Webshop.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Search(string search)
-        //{
-        //    var hitlist = _context.Articles.Where((System.Linq.Expressions.Expression<Func<Articles, bool>>)(x => (bool)x.ArticleName.Contains(search)));
-        //    if(hitlist.Count() == 0)
-        //    {
-        //        ViewBag.NoHit = "Din sökning gav inga resultat";
-        //    }
-        //    return RedirectToAction("Index", hitlist);
-        //}
 
         // GET: Articles/Create
         public IActionResult NewArticle()
@@ -401,77 +367,15 @@ namespace Webshop.Controllers
             ViewData["VendorID"] = new SelectList(_context.Vendors, "VendorID", "VendorName");
             return View();
         }
-        //[Authorize]
-        //public IActionResult NewArticle(string dropdownVendor, string dropdownProduct, string dropdownCategory, string dropdownSubCategory)
-        //{
-        //    ///<summary>
-        //    ///Gets all the MANUFACTURES in the database
-        //    /// </summary>
-        //    var vndrQry = from v in _context.Vendors
-        //                  orderby v.VendorName
-        //                  select v.VendorName;
-        //    var vendorList = new List<string>();
-        //    vendorList.AddRange(vndrQry.Distinct());
-        //    var vendor = from v in _context.Vendors
-        //                 select v;
-        //    ViewData["dropdownVendor"] = new SelectList(vendorList);
 
-        //    ///<summary>
-        //    ///Gets all the PRODUCTTYPE in the database
-        //    /// </summary>
-        //    var prdctQry = from p in _context.Products
-        //                   orderby p.ProductName
-        //                   select p.ProductName;
-        //    var prdctList = new List<string>();
-        //    prdctList.AddRange(prdctQry.Distinct());
-        //    var procuct = from p in _context.Products
-        //                  select p;
-        //    ViewData["dropdownProduct"] = new SelectList(prdctList);
-
-        //    ///<summary>
-        //    ///Gets all the CATEGORIES in the database
-        //    /// </summary>
-        //    var catQry = from c in _context.Categories
-        //                 orderby c.CategoryName
-        //                 select c.CategoryName;
-        //    var catList = new List<string>();
-        //    catList.AddRange(catQry.Distinct());
-        //    var category = from c in _context.Categories
-        //                   select c;
-        //    ViewData["dropdownCategory"] = new SelectList(catList);
-
-        //    ///<summary>
-        //    ///Gets all the SUBPRODUCTLIST in the database
-        //    /// </summary>
-        //    var subPrdctQry = from s in _context.SubCategories
-        //                      orderby s.SubCategoryName
-        //                      select s.SubCategoryName;
-        //    var subPrdctList = new List<string>();
-        //    subPrdctList.AddRange(subPrdctQry.Distinct());
-        //    var subProduct = from s in _context.SubCategories
-        //                     select s;
-        //    ViewData["dropdownSubCategory"] = new SelectList(subPrdctList);
-        //    return View();
-        //}
-
-
-        // POST: Articles/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleTranslationBusinessLayer trans, AddArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        public IActionResult NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
         {
             if (ModelState.IsValid)
             {
                 add.AddArticle(article, artTranslate, _context, _hostEnvironment, _localizer, file, form);
-                //var translate = _context.ArticleTranslations.Where(x => x.ISTranslated == false).Count();
-                //do while (translate != 0)
-                //    {
-                //        return RedirectToAction("ArticleTranslation", translate);
-                //    }
-                //while (translate == 0);
                 return RedirectToAction("Create");
             }
             return View(article);
@@ -492,7 +396,6 @@ namespace Webshop.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var nameInput = vendor.VendorName;
                 var exists = _context.Vendors.ToList().Where(x => x.VendorName == nameInput).Select(x => x.VendorName).FirstOrDefault();
                 do while (nameInput == exists)

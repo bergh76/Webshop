@@ -23,10 +23,10 @@ namespace Webshop.Controllers
     {
         private WebShopRepository _context;
         private readonly IStringLocalizer<HomeController> _localizer;
-        private readonly ILogger<ShoppingCartController> _logger;
-        private readonly AppSettings _appSettings;
+        private readonly ILogger<HomeController> _logger;
+        //private readonly AppSettings _appSettings;
 
-        public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<ShoppingCartController> logger)
+        public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<HomeController> logger)
         {
             _context = context;
             _localizer = localizer;
@@ -56,10 +56,6 @@ namespace Webshop.Controllers
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             var artList = from p in _context.Articles
                           where  p.ISCampaign == true
-                          //where p.VendorId == vendor || vendor == 0
-                          //where p.CategoryId == category || category == 0
-                          //where p.ProductId == product || string.IsNullOrEmpty(product)
-                          //where p.SubCategoryId == subproduct || subproduct == 0
                           join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
@@ -132,10 +128,6 @@ namespace Webshop.Controllers
             {
                 return NotFound();
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
         }
 
@@ -219,14 +211,6 @@ namespace Webshop.Controllers
             // Return the view
             return View("ShoppingCart", viewModel);
         }
-
-        //public async Task<IActionResult> _Layout()
-        //{
-        //    var sum = ShoppingCart.GetCart(_context, HttpContext);
-        //    ViewBag.Sum = await sum.GetTotal();
-        //    return View();
-        //}
-        //[AjaxOnly]
         public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
         {
             // Retrieve the album from the database
@@ -235,8 +219,6 @@ namespace Webshop.Controllers
 
             var addedArticleName = await _context.ArticleTranslations
                .SingleAsync(artT => artT.ArticleId == id);
-
-            //var addedImagePath = await _context.Articles.SingleAsync(x => x.ImageId == x._Image.ImageId);
 
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
@@ -298,30 +280,6 @@ namespace Webshop.Controllers
             return Json(results);
         }
 
-
-        //public async Task<IActionResult> CartDetails(
-        //    [FromServices] IMemoryCache cache,
-        //    int id)
-        //{
-        //    var cacheKey = string.Format("album_{0}", id);
-        //    //Articles article;
-        //    ArticleTranslation artT;
-        //    if (!cache.TryGetValue(cacheKey, out artT))
-        //    {
-        //        artT = await _context.ArticleTranslations                                        
-        //                        .Where(a => a.ArticleId == id)
-        //                        .Include(a => a.ArticleName)
-        //                        .FirstOrDefaultAsync();
-
-        //    }
-
-        //    if (artT == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(artT);
-        //}
     }
 
     internal class AppSettings
