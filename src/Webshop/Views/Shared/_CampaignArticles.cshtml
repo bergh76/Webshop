@@ -35,7 +35,7 @@
                             </div>
                             <div class="productImageWrap">
                                 <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ArticleId">
-                                    <img class="img-responsive img" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@Html.UrlEncoder.Encode(item.ArticleImgPath)" />
+                                    <img class="img-responsive img" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@item.ArticleImgPath" />
                                 </a>
                             </div>
                             <div class="productDescription">

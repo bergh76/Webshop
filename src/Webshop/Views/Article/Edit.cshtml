@@ -23,7 +23,7 @@
                     <input type="file" name="file" multiple />
                 </div>
                 <div class="image-container">
-                    <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/@Html.UrlEncoder.Encode(Model.ArticleImgPath)" />
+                    <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/@Model.ArticleImgPath" />
                 </div>
             </div>
 

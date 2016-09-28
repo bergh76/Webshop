@@ -42,7 +42,7 @@ if (count == 0)
                             <div class="col-xs-4 padding-x-off">
                                 <div class="productDetailImageWrap">
                                     <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
-                                        <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@Html.UrlEncoder.Encode(item.ArticleImgPath)" />
+                                        <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@item.ArticleImgPath" />
                                     </a>
                                 </div>
                             </div>

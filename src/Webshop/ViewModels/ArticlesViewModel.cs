@@ -69,7 +69,7 @@ namespace Webshop.ViewModels
         public ProductModel _Product { get; set; }
         [Display(Name = "Product", ResourceType = typeof(Resources.Articles))]
         [Required(ErrorMessage = "ErrorProductName")]
-        public string ProductID { get; set; } //lang independent
+        public int ProductID { get; set; } //lang independent
 
         public CategoryModel _Category { get; set; }
         [Display(Name = "Category", ResourceType = typeof(Resources.Articles))]

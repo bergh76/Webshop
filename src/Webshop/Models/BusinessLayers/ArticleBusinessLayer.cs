@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
@@ -21,66 +23,77 @@ namespace Webshop.Models.BusinessLayers
         private IFormCollection _form;
 
         DateTime date = DateTime.Now.ToLocalTime();
-        public Guid guidID;
+        private static Guid guidID;
+        private static string root;
         string tempArtNr;
-        private int vendorID;
-        private int categoryID;
-        private int productID;
-        private int subproductID;
         private int _vendorID;
         private int _categoryID;
-        private string _productID;
+        private int _productID;
         private int _subproductID;
+        private string _vendor;
+        private string _category;
+        private string _product;
+        private string _subproduct;
 
         public ArticleBusinessLayer() { }
 
         public ArticleBusinessLayer(IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, WebShopRepository context, IFormFile file, IFormCollection form)
         {
-            _hostEnvironment = hostEnvironment;
             _context = context;
+            _hostEnvironment = hostEnvironment;
             _localizer = localizer;
             _file = file;
             _form = form;
         }
 
-        internal async Task AddArticle(Articles article, ArticleTranslation artTranslate, WebShopRepository context, IFormCollection form)
+        internal async Task AddArticle(IFormFile file, IFormCollection form, WebShopRepository context, Articles article,ArticleTranslation artTranslate, IHostingEnvironment hostEnvironment, int VendorID, int ProductID, int CategoryID,int SubCategoryID)
         {
-            string lang = "sv";
-            artTranslate.LangCode = lang;
 
-            vendorID = Convert.ToInt32(form["VendorID"]);
-            article.VendorId = Convert.ToInt32(vendorID);
+            var rootHost = RootHost(hostEnvironment);
 
-            categoryID = Convert.ToInt32(form["CategoryID"]);
-            article.CategoryId = categoryID;
+            artTranslate.LangCode = "sv";
 
-            string productID = form["ProductID"];
-            article.ProductId = productID;
+            _vendorID = VendorID;
+            _vendor = context.Vendors.Where(x => x.VendorID == _vendorID).Select(n => n.VendorName).FirstOrDefault();
+            article.VendorId = Convert.ToInt32(_vendorID);
 
-            subproductID = Convert.ToInt32(form["SubCategoryID"]);
-            article.SubCategoryId = subproductID;
+            _categoryID = CategoryID;
+            _category = context.Categories.Where(x => x.CategoryID == _categoryID).Select(n => n.CategoryName).FirstOrDefault();
+            article.CategoryId = _categoryID;
 
-            tempArtNr = String.Format("{0}{1}{2}{3}", vendorID, categoryID, productID, subproductID);
+            _productID = ProductID;
+            _product = context.Products.Where(x => x.ProductID == _productID).Select(n => n.ProductName).FirstOrDefault();
+            article.ProductId = _productID;
+
+            _subproductID = SubCategoryID;
+            _subproduct = context.SubCategories.Where(x => x.SubCategoryID == _subproductID).Select(n => n.SubCategoryName).FirstOrDefault();
+            article.SubCategoryId = _subproductID;
+
+            tempArtNr = String.Format("{0}{1}{2}{3}", _vendorID, _categoryID, _productID, _subproductID);
             article.ArticleNumber = tempArtNr;
             artTranslate.ArticleNumber = tempArtNr;
+
             Guid guidID = CreatGuid();
             article.ArticleGuid = guidID;
             article.ArticleAddDate = date;
             artTranslate.ISTranslated = false;
+
+            await Image(_hostEnvironment, context, article, file, form, _vendor, _category, _product, _subproduct);
             context.Articles.Add(article);
+            article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+
             await context.SaveChangesAsync();
             artTranslate.ArticleId = context.Articles.Where(x => x.ArticleGuid == guidID).Select(x => x.ArticleId).FirstOrDefault();
             context.ArticleTranslations.Add(artTranslate);
             await context.SaveChangesAsync();
         }
-        public void Image(WebShopRepository context, Articles article, IFormFile file, IFormCollection form, IHostingEnvironment hostEnvironment)
+    
+        public async Task Image(IHostingEnvironment hostEnvironment,  WebShopRepository context, Articles article, IFormFile file, IFormCollection form, string _vendor, string _category, string _product, string _subproduct)
         {
-            var image = IsImage(file); // check if file is a image
-            if (image == true)
+            if (IsImage(file)==true)
             {
-                var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", vendorID, categoryID, productID, subproductID);//creates serverpath for images
-                var root = hostEnvironment.WebRootPath;
-                string uploads = root + "/" + serverPath;
+                var serverPath = string.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", _vendorID, _categoryID, _productID, _subproductID);//creates serverpath for images
+                var uploads = root + "/" + serverPath;
                 Directory.CreateDirectory(uploads); //creates directory if not exists else use allready created
 
                 string ext = Path.GetExtension(file.FileName);
@@ -100,7 +113,7 @@ namespace Webshop.Models.BusinessLayers
                     string newFnameExists = tmpNameThree.Replace(" ", "_") + ext.ToString();
                     using (var fileStream = new FileStream(Path.Combine(uploads, newFnameExists), FileMode.Create))
                     {
-                        file.CopyToAsync(fileStream);
+                        await file.CopyToAsync(fileStream);
                     }
                     ImageModel imgExists = new ImageModel
                     {
@@ -110,15 +123,14 @@ namespace Webshop.Models.BusinessLayers
                         ArticleGuid = guidID
                     };
                     context.Images.Add(imgExists);
-                    context.SaveChangesAsync();
-                    article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+                    await context.SaveChangesAsync();
 
                 }
                 else
                 {
                     using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
                     {
-                        file.CopyToAsync(fileStream);
+                        await file.CopyToAsync(fileStream);
                     }
                     ImageModel img = new ImageModel
                     {
@@ -128,13 +140,12 @@ namespace Webshop.Models.BusinessLayers
                         ArticleGuid = guidID
                     };
                     context.Images.Add(img);
-                    context.SaveChanges();
-                    article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+                    await context.SaveChangesAsync();
                 }
             }
         }
 
-        internal async Task EditArticle(Models.Articles article, ArticleTranslation artTrans, WebShopRepository context, IHostingEnvironment hostEnvironment, int id, string ext, string newFilename, IFormFile file, IFormCollection form)
+        internal async Task EditArticle(Articles article, ArticleTranslation artTrans, WebShopRepository context, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
         {
             var image = IsImage(file);
             if (image == true)
@@ -152,10 +163,10 @@ namespace Webshop.Models.BusinessLayers
                 string uploads = root + "/" + serverPath;
 
                 Directory.CreateDirectory(uploads);
-                ext = Path.GetExtension(file.FileName);
+                string ext = Path.GetExtension(file.FileName);
                 var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
                 var tmpNameTwo = tmpName.Replace("\"", "");
-                newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
+                string newFilename = tmpNameTwo.Replace(" ", "_") + ext.ToString();
                 using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
@@ -170,10 +181,13 @@ namespace Webshop.Models.BusinessLayers
                 context.Images.Add(img);
                 context.SaveChanges();
                 article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
-                _context.Update(article);
-                _context.Update(artTrans);
-                await _context.SaveChangesAsync();
+                context.Update(article);
+                context.Update(artTrans);
+                await context.SaveChangesAsync();
             }
+            context.Entry(article).State = EntityState.Modified;
+            context.Entry(artTrans).State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
 
         private Guid CreatGuid()
@@ -182,8 +196,13 @@ namespace Webshop.Models.BusinessLayers
             return guidID;
         }
 
-        private static bool IsImage(IFormFile file)
+        private static string RootHost(IHostingEnvironment host)
         {
+            return root = host.WebRootPath;
+        }
+
+        private static bool IsImage(IFormFile file)
+        {         
             if (file == null) return false;
             return file.ContentType.Contains("image") ||
                 _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));

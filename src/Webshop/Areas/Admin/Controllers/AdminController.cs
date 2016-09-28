@@ -25,12 +25,16 @@ namespace Webshop.Areas.Admin.Controllers
         private readonly WebShopRepository _context;
         private readonly IStringLocalizer<ArticleController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment;
+        private IFormFile _file;
+        private IFormCollection _form;
 
-        public AdminController(WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
+        public AdminController(WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, IFormFile file, IFormCollection form)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
+            _form = form;
+            _file = file;
         }
         // GET: Article
 
@@ -220,7 +224,7 @@ namespace Webshop.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string ext, string newFilename, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
+        public async Task<IActionResult> Edit(int id, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
         {
             if (id != article.ArticleId)
             {
@@ -231,8 +235,7 @@ namespace Webshop.Areas.Admin.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(article, artTrans, _context, _hostEnvironment, id, ext, newFilename, file, form);
-
+                    await newArticle.EditArticle(article, artTrans, _context, _hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -253,7 +256,6 @@ namespace Webshop.Areas.Admin.Controllers
             ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
             return View(article);
         }
-
 
         public IActionResult ArticleTranslation(int? id)
         {
@@ -353,10 +355,6 @@ namespace Webshop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
         }
 
@@ -385,15 +383,17 @@ namespace Webshop.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        public async Task<IActionResult> NewArticle(IFormFile file, IFormCollection form, int VendorID, int ProductID, int CategoryID, int SubCategoryID, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")]Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add)
         {
+
             if (ModelState.IsValid)
             {
-                await add.AddArticle(article, artTranslate, _context, form);
+                await add.AddArticle(file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
                 return RedirectToAction("Create");
             }
             return View(article);
         }
+
 
         public IActionResult NewVendor()
         {
@@ -462,7 +462,7 @@ namespace Webshop.Areas.Admin.Controllers
                 var p = _context.Products.ToList().Select(x => x.ProductID).Count();
                 if (p == 0)
                 {
-                    string tempP = "001";
+                    int tempP = 4001;
                     product.ProductID = tempP;
 
                 }
@@ -470,24 +470,8 @@ namespace Webshop.Areas.Admin.Controllers
                 {
                     var getLastID = _context.Products.ToList().OrderBy(x => x.ProductID).Select(x => x.ProductID).Last();
                     var tempIntProdID = Convert.ToInt32(getLastID);
-                    if (tempIntProdID < 10)
-                    {
-                        int newPId = tempIntProdID + 1;
-                        var newProdID = String.Format("00{0}", newPId);
-                        product.ProductID = newProdID;
-                    }
-                    else if (tempIntProdID < 100 && tempIntProdID >= 10)
-                    {
-                        int newPId = tempIntProdID + 1;
-                        var newProdID = String.Format("0{0}", newPId);
-                        product.ProductID = newProdID;
-                    }
-                    else
-                    {
-                        int newPId = tempIntProdID + 1;
-                        var newProdID = String.Format("{0}", newPId);
-                        product.ProductID = newProdID;
-                    }
+                    product.ProductID = tempIntProdID + 1;
+
                 }
                 _context.Add(product);
                 await _context.SaveChangesAsync();

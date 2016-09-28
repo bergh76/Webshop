@@ -20,7 +20,7 @@ namespace Webshop.Controllers
     {
         private readonly WebShopRepository _context;
         private readonly IStringLocalizer<ArticleController> _localizer;
-        private readonly IHostingEnvironment _hostEnvironment;
+        private readonly IHostingEnvironment _hostEnvironment; // service that provides some useful environment information such as the current file path
 
         public ArticleController(WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
         {
@@ -208,7 +208,7 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string ext, string newFilename, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
+        public async Task<IActionResult> Edit(int id, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
         {
             if (id != article.ArticleId)
             {
@@ -219,7 +219,7 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(article, artTrans,_context,_hostEnvironment, id, ext, newFilename, file, form);
+                    await newArticle.EditArticle(article, artTrans,_context,_hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -291,9 +291,9 @@ namespace Webshop.Controllers
             return View(vModel.SingleOrDefault());
         }
 
-  
+
         // GET: Article/Delete/5
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -330,7 +330,7 @@ namespace Webshop.Controllers
                               ISCampaign = p.ISCampaign
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
                 return NotFound();
@@ -366,11 +366,12 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewArticle(Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add, IFormFile file, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] IFormCollection form)
+        public async Task<IActionResult> NewArticle(IFormFile file, IFormCollection form, int VendorID, int ProductID, int CategoryID, int SubCategoryID, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")]Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add)
         {
+
             if (ModelState.IsValid)
             {
-                await add.AddArticle(article, artTranslate, _context, form);
+                await add.AddArticle(file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
                 return RedirectToAction("Create");
             }
             return View(article);
@@ -442,7 +443,7 @@ namespace Webshop.Controllers
                 var p = _context.Products.ToList().Select(x => x.ProductID).Count();
                 if (p == 0)
                 {
-                    string tempP = "001";
+                    int tempP = 4001;
                     product.ProductID = tempP;
 
                 }
@@ -450,24 +451,8 @@ namespace Webshop.Controllers
                 {
                     var getLastID = _context.Products.ToList().OrderBy(x => x.ProductID).Select(x => x.ProductID).Last();
                     var tempIntProdID = Convert.ToInt32(getLastID);
-                    if (tempIntProdID < 10)
-                    {
-                        int newPId = tempIntProdID + 1;
-                        var newProdID = String.Format("00{0}", newPId);
-                        product.ProductID = newProdID;
-                    }
-                    else if (tempIntProdID < 100 && tempIntProdID >= 10)
-                    {
-                        int newPId = tempIntProdID + 1;
-                        var newProdID = String.Format("0{0}", newPId);
-                        product.ProductID = newProdID;
-                    }
-                    else
-                    {
-                        int newPId = tempIntProdID + 1;
-                        var newProdID = String.Format("{0}", newPId);
-                        product.ProductID = newProdID;
-                    }
+                    product.ProductID = tempIntProdID + 1;
+
                 }
                 _context.Add(product);
                 await _context.SaveChangesAsync();

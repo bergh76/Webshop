@@ -9,6 +9,8 @@ using Webshop.Models;
 using Webshop.Models.BusinessLayers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Localization;
+using Webshop.ViewModels;
+using System.Globalization;
 
 namespace Webshop.Controllers
 {
@@ -18,19 +20,46 @@ namespace Webshop.Controllers
     {
         private readonly WebShopRepository _context; //crate a service for context
         private readonly IHostingEnvironment _hostEnvironment;
-        private readonly IFormCollection _form;
-        public ApiArticlesController(IFormCollection form, IHostingEnvironment hostEnvironment, WebShopRepository context)
+        public ApiArticlesController(WebShopRepository context) //IFormCollection form,,
         {
-            _hostEnvironment = hostEnvironment;
             _context = context;
-            _form = form;
+            //_form = form;
         }
 
         // GET: api/ApiArticles
         [HttpGet]
-        public IEnumerable<Articles> GetArticles()
+        public IEnumerable<ArticlesViewModel> GetArticles()
         {
-            return _context.Articles;
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              CategoryID = p.CategoryId,
+                              VendorID = p.VendorId,
+                              ProductID = p.ProductId,
+                              SubCategoryID = p.SubCategoryId,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ImageId = i.ImageId,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
+                          };
+            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            return vModel;
         }
 
         // GET: api/ApiArticles/5
@@ -41,15 +70,45 @@ namespace Webshop.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var artList = from p in _context.Articles
+                          where p.ArticleId == id
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
 
-            Articles articles = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
 
-            if (articles == null)
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              CategoryID = p.CategoryId,
+                              VendorID = p.VendorId,
+                              ProductID = p.ProductId,
+                              SubCategoryID = p.SubCategoryId,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ImageId = i.ImageId,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleGuid = p.ArticleGuid,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
+                          };
+
+            if (artList == null)
             {
                 return NotFound();
             }
 
-            return Ok(articles);
+            return Ok(await artList.SingleOrDefaultAsync(m => m.ArticleId == id));
         }
 
         // PUT: api/ApiArticles/5
@@ -84,19 +143,19 @@ namespace Webshop.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/ApiArticles
         [HttpPost]
-        public async Task<IActionResult> PostArticles([FromBody] Articles articles)
+        public async Task<IActionResult> PostArticles([FromBody] Articles articles)//, ArticleTranslation artT)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             _context.Articles.Add(articles);
+            //_context.ArticleTranslations.Add(artT);
             try
             {
                 await _context.SaveChangesAsync();
@@ -126,15 +185,17 @@ namespace Webshop.Controllers
             }
 
             Articles articles = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
+            ArticleTranslation artT = await _context.ArticleTranslations.SingleOrDefaultAsync(m => m.ArticleId == id);
             if (articles == null)
             {
                 return NotFound();
             }
 
             _context.Articles.Remove(articles);
+            _context.ArticleTranslations.Remove(artT);
             await _context.SaveChangesAsync();
 
-            return Ok(articles);
+            return CreatedAtRoute("GetArticles", new { id = articles.ArticleId }, articles);
         }
 
         private bool ArticlesExists(int id)
@@ -142,17 +203,5 @@ namespace Webshop.Controllers
             return _context.Articles.Any(e => e.ArticleId == id);
         }
 
-        // DELETE: api/ApiArticles
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody]ArticleBusinessLayer article, Articles art, ArticleTranslation artTrans)
-        {
-            if (article == null)
-            {
-                return BadRequest();
-            }
-            await article.AddArticle(art, artTrans, _context, _form);
-                return CreatedAtRoute("GetArticles", new { id = art.ArticleId }, article);
-        }
     }
 }

@@ -24,7 +24,6 @@ namespace Webshop.Controllers
         private WebShopRepository _context;
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly ILogger<HomeController> _logger;
-        //private readonly AppSettings _appSettings;
 
         public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<HomeController> logger)
         {
@@ -68,15 +67,23 @@ namespace Webshop.Controllers
                               ArticleNumber = p.ArticleNumber,
                               ArticlePrice = p.ArticlePrice,
                               ArticleStock = p.ArticleStock,
-                              ISActive = p.ISActive,
-                              ISCampaign = p.ISCampaign,
+                              CategoryID = p.CategoryId,
+                              VendorID = p.VendorId,
+                              ProductID = p.ProductId,
+                              SubCategoryID = p.SubCategoryId,
                               ArticleName = pt.ArticleName,
                               ArticleShortText = pt.ArticleShortText,
                               ArticleFeaturesOne = pt.ArticleFeaturesOne,
                               ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleGuid = p.ArticleGuid,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
                           };
 
             IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
@@ -115,7 +122,7 @@ namespace Webshop.Controllers
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
-                              ArticleImgPath = i.ImagePath + i.ImageName.ToString(),
+                              ArticleImgPath = i.ImagePath + i.ImageName,
                               ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
@@ -132,7 +139,7 @@ namespace Webshop.Controllers
         }
 
         //[AjaxOnly]
-        public async Task<IActionResult> SearchArticles(int vendor, int category, string product, int subproduct)
+        public async Task<IActionResult> SearchArticles(int vendor, int category, int product, int subproduct)
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
@@ -141,7 +148,7 @@ namespace Webshop.Controllers
             var artList = from p in _context.Articles
                           where p.VendorId == vendor || vendor == 0
                           where p.CategoryId == category || category == 0
-                          where p.ProductId == product || string.IsNullOrEmpty(product)
+                          where p.ProductId == product || product == 0
                           where p.SubCategoryId == subproduct || subproduct == 0
                           join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
                           join pt in _context.ArticleTranslations on
@@ -280,9 +287,5 @@ namespace Webshop.Controllers
             return Json(results);
         }
 
-    }
-
-    internal class AppSettings
-    {
     }
 }

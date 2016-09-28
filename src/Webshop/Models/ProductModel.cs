@@ -10,7 +10,7 @@ namespace Webshop.Models
     {
         [Key]
         public int ID { get; set; }
-        public string ProductID { get; set; }
+        public int ProductID { get; set; }
         [Display(Name = "Product", ResourceType = typeof(Resources.ProductModel))]
         [Required(ErrorMessage = "ProductError")]
         public string ProductName { get; set; }
