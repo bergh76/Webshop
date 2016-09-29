@@ -64,7 +64,12 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+        @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">*@
+
+        @*<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>*@
         <link rel="stylesheet" href="~/css/site.css" />
+        <link href="~/lib/flag-icon-css/css/flag-icon.css" rel="stylesheet" />
         <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
         <link href="~/lib/animate.css/animate.css" rel="stylesheet" />
     </environment>
@@ -75,20 +80,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
     </environment>
-    @*<script type="text/javascript">
-    $(function () {
-        if (document.cookie.indexOf("cookies") < 0) {
-            $('#cookie-consent').slideDown('slow');
-        }
-        $('#consent').on('click', function () {
-            document.cookie = "cookies=yes; max-age=" + (5*365*24*60*60);
-            $('#cookie-consent').slideUp('slow');
-        });
-        $('#learn-more').on('click', function () {
-            location.href = '/privacy';
-        })
-    });
-    </script>*@
+
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript">
     window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"light-bottom"};
@@ -289,7 +281,9 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"

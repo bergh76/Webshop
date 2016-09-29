@@ -208,5 +208,9 @@ namespace Webshop.Models.BusinessLayers
                 _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
 
+        internal Task Translate(Articles article, ArticleTranslation artTrans, WebShopRepository _context, IHostingEnvironment _hostEnvironment, int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

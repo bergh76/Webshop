@@ -242,7 +242,8 @@ namespace Webshop.Controllers
         }
 
 
-        public IActionResult ArticleTranslation(int? id)
+        // GET: Article/Create
+        public async Task<IActionResult> Translate(int? id)
         {
             if (id == null)
             {
@@ -279,7 +280,7 @@ namespace Webshop.Controllers
                               ISCampaign = p.ISCampaign
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
                 return NotFound();
@@ -290,6 +291,43 @@ namespace Webshop.Controllers
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
         }
+
+        // POST: Article/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Translate(int id, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
+        //{
+        //    if (id != article.ArticleId)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            await newArticle.Translate(article, artTrans, _context, _hostEnvironment, id);
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ArticleModelExists(article.ArticleId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorId);
+        //    ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductId);
+        //    ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryId);
+        //    ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
+        //    return View(article);
+        //}
+
 
 
         // GET: Article/Delete/5

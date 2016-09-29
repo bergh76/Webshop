@@ -12,6 +12,11 @@ body {
   color: #333;
   background-color: #fff;
 }
+.table-font{
+    font-family: 'Roboto';
+    font-size: 0.7em;
+}
+
 .basket-lined {
     font-size: 3em;
     line-height: 0;
@@ -24,6 +29,9 @@ body {
     /*border: 1px solid #000;*/
     color: #fff;
     background-color: #3498db;
+}
+.flag-icon{
+   border-radius: 5px;
 }
 .basket-lined >.badge {
     position: absolute;
@@ -301,6 +309,9 @@ body {
     align-items: center;
     justify-content: center;
 
+}
+.btn-translate{
+    width: 20px;
 }
 .img-justify-center{
     justify-content: center!important;
@@ -1078,7 +1089,15 @@ box-shadow: 0px 0px 8px #EDDCC5;
 -webkit-box-shadow: 0px 0px 8px #EDDCC5; 
 -moz-box-shadow: 0px 0px 8px #EDDCC5; 
 }
-
+.form-control[readonly], fieldset[disabled] .form-control {
+       color: #3498db;
+    font-size: 1.0em;
+    border: 2px solid #3498db;
+    background: #fff;
+    padding: 9px 23px;
+    outline: none;
+    font-family: 'Open Sans', sans-serif;
+}
 .btn-xs:focus{
     background:#FFFFFF;
 border:1px solid #ff6500;

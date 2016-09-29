@@ -155,10 +155,10 @@ namespace Webshop.Controllers
                 return BadRequest(ModelState);
             }
             _context.Articles.Add(articles);
-            foreach (var item in articles.Translations)
-            {
-                _context.ArticleTranslations.Add(item);
-            }
+            //foreach (var item in articles.Translations)
+            //{
+            //    _context.ArticleTranslations.Add(item);
+            //}
 
             try
             {
