@@ -15,6 +15,7 @@ using Webshop.HelperClasses;
 using Webshop.Interfaces;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
+using Webshop.Services;
 using Webshop.ViewModels;
 
 namespace Webshop.Controllers
@@ -41,14 +42,14 @@ namespace Webshop.Controllers
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
-
             return LocalRedirect(returnUrl);
         }
 
-        public async Task<IActionResult> Index(/*int vendor, int category, string product, int subproduct*/)
+        public async Task<IActionResult> Index([FromServices]FixerIO fixer)
         {
-            //var webShopRepository = _context.Articles.Include(a => a.).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
-            //    return View(await webShopRepository.ToListAsync());
+
+            var Iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+            var curr = FixerIO.GetUDSToRate(Iso);
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
@@ -60,12 +61,11 @@ namespace Webshop.Controllers
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
 
-
                           select new ArticlesViewModel
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
+                              ArticlePrice = p.ArticlePrice / curr,
                               ArticleStock = p.ArticleStock,
                               CategoryID = p.CategoryId,
                               VendorID = p.VendorId,
@@ -87,7 +87,6 @@ namespace Webshop.Controllers
                           };
 
             IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
-
             return View(vModel);
         }
 

@@ -14,7 +14,7 @@ namespace Webshop.Models
         [DataType(DataType.Text)]
         public string ArticleNumber { get; set; }
 
-        [Display(Name = "Price", ResourceType = typeof(Resources.Articles))] 
+        [Display(Name = "Price", ResourceType = typeof(Resources.Articles))]
         [DataType(DataType.Currency)]
         [Range(0, 99999)]
         [Required(ErrorMessage = "ErrorArticlePrice")]
@@ -59,8 +59,8 @@ namespace Webshop.Models
         public ImageModel _Image { get; set; }
         public int ImageId { get; set; } //lang independent
 
-        //[Required]
-        //public virtual ICollection<ArticleTranslation> Translations { get; set; }
+        [Required]
+        public virtual ICollection<ArticleTranslation> Translations { get; set; }
 
     }
 }

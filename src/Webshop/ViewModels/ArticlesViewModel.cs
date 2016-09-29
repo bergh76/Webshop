@@ -9,7 +9,6 @@ namespace Webshop.ViewModels
 {
     public class ArticlesViewModel
     {
-
         public int ArticleId { get; set; }
 
         [Display(Name = "ArticleName", ResourceType = typeof(Resources.ArticlesViewModel))]
@@ -57,8 +56,6 @@ namespace Webshop.ViewModels
         [Display(Name = "Stock", ResourceType = typeof(Resources.Articles))] 
         [Required(ErrorMessage = "ErrorArticleStock")]
         public int ArticleStock { get; set; } //lang independent  
-
-
 
         public VendorModel _Vendor { get; set; }
         [Display(Name = "Brand", ResourceType = typeof(Resources.Articles))]

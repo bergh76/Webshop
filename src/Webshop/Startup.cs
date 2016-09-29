@@ -12,6 +12,7 @@ using Webshop.Controllers;
 using Webshop.Interfaces;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
+using Webshop.Services;
 
 namespace Webshop
 {
@@ -33,6 +34,7 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<FixerIO>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddLocalization(option => option.ResourcesPath = "Resources");
             var connection = @"Server=(localdb)\mssqllocaldb;Database=Webshop;Trusted_Connection=True;";

@@ -19,7 +19,7 @@ namespace Webshop.Controllers
     public class ApiArticlesController : Controller
     {
         private readonly WebShopRepository _context; //crate a service for context
-        private readonly IHostingEnvironment _hostEnvironment;
+        //private readonly IHostingEnvironment _hostEnvironment;
         public ApiArticlesController(WebShopRepository context) //IFormCollection form,,
         {
             _context = context;
@@ -148,14 +148,18 @@ namespace Webshop.Controllers
 
         // POST: api/ApiArticles
         [HttpPost]
-        public async Task<IActionResult> PostArticles([FromBody] Articles articles)//, ArticleTranslation artT)
+        public async Task<IActionResult> PostArticles([FromBody] Articles articles)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             _context.Articles.Add(articles);
-            //_context.ArticleTranslations.Add(artT);
+            foreach (var item in articles.Translations)
+            {
+                _context.ArticleTranslations.Add(item);
+            }
+
             try
             {
                 await _context.SaveChangesAsync();

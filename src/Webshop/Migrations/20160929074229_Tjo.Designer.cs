@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20160929074229_Tjo")]
+    partial class Tjo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

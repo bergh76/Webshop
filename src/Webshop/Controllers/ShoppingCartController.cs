@@ -9,6 +9,8 @@ using Webshop.Models.BusinessLayers;
 using Webshop.ViewModels;
 using System.Threading;
 using Microsoft.EntityFrameworkCore;
+using Webshop.Services;
+using System.Globalization;
 
 namespace Webshop.Controllers
 {
