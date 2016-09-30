@@ -60,18 +60,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webshop</title>
-
+    
     <environment names="Development">
+        <!--JQUERY -->
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <!--JQUERY -->
+
+        <!-- DATATABLE CSS-->
+        <link href="~/lib/DataTables-1.10.12/extensions/Responsive/css/responsive.dataTables.css" rel="stylesheet" />
+        <link href="~/lib/DataTables-1.10.12/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/DataTables-1.10.12/media/css/dataTables.bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/DataTables-1.10.12/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/DataTables-1.10.12/extensions/Responsive/css/responsive.jqueryui.min.css" rel="stylesheet" />
+        <!-- END DATATABLE CSS-->
+
+        <!-- DATATABLE BUTTONS CSS-->
+        <link href="~/lib/DataTables-1.10.12/extensions/Buttons/css/buttons.dataTables.min.css" rel="stylesheet" />
+        <link href="~/lib/DataTables-1.10.12/extensions/Buttons/css/buttons.jqueryui.min.css" rel="stylesheet" />
+        <!-- END DATATABLE BUTTONS CSS-->
+
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-
-        @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">*@
-
-        @*<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>*@
+        <link href="~/lib/animate.css/animate.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/lib/flag-icon-css/css/flag-icon.css" rel="stylesheet" />
         <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <link href="~/lib/animate.css/animate.css" rel="stylesheet" />
+
+
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -83,7 +97,13 @@
 
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript">
-    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"light-bottom"};
+        window.cookieconsent_options = {
+            "message": "This website uses cookies to ensure you get the best experience on our website",
+            "dismiss": "Got it!",
+            "learnMore": "More info",
+            "link": null,
+            "theme": "light-bottom"
+        };
     </script>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.10/cookieconsent.min.js"></script>
@@ -157,7 +177,7 @@
                 </ul>
                 <div>
                     <ul class="nav-white navbar-nav pull-right">
-                        <li class="dropdown pull-right cart">
+                        <li class="dropdown pull-right cart pad-right-15">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart">
                                 <label class="cartValue  dropdown-toggle-cart">@await Component.InvokeAsync("CartTotalSum")</label>
                             </a>
@@ -194,7 +214,7 @@
     <div class="container-details-wide">
         @RenderBody()
         <section class="nav-white bottom">
-            <div class="footer">
+            <section class="footer">
                 <div class="wrap">
                     <div class="contact-section">
                         <div class="col-md-4 different-products">
@@ -273,16 +293,31 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </section>
     </div>
 
     <environment names="Development">
+
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- DATATABELS -->
+        <script src="~/lib/DataTables-1.10.12/media/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/DataTables-1.10.12/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/lib/DataTables-1.10.12/media/js/dataTables.bootstrap.js"></script>
+        <script src="~/lib/DataTables-1.10.12/extensions/Responsive/js/responsive.jqueryui.min.js"></script>
+        <script src="~/lib/DataTables-1.10.12/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+        <!-- END DATATABELS -->
+        <!-- DATATABEL-BUTTONS -->
+        <script src="~/lib/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+        <script src="~/lib/DataTables-1.10.12/PdfMaker/pdfmake.min.js"></script>
+        <script src="~/lib/DataTables-1.10.12/jszip/dist/jszip.js"></script>
+        <script src="~/lib/DataTables-1.10.12/PdfMaker/vfs_fonts.js"></script>
+        <script src="~/lib/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.js"></script>
+        <!-- END DATATABEL-BUTTONS -->
 
     </environment>
     <environment names="Staging,Production">

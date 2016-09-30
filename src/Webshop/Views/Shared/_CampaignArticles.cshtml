@@ -7,8 +7,7 @@
     ViewData["Title"] = Localizer["Index"];
 }
 
-<section class="container">
-    <div class="col-md-12">
+
         @{  var count = Model.Where(x => x.ISCampaign == true).Count();
             if (count == 0)
             {
@@ -56,11 +55,10 @@
                                 <i class="fa-colored-check-square-green"></i>
                                 <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green">@Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Stock"]</span></span>
                             </div>
-                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
+                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
                         </div>
                     </div>
                 }
             }
         }
-    </div>
-</section>
+

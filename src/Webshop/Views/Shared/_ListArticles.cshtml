@@ -66,7 +66,7 @@ if (count == 0)
                                     </span>
                                 </div>
                             </div>
-                            <a asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy rubberBand"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
+                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy rubberBand"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
                         </div>
                     </div>
                 </div>

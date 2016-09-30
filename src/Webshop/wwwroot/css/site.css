@@ -1,5 +1,7 @@
-﻿ @import 'https://fonts.googleapis.com/css?family=Raleway';
+﻿@import 'https://fonts.googleapis.com/css?family=Raleway';
 @import 'https://fonts.googleapis.com/css?family=Roboto';
+@import 'http://fonts.googleapis.com/css?family=Lato';
+
 body {
   font-size: 1.4em !important;
   padding-top: 50px;
@@ -248,7 +250,6 @@ body {
 .productItemBox {
     min-height: 500px;
     z-index: 1;
-    box-shadow: none;
     background-color: #fff;
     border: 1px solid #e6e8e9;
     /*margin: 0 15px 15px 0;*/
@@ -309,6 +310,12 @@ body {
     align-items: center;
     justify-content: center;
 
+}
+.col-md-12, .col-lg-12, .col-xs-12 {
+    position: relative;
+    min-height: 1px;
+     padding-right: 0!important; 
+     padding-left: 0!important; 
 }
 .btn-translate{
     width: 20px;
@@ -563,6 +570,9 @@ body {
     text-decoration: none;
     width: 100%;
     transition: 0.5ms !important;
+}
+.pad-right-15{
+    padding-right: 15px;
 }
 .pad-top-5{
     padding-top: 5px;
@@ -990,10 +1000,10 @@ textarea {
 }
 
 .info-sm-button:hover {
-    background: -moz-linear-gradient( center top, #ffffff 5%, #ededed 100% );
+    /*background: -moz-linear-gradient( center top, #ffffff 5%, #ededed 100% );*/
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
     background: -webkit-gradient( linear, left top, left bottom, color-stop(5%, #ffffff), color-stop(100%, #ededed) );
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     color: #007acc;
     transition: 0.5s !important;
 }
@@ -1090,11 +1100,11 @@ box-shadow: 0px 0px 8px #EDDCC5;
 -moz-box-shadow: 0px 0px 8px #EDDCC5; 
 }
 .form-control[readonly], fieldset[disabled] .form-control {
-       color: #3498db;
+       /*color: #3498db;*/
     font-size: 1.0em;
-    border: 2px solid #3498db;
+    /*border: 2px solid #3498db;
     background: #fff;
-    padding: 9px 23px;
+    padding: 9px 23px;*/
     outline: none;
     font-family: 'Open Sans', sans-serif;
 }
@@ -1128,9 +1138,6 @@ background-color: #fff;
     margin-left: 15px;
 }
 /* CUSTOM FILEUPLOADER*/
-@import "compass/css3";
-
-@import url("http://fonts.googleapis.com/css?family=Lato");
 
 .custom-file-upload-hidden {
     display: none;
@@ -1142,8 +1149,6 @@ background-color: #fff;
     display: block;
     width: auto;
     font-size: 14px;
-    /*margin-top: 25px;*/
-    display: block;
     margin-bottom: 5px;
 }
 
@@ -1303,7 +1308,6 @@ i.linkedin{
 	font-size: 1.7em;
 	font-weight: 900;
 	font-family: 'Open Sans', sans-serif;
-	text-transform:capitalize;
 }
 .follow p,.subscribe p,.help p{
 	font-family: 'Open Sans', sans-serif;

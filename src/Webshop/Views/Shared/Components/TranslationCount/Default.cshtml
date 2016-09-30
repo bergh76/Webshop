@@ -6,67 +6,90 @@
 @{
     ViewData["Title"] = Localizer["Index"];
 }
-@*<!--ajax script-->
+<!--ajax script-->
 
-<script src="~/lib/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#noTranslationTabel').DataTable({
+            dom: 'B<"clear"><lf<t>ip>',
+            buttons: [{ extend: 'copy', text: 'Kopiera', },
+                {
+                extend: 'excel',
+                text: 'Excel',
+                exportOptions: {  modifier: { page: 'current' } },
+            },
+            {
+                extend: 'pdf',
+                text: 'Pdf'
+            },
+            ],
+            "language": {
+                "lengthMenu": "Visa _MENU_ rader per sida",
+                "zeroRecords": "Din sökning gav inget - försök med ett annat sökord",
+                "info": "_PAGE_ av _PAGES_",
+                "infoEmpty": "Datatabellen är tom",
+                "infoFiltered": "(filtrerdad på _MAX_ antal poster)"
+            },
+            //"order": [[0, "asc", ]], //Column1
+            "processing": true,
 
+        })
+
+        //var table = $('#myDWPTable').DataTable();
+        //var expdata = table.buttons.exportData();
+        //console.log("Tabelldata \n", expdata);
+    });
+    </script>
 
 <!--ajax script end-->
 <!-- FORMFIELDS START -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#table_id').DataTable();
-    });
-    //$(document).ready(function(){
-    //    $('#myTable').DataTable({
-    //        //"order": [[3, "asc"]],
-    //        //"language": {
-    //        //    "lengthMenu": "Visa _MENU_ rader per sida",
-    //        //    "zeroRecords": "Din sökning gav inget - försök med att annat sökord",
-    //        //    "info": "Visar nu _PAGE_ av _PAGES_",
-    //        //    "infoEmpty": "Datatabellen är tom",
-    //        //    "infoFiltered": "(filtrerdad på _MAX_ antal poster)"
-    //        //},
-    //        //"processing": true,
-    //    //});
-    //});
-</script>*@
 @if (ViewBag.TransCount != 0)
 {
-        <div class="col-md-12 text-danger"><span class="fa fa-exclamation-circle"></span>Du har @ViewBag.TransCount artiklar som ej är översatta</div>
-        <form asp-action="Translate" asp-controller="Article">
+    <div class="container content-box">
+        <div class="col-md-12">
+            <h3 class="alert-danger"><i class="fa fa-exclamation-circle"></i>Du har @ViewBag.TransCount artiklar som ej är översatta</h3>
+            <form asp-action="Translate" asp-controller="Article">
+                <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                    <div class="col-md-12">
+                        <table id="noTranslationTabel" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Id</th>
+                                    <th>Namn</th>
+                                    <th>Beskrivning</th>
+                                    <th>Egenskap 1</th>
+                                    <th>Egenskap 2</th>
+                                    <th>Egenskap 3</th>
+                                    <th>Egenskap 4</th>
 
-            <table class="table table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Id</th>
-                        <th>Namn</th>
-                        <th>Beskrivning</th>
-                        <th>Egenskap 1</th>
-                        <th>Egenskap 2</th>
-                        <th>Egenskap 3</th>
-                        <th>Egenskap 4</th>
-                    </tr>
-                </thead>
-                @{int i = 1;}
-                @foreach (var item in @ViewBag.TransNames)
-                {
-                    <tbody>
-                        <tr>
-                            <td style="width:20px">@i</td>
-                            <td style="width:20px">@item.ArticleId</td>
-                            <td style="width:150px">@item.ArticleName </td>
-                            <td style="width:auto">@item.ArticleShortText</td>
-                            <td style="width:auto">@item.ArticleFeaturesOne</td>
-                            <td style="width:auto">@item.ArticleFeaturesTwo</td>
-                            <td style="width:auto">@item.ArticleFeaturesThree</td>
-                            <td style="width:auto">@item.ArticleFeaturesFour</td>
-                            <td style="width:auto"><a asp-action="Translate" asp-route-id="@item.ArticleId" class="btn btn-success btn-sm fa fa-align-center fa-pencil-square-o"></a></td>
-                        </tr>
-                    </tbody>
-                    i++;
-                }
-            </table>
-        </form>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int i = 1;}
+                                @foreach (var item in @ViewBag.TransNames)
+
+                                {
+                                    <tr class="content-box">
+                                        <td>@i</td>
+                                        <td><a asp-action="Translate" asp-route-id="@item.ArticleId" class="btn btn-success btn-sm fa fa-align-center fa-pencil-square-o"></a></td>
+                                        <td>@item.ArticleId</td>
+                                        <td>@item.ArticleName </td>
+                                        <td>@item.ArticleShortText</td>
+                                        <td>@item.ArticleFeaturesOne</td>
+                                        <td>@item.ArticleFeaturesTwo</td>
+                                        <td>@item.ArticleFeaturesThree</td>
+                                        <td>@item.ArticleFeaturesFour</td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 }

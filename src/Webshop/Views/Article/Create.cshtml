@@ -6,9 +6,9 @@
     ViewData["Title"] = "Create";
 }
 
-<section class="container">
+<section class="container content-box">
     <form asp-controller="Article" asp-action="NewArticle" enctype="multipart/form-data">
-        <div class="col-xs-12 padding-x-off pad-top content-box">
+        <div class="col-xs-12 padding-x-off pad-top">
             <div class="col-xs-12">
                 <div class="col-md-4 pull-left">
                     <div class="col-xs-12"><label class="col-md-10 control-label">@Localizer["Image"]</label>
@@ -178,18 +178,14 @@
                     </div>
                 </div>
             </div>
-            <div style="height: 30px;">
+            <div>
                 <div class="action-row">
                     <div>
                         <button class="btn btn-sm btn-success margin-bottom pull-right" onclick="history.go(-1);">@Localizer["Back1"]</button>
                         <input type="submit" value=@Localizer["Save1"] class="btn btn-sm btn-danger margin-bottom pull-right" />
                     </div>
                 </div>
-            </div>
-                <div class="col-md-12 margin-bottom">
-                    @await Component.InvokeAsync("TranslationCount")
-                </div>
-
+            </div>            
         </div>
     </form>
 
@@ -252,6 +248,10 @@
     </div>
 
     @*</div>*@
+</section>
+
+<section>
+    @await Component.InvokeAsync("TranslationCount")
 </section>
 
 @section Scripts {

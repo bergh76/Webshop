@@ -1,0 +1,113 @@
+﻿@model Webshop.ViewModels.ShoppingCartViewModel
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@*@using Microsoft.Extensions.Options*@
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Index"];
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+@functions
+{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            // Document.ready -> link up remove event handler
+            $(".RemoveLink").click(function () {
+                // Get the id from the link
+                var recordToDelete = $(this).attr("data-id");
+                var PostToUrl = $(this).attr("data-url");
+                if (recordToDelete != '') {
+
+                    // Perform the ajax post
+                    $.ajax(PostToUrl, {
+                        type: "post",
+                        data: { "id": recordToDelete },
+                        dataType: "json",
+                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }
+                    }).done(function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.DeleteId).fadeOut('slow');
+                            window.location.reload().fadeOut("fast")
+                        } else {
+                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                            window.location.reload().fadeOut("fast")
+                        }
+
+                        $('#cart-total').text(data.CartTotal);
+                        $('#update-message').text(data.Message);
+                        $('#cart-status').text(data.CartCount);
+                        console.log("Borttaget\n", PostToUrl, "\n")
+                        console.log("Data \n", data, "\n")
+                        console.log("Borttaget", data.DeleteId)
+                        window.location.reload().fadeOut("fast");
+                    });
+                }
+            });
+
+        });
+    </script>
+}
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 pad-top content-box">
+            <h3>@Localizer["CartHeader"]</h3>
+            <p id="update-message"> </p>
+            <table id="cart-summary" class="table table-responsive table-hover table-striped">
+                <tr>
+                    <th> </th>
+                    
+                    <th>@Localizer["Article"]</th>
+
+                    <th>@Localizer["Amount"]</th>
+
+                    <th>@Localizer["Price"]</th>
+
+                    <th>@Localizer["RowTotal"]</th>
+
+                    <th> </th>
+                </tr>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr id="row-@item.CartItemId">
+                        <td><img class="img-responsive" alt="@item.ArticleName" /></td>
+
+                        <td><a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></td>
+
+                        <td id="item-count-@item.CartItemId">@item.Count</td>
+
+                        <td>@item.Article.ArticlePrice</td>
+                        <td>
+                            @{var price = item.Article.ArticlePrice;
+                                var i = item.Count;
+                                var sum = Convert.ToDecimal(price * i);}
+                            @sum
+                        </td>
+                        <td>
+                            <a class="delete-button-sm pull-right RemoveLink" href="#"
+                               data-id="@item.CartItemId"
+                               data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                                <i class="fa fa-remove small"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="pull-right" id="cart-total">
+                <h4>@Localizer["CartTotal"] @Model.CartTotal</h4>
+            </div>
+            <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
+        </div>
+    </div>
+</section>

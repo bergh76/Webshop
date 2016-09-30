@@ -11,6 +11,7 @@ using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using Webshop.Services;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Webshop.Controllers
 {
@@ -23,14 +24,49 @@ namespace Webshop.Controllers
             _context = context;
             _logger = logger;
         }
+        public async Task<IActionResult> SearchArticles(int vendor, int category, int product, int subproduct)
+        {
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            var artList = from p in _context.Articles
+                          where p.VendorId == vendor || vendor == 0
+                          where p.CategoryId == category || category == 0
+                          where p.ProductId == product || product == 0
+                          where p.SubCategoryId == subproduct || subproduct == 0
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = p.ArticleId,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticlePrice = p.ArticlePrice,
+                              ArticleStock = p.ArticleStock,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign,
+                              ArticleName = pt.ArticleName,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                          };
 
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
+
+            return View(vModel.ToList());
+        }
         public WebShopRepository _context { get; }
 
         //
         // GET: /ShoppingCart/
         public async Task<IActionResult> Index()
         {
-            var cart = ShoppingCart.GetCart(_context, HttpContext);
+            var cart = ShoppingCart.GetCart(_context, HttpContext); // gets all items from context.CartItems
 
             // Set up our ViewModel
             var viewModel = new ShoppingCartViewModel
@@ -40,28 +76,31 @@ namespace Webshop.Controllers
             };
 
             // Return the view
-            return View(viewModel);
+            return View("ShoppingCart", viewModel);
         }
 
         //
         // GET: /ShoppingCart/AddToCart/5
 
-        public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted, ArticleTranslation artT)
+        public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
         {
             // Retrieve the album from the database
             var addedArticle = await _context.Articles
                 .SingleAsync(article => article.ArticleId == id);
 
+            var addedArticleName = await _context.ArticleTranslations
+               .SingleAsync(artT => artT.ArticleId == id);
+
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
 
-            await cart.AddToCart(addedArticle, artT);
+            await cart.AddToCart(addedArticle, addedArticleName);
 
             await _context.SaveChangesAsync(requestAborted);
             _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);
 
             // Go back to the main store page for more shopping
-            return RedirectToAction("Index");
+            return RedirectToAction("SearchArticles");
         }
 
         //
@@ -78,7 +117,7 @@ namespace Webshop.Controllers
             // Get the name of the album to display confirmation
             var cartItem = await _context.CartItems
                 .Where(item => item.CartItemId == id)
-                .Include(c => c.ArticleId)
+                .Include(x => x.Article)
                 .SingleOrDefaultAsync();
 
             string message;
@@ -87,11 +126,9 @@ namespace Webshop.Controllers
             {
                 // Remove from cart
                 itemCount = cart.RemoveFromCart(id);
-
                 await _context.SaveChangesAsync(requestAborted);
-
                 string removed = (itemCount > 0) ? " 1 copy of " : string.Empty;
-                message = removed + cartItem.ArticleTranslation.ArticleName + " has been removed from your shopping cart.";
+                message = removed + cartItem.ArticleName + " has been removed from your shopping cart.";
             }
             else
             {
@@ -111,7 +148,7 @@ namespace Webshop.Controllers
             };
 
             _logger.LogInformation("Album {id} was removed from a cart.", id);
-
+            ViewData["Message"] = message;
             return Json(results);
         }
     }
