@@ -1,4 +1,4 @@
-﻿@model Webshop.ViewComponents.ShowTranslationCount
+﻿@model Webshop.Models.TranslationData
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @*@using Microsoft.Extensions.Options*@
@@ -43,11 +43,12 @@
 
 <!--ajax script end-->
 <!-- FORMFIELDS START -->
-@if (ViewBag.TransCount != 0)
-{
+
+@if (!string.IsNullOrEmpty(Model._names.ToList().Select(x => x.ArticleId).Count().ToString()))
+    {
     <div class="container content-box">
         <div class="col-md-12">
-            <h3 class="alert-danger"><i class="fa fa-exclamation-circle"></i>Du har @ViewBag.TransCount artiklar som ej är översatta</h3>
+            <h3 class="alert-danger"><i class="fa fa-exclamation-circle"></i>Du har @Model._count artiklar som ej är översatta</h3>
             <form asp-action="Translate" asp-controller="Article">
                 <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                     <div class="col-md-12">
@@ -68,10 +69,10 @@
                             </thead>
                             <tbody>
                                 @{int i = 1;}
-                                @foreach (var item in @ViewBag.TransNames)
+                                @foreach (var item in Model._names)
 
                                 {
-                                    <tr class="content-box">
+                                    <tr>
                                         <td>@i</td>
                                         <td><a asp-action="Translate" asp-route-id="@item.ArticleId" class="btn btn-success btn-sm fa fa-align-center fa-pencil-square-o"></a></td>
                                         <td>@item.ArticleId</td>
