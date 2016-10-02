@@ -3,15 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Webshop.Resources;
 
 namespace Webshop.Models.BusinessLayers
 {
     public partial class ShoppingCart
     {
+
         private readonly WebShopRepository _context;
         private readonly string _shoppingCartId;
+
+        public decimal _sum { get; set; }
+        public int _items { get; set; }
+        public IEnumerable<CartItem> _cartItems { get; set; }
+        public IEnumerable<CartItem> _artList {get;set;}
 
         private ShoppingCart(WebShopRepository db, string id)
         {

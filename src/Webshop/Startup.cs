@@ -1,6 +1,6 @@
-﻿using Localization.SqlLocalizer.DbStringLocalizer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
-using Webshop.Controllers;
 using Webshop.Interfaces;
 using Webshop.Models;
-using Webshop.Models.BusinessLayers;
 using Webshop.Services;
 
 namespace Webshop
@@ -37,10 +35,33 @@ namespace Webshop
             services.AddTransient<FixerIO>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddLocalization(option => option.ResourcesPath = "Resources");
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=Webshop;Trusted_Connection=True;";
-            services.AddDbContext<WebShopRepository>(options => options.UseSqlServer(connection));
-            // Add session related services.
-            services.AddSession();
+            // Add framework services.
+            services.AddDbContext<WebShopRepository>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add Identity services to the services container
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+               .AddEntityFrameworkStores<WebShopRepository>()
+               .AddDefaultTokenProviders();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.WithOrigins("http://example.com");
+                });
+            });
+
+            // Configure Auth
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "ManageStore",
+                    authBuilder =>
+                    {
+                        authBuilder.RequireClaim("ManageStore", "Allowed");
+                    });
+            });
 
             // Add framework services.
             services.AddSingleton<IDateTime, SystemDateTime>();
@@ -50,6 +71,10 @@ namespace Webshop
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
                 .AddDataAnnotationsLocalization();
+
+            //// Add session related services.
+            services.AddSession();
+
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -76,6 +101,8 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            // Add cookie-based authentication to the request pipeline
+            app.UseIdentity();
             // Configure Session.
             app.UseSession();
             var supportedCultures = new[]

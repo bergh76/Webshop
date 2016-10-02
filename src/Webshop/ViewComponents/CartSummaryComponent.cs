@@ -20,19 +20,12 @@ namespace Webshop.Components
         private WebShopRepository _context { get; }
 
         public async Task<IViewComponentResult> InvokeAsync()
-        {            
-            var cart = ShoppingCart.GetCart(_context, HttpContext);
-            var cartItems = await cart.GetCartArticleTitles();
-            var listItems = await cart.GetCartItems();
-
-            ViewBag.CartCount = cartItems.Count;
-            ViewBag.CartSummary = string.Join("\n", cartItems.Distinct());
-            ViewBag.List = listItems.ToList();
-            var artCount = await cart.GetCount();
-            ViewBag.ArtCount = artCount;
-            var sum = await cart.GetTotal();
-            ViewBag.Sum = sum.ToString();
-            return View();
+        {
+            ShoppingCart cart = ShoppingCart.GetCart(_context, HttpContext);
+            cart._cartItems = await cart.GetCartItems();
+            cart._artList = await cart.GetCartItems();
+            cart._sum = await cart.GetTotal();
+            return View(cart);
         }
     }
 }

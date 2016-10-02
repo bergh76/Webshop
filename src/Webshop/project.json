@@ -40,12 +40,11 @@
     },
     "Microsoft.EntityFrameworkCore": "1.0.1",
     "Newtonsoft.Json": "9.0.1",
-    "Localization.SqlLocalizer": "1.0.0.0",
+    "Localization.SqlLocalizer": "1.0.3",
     "Microsoft.EntityFrameworkCore.Sqlite": "1.0.1",
     "Microsoft.AspNetCore.Session": "1.0.0",
     "Sakura.AspNetCore.Mvc.PagedList": "2.0.9",
-    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3"
-  },
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3"  },
 
   "tools": {
     "BundlerMinifier.Core": "2.0.238",
@@ -90,9 +89,4 @@
       "web.config"
     ]
   }
-
-  //"scripts": {
-  //  "prepublish": [ "bower install", "dotnet bundle" ],
-  //  "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
-  //}
 }

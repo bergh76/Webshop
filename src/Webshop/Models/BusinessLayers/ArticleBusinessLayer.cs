@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Controllers;
+using Webshop.ViewModels;
 
 namespace Webshop.Models.BusinessLayers
 {
@@ -208,9 +209,24 @@ namespace Webshop.Models.BusinessLayers
                 _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
 
-        internal Task Translate(Articles article, ArticleTranslation artTrans, WebShopRepository _context, IHostingEnvironment _hostEnvironment, int id)
+        internal async Task Translate(int id, WebShopRepository context,ArticlesViewModel artView, ArticleTranslation artTrans,string text, string one, string two, string three, string four)
         {
-            throw new NotImplementedException();
+            ArticleTranslation trans = new ArticleTranslation
+            {
+                ArticleId = id,
+                ArticleName = artTrans.ArticleName,
+                ArticleShortText = text,
+                ArticleFeaturesOne = one,
+                ArticleFeaturesTwo = two,
+                ArticleFeaturesThree = three,
+                ArticleFeaturesFour = four,
+                ISTranslated = true,
+                LangCode = "en",
+                ArticleNumber = artTrans.ArticleNumber
+            };
+            artTrans.ISTranslated = true;
+            context.Add(trans);
+            await context.SaveChangesAsync();
         }
     }
 }

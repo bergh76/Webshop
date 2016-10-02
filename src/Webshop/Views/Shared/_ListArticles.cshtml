@@ -40,10 +40,12 @@ if (count == 0)
                             </div>
 
                             <div class="col-xs-4 padding-x-off">
-                                <div class="productDetailImageWrap">
-                                    <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
-                                        <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@item.ArticleImgPath" />
-                                    </a>
+                                <div class="col-md-12">
+                                    <div class="productDetailImageWrap">
+                                        <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
+                                            <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@item.ArticleImgPath" />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 

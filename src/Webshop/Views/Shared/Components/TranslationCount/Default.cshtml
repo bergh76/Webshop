@@ -44,7 +44,7 @@
 <!--ajax script end-->
 <!-- FORMFIELDS START -->
 
-@if (!string.IsNullOrEmpty(Model._names.ToList().Select(x => x.ArticleId).Count().ToString()))
+@if (Model._count != 0)
     {
     <div class="container content-box">
         <div class="col-md-12">

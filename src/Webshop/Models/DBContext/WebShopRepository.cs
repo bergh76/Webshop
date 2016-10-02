@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Webshop.Models
 {
-    public class WebShopRepository : DbContext
+    public class WebShopRepository : IdentityDbContext<ApplicationUser>
     {
         public WebShopRepository(DbContextOptions<WebShopRepository> options)
             : base(options)
@@ -18,9 +18,11 @@ namespace Webshop.Models
         public DbSet<Language> Languages { get; set; }
         public DbSet<ArticleTranslation> ArticleTranslations { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ArticleTranslation>()
                 .HasKey(c => new { c.ArticleId, c.LangCode });
             //modelBuilder.Entity<VendorModel>()

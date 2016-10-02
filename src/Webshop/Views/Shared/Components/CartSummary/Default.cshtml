@@ -1,4 +1,4 @@
-﻿@model Webshop.Components.CartSummaryComponent
+﻿@model Webshop.Models.BusinessLayers.ShoppingCart
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @*@using Microsoft.Extensions.Options*@
@@ -6,7 +6,6 @@
 @{
     ViewData["Title"] = Localizer["Index"];
 }
-
 
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @functions
@@ -60,7 +59,7 @@
         });
     </script>
 }
-@if (ViewBag.CartCount > 0)
+@if (Model._cartItems != null)
 {
     <div class="col-md-12">
         <table id="cart-summary" class="table table-responsive table-hover table-striped">
@@ -75,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ViewBag.List)
+                @foreach (var item in Model._cartItems)
                 {
                     <tr id="row-@item.CartItemId">
                         <td><img class="img-responsive" alt="@item.ArticleName" /></td>
@@ -94,7 +93,8 @@
                         </td>
 
                         <td>
-                        <a class="delete-button-sm RemoveFromCart" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/Home/RemoveFromCart")'>
+                            <a class="delete-button-sm RemoveFromCart pl" data-id="@item.CartItemId"  data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
+                        @*<a class="delete-button-sm RemoveFromCart" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>*@
                             <i class="fa fa-remove"></i>
                             </a>
                         </td>
@@ -106,12 +106,12 @@
             <div class="col-md-9"></div>
             <div class="col-md-3 pull-left">
                 <p>
-                    @Localizer["CartTotal"] @ViewBag.Sum
+                    @Localizer["CartTotal"] @Model._sum
                 </p>
             </div>
         </div>
         <div class="col-md-12">
-            <a asp-area="" asp-controller="Home" asp-action="Cart" class="btn btn-sm btn-success pull-right">@Localizer["ShowCart"]</a>
+            <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" class="btn btn-sm btn-success pull-right">@Localizer["ShowCart"]</a>
         </div>
     </div>
  }

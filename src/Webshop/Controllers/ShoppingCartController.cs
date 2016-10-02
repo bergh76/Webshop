@@ -18,6 +18,7 @@ namespace Webshop.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly ILogger<ShoppingCartController> _logger;
+        private static readonly string _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).TwoLetterISORegionName.ToLower();
 
         public ShoppingCartController(WebShopRepository context, ILogger<ShoppingCartController> logger)
         {
@@ -90,6 +91,9 @@ namespace Webshop.Controllers
 
             var addedArticleName = await _context.ArticleTranslations
                .SingleAsync(artT => artT.ArticleId == id);
+
+            //var addedArticleName = await _context.ArticleTranslations
+            //    .SingleAsync(artT => artT.ArticleId == id);
 
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);

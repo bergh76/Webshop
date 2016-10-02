@@ -116,12 +116,6 @@
     @*@await Html.PartialAsync("_LoginPartial")*@
 
     <section class="nav-white navbar-fixed-top end-border">
-        @*<div id="cookie-consent" class="alert-warning">
-            <div class="container">
-                <span>My site uses cookies to personalise content and adverts, to provide social media features and to analyse traffic.</span>
-                <a class="btn btn-xs btn-success" id="consent">I'm happy with this</a> <a class="btn btn-xs btn-danger" id="learn-more">Learn more</a>
-            </div>
-        </div>*@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -179,7 +173,7 @@
                     <ul class="nav-white navbar-nav pull-right">
                         <li class="dropdown pull-right cart pad-right-15">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart">
-                                <label class="cartValue  dropdown-toggle-cart">@await Component.InvokeAsync("CartTotalSum")</label>
+                                <label class="cartValue dropdown-toggle-cart">@await Component.InvokeAsync("CartTotalSum")</label>
                             </a>
                             <ul class="dropdown-menu keep-open">
                                 <li class="hide"></li>

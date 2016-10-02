@@ -36,13 +36,3 @@ namespace Webshop.Models
         }
     }
 }
-//public Task GetNonTranslated()
-//{
-//    List<ArticleTranslation> nonTransList = new List<ArticleTranslation>();
-//    var items = _context
-//    .ArticleTranslations
-//    .Where(x => x.ISTranslated != true)
-//    .ToList();
-//    nonTransList.AddRange(items);
-//    //return _names = nonTransList.ToList();
-//}

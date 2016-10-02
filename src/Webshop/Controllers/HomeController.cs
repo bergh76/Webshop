@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,14 +21,18 @@ using Webshop.ViewModels;
 
 namespace Webshop.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private WebShopRepository _context;
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<HomeController> logger)
+        private static string _iso;
+        private static decimal _curr;
+        public HomeController([FromServices]FixerIO fixer, WebShopRepository context, IStringLocalizer<HomeController> localizer, ILogger<HomeController> logger)
         {
+            _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+            _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
             _localizer = localizer;
             _logger = logger;
@@ -45,15 +50,12 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public async Task<IActionResult> Index([FromServices]FixerIO fixer)
+        public async Task<IActionResult> Index([FromServices] WebShopRepository dbContext)
         {
-
-            var Iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
-            var curr = FixerIO.GetUDSToRate(Iso);
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             var artList = from p in _context.Articles
                           where  p.ISCampaign == true
                           join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
@@ -65,7 +67,7 @@ namespace Webshop.Controllers
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice / curr,
+                              ArticlePrice = p.ArticlePrice / _curr,
                               ArticleStock = p.ArticleStock,
                               CategoryID = p.CategoryId,
                               VendorID = p.VendorId,
@@ -201,90 +203,5 @@ namespace Webshop.Controllers
         {
             return View();
         }
-
-        // GET: /ShoppingCart/
-        public async Task<IActionResult> Cart()
-        {
-            var cart = ShoppingCart.GetCart(_context, HttpContext); // gets all items from context.CartItems
-
-            // Set up our ViewModel
-            var viewModel = new ShoppingCartViewModel
-            {
-                CartItems = await cart.GetCartItems(),
-                CartTotal = await cart.GetTotal()
-            };
-
-            // Return the view
-            return View("ShoppingCart", viewModel);
-        }
-        public async Task<IActionResult> AddToCart(int id, CancellationToken requestAborted)
-        {
-            // Retrieve the album from the database
-            var addedArticle = await _context.Articles
-                .SingleAsync(article => article.ArticleId == id);
-
-            var addedArticleName = await _context.ArticleTranslations
-               .SingleAsync(artT => artT.ArticleId == id);
-
-            // Add it to the shopping cart
-            var cart = ShoppingCart.GetCart(_context, HttpContext);
-
-            await cart.AddToCart(addedArticle, addedArticleName);
-
-            await _context.SaveChangesAsync(requestAborted);
-            _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);
-
-            // Go back to the main store page for more shopping
-            return RedirectToAction("SearchArticles");
-        }
-
-        //
-        // AJAX: /ShoppingCart/RemoveFromCart/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AjaxOnly]
-        public async Task<IActionResult> RemoveFromCart(int id, CancellationToken requestAborted)
-        {
-            // Retrieve the current user's shopping cart
-            var cart = ShoppingCart.GetCart(_context, HttpContext);
-
-            // Get the name of the album to display confirmation
-            var cartItem = await _context.CartItems
-                .Where(item => item.CartItemId == id)
-                .Include(x => x.Article)
-                .SingleOrDefaultAsync();
-
-            string message;
-            int itemCount;
-            if (cartItem != null)
-            {
-                // Remove from cart
-                itemCount = cart.RemoveFromCart(id);
-                await _context.SaveChangesAsync(requestAborted);
-                string removed = (itemCount > 0) ? " 1 copy of " : string.Empty;
-                message = removed + cartItem.ArticleName + " has been removed from your shopping cart.";
-            }
-            else
-            {
-                itemCount = 0;
-                message = "Could not find this item, nothing has been removed from your shopping cart.";
-            }
-
-            // Display the confirmation message
-
-            var results = new ShoppingCartRemoveViewModel
-            {
-                Message = message,
-                CartTotal = await cart.GetTotal(),
-                CartCount = await cart.GetCount(),
-                ItemCount = itemCount,
-                DeleteId = id
-            };
-
-            _logger.LogInformation("Album {id} was removed from a cart.", id);
-            ViewData["Message"] = message;
-            return Json(results);
-        }
-
     }
 }

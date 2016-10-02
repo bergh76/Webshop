@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
+using Webshop.Services;
 using Webshop.ViewModels;
 
 namespace Webshop.Controllers
@@ -21,9 +22,12 @@ namespace Webshop.Controllers
         private readonly WebShopRepository _context;
         private readonly IStringLocalizer<ArticleController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment; // service that provides some useful environment information such as the current file path
-
-        public ArticleController(WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
+        private static string _iso;
+        private static decimal _curr;
+        public ArticleController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
         {
+            _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+            _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
@@ -55,7 +59,7 @@ namespace Webshop.Controllers
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
+                              ArticlePrice = p.ArticlePrice / _curr,
                               ArticleStock = p.ArticleStock,
                               ArticleName = pt.ArticleName,
                               ArticleShortText = pt.ArticleShortText,
@@ -76,6 +80,7 @@ namespace Webshop.Controllers
         // GET: Article/Details/5
         public IActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -91,7 +96,7 @@ namespace Webshop.Controllers
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
+                              ArticlePrice = p.ArticlePrice / _curr,
                               ArticleStock = p.ArticleStock,
                               CategoryID = p.CategoryId,
                               VendorID = p.VendorId,
@@ -169,7 +174,7 @@ namespace Webshop.Controllers
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
+                              ArticlePrice = p.ArticlePrice / _curr,
                               ArticleStock = p.ArticleStock,
                               CategoryID = p.CategoryId,
                               VendorID = p.VendorId,
@@ -242,55 +247,6 @@ namespace Webshop.Controllers
         }
 
 
-        // GET: Article/Create
-        public async Task<IActionResult> Translate(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
-                          join pt in _context.ArticleTranslations on
-                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
-                                           equals new { pt.ArticleId, Second = pt.LangCode }
-                          where p.ArticleId == id
-                          select new ArticlesViewModel
-                          {
-                              ArticleId = p.ArticleId,
-                              ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
-                              ArticleStock = p.ArticleStock,
-                              CategoryID = p.CategoryId,
-                              VendorID = p.VendorId,
-                              ProductID = p.ProductId,
-                              SubCategoryID = p.SubCategoryId,
-                              ArticleName = pt.ArticleName,
-                              ArticleShortText = pt.ArticleShortText,
-                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
-                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
-                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
-                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                              ImageId = i.ImageId,
-                              ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
-                              LangCode = pt.LangCode,
-                              ISTranslated = pt.ISTranslated,
-                              ISActive = p.ISActive,
-                              ISCampaign = p.ISCampaign
-                          };
-
-            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
-            if (vModel == null)
-            {
-                return NotFound();
-            }
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            return View(vModel.SingleOrDefault());
-        }
 
         // POST: Article/Create
         //[HttpPost]
@@ -347,7 +303,7 @@ namespace Webshop.Controllers
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
+                              ArticlePrice = p.ArticlePrice / _curr,
                               ArticleStock = p.ArticleStock,
                               CategoryID = p.CategoryId,
                               VendorID = p.VendorId,
@@ -415,6 +371,77 @@ namespace Webshop.Controllers
             return View(article);
         }
 
+        // GET: Article/Create
+        public IActionResult Translate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join pt in _context.ArticleTranslations on
+                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                           equals new { pt.ArticleId, Second = pt.LangCode }
+                          where p.ArticleId == id
+                          select new ArticlesViewModel
+                          {
+                              ArticleId = pt.ArticleId,
+                              ArticleName = pt.ArticleName,
+                              ArticleNumber = p.ArticleNumber,
+                              ArticleShortText = pt.ArticleShortText,
+                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ArticlePrice = p.ArticlePrice / _curr,
+                              ArticleStock = p.ArticleStock,
+                              LangCode = pt.LangCode,
+                              ISTranslated = pt.ISTranslated,
+                              ImageId = i.ImageId,
+                              ArticleImgPath = i.ImagePath + i.ImageName,
+                              ArticleGuid = p.ArticleGuid,
+                              ISActive = p.ISActive,
+                              ISCampaign = p.ISCampaign
+                          };
+
+            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            if (vModel == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            return View(vModel.SingleOrDefault());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Translate(int id, string text, string one, string two, string three, string four,ArticlesViewModel artView, ArticleTranslation artTrans, ArticleBusinessLayer add)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+                    await add.Translate(id, _context, artView, artTrans, text, one, two, three, four);
+                //}
+                //catch (DbUpdateConcurrencyException)
+                //{
+                //    if (!ArticleModelExists(artView.ArticleId))
+                //    {
+                //return NotFound();
+                //    }
+                //    else
+                //    {
+                //        throw;
+                //
+                return RedirectToAction("Create");
+            //}            
+            //return View();
+        }
         public IActionResult NewVendor()
         {
             return View();
