@@ -88,13 +88,13 @@
                         <td>
                             @{var price = item.Article.ArticlePrice;
                                 var i = item.Count;
-                                var sum = Convert.ToDecimal(price * i);}
-                            @sum
+                                var sum = Convert.ToDecimal(Math.Round(price * i, 2));}
+                                @sum
                         </td>
 
                         <td>
-                            <a class="delete-button-sm RemoveFromCart pl" data-id="@item.CartItemId"  data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
-                        @*<a class="delete-button-sm RemoveFromCart" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>*@
+                            @*<a class="delete-button-sm RemoveFromCart pl" data-id="@item.CartItemId"  data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>*@
+                        <a class="delete-button-sm RemoveFromCart" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
                             <i class="fa fa-remove"></i>
                             </a>
                         </td>

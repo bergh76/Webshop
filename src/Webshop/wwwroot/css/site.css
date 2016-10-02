@@ -18,7 +18,10 @@ body {
     font-family: 'Roboto';
     font-size: 0.7em;
 }
-
+.padding-l-r-15{
+    padding-left: 15px;
+    padding-right:15px;
+}
 .basket-lined {
     font-size: 3em;
     line-height: 0;
@@ -311,12 +314,12 @@ body {
     justify-content: center;
 
 }
-.col-md-12, .col-lg-12, .col-xs-12 {
+/*.col-md-12, .col-lg-12, .col-xs-12 {
     position: relative;
     min-height: 1px;
      padding-right: 0!important; 
      padding-left: 0!important; 
-}
+}*/
 .btn-translate{
     width: 20px;
 }

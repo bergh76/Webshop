@@ -80,7 +80,6 @@ namespace Webshop.Controllers
         // GET: Article/Details/5
         public IActionResult Details(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();

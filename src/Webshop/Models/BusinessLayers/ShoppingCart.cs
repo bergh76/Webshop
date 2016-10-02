@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Resources;
+using Webshop.Services;
 
 namespace Webshop.Models.BusinessLayers
 {
@@ -15,6 +16,8 @@ namespace Webshop.Models.BusinessLayers
 
         private readonly WebShopRepository _context;
         private readonly string _shoppingCartId;
+        private static readonly string _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+        private static readonly decimal _curr = FixerIO.GetUDSToRate(_iso);
 
         public decimal _sum { get; set; }
         public int _items { get; set; }
@@ -33,13 +36,13 @@ namespace Webshop.Models.BusinessLayers
         public static ShoppingCart GetCart(WebShopRepository db, string cartId)
             => new ShoppingCart(db, cartId);
 
-        public async Task AddToCart(Articles article, ArticleTranslation artT)
+        public async Task AddToCart(Articles article)//, ArticleTranslation artT)
         {
             // Get the matching cart and album instances
             var cartItem = await _context.CartItems.SingleOrDefaultAsync(
                 c => c.CartId == _shoppingCartId
-                && c.ArticleId == article.ArticleId
-                && c.ArticleId == artT.ArticleId);
+                && c.ArticleId == article.ArticleId);
+                //&& c.ArticleId == artT.ArticleId);
 
 
             if (cartItem == null)
@@ -48,7 +51,10 @@ namespace Webshop.Models.BusinessLayers
                 cartItem = new CartItem
                 {
                     ArticleId = article.ArticleId,
-                    ArticleName = artT.ArticleName,
+                    ArticleName = _context.ArticleTranslations
+                                     .Where(x => x.ArticleId == article.ArticleId)
+                                     .Select(x => x.ArticleName)
+                                     .FirstOrDefault(),
                     CartId = _shoppingCartId,                    
                     Count = 1,
                     DateCreated = DateTime.Now
@@ -138,7 +144,7 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Include(c => c.Article)
                 .Where(c => c.CartId == _shoppingCartId)
-                .Select(c => c.Article.ArticlePrice * c.Count)
+                .Select(c => c.Article.ArticlePrice /_curr  * c.Count)
                 .SumAsync();
         }
 

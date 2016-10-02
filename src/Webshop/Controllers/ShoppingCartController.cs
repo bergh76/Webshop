@@ -18,14 +18,16 @@ namespace Webshop.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly ILogger<ShoppingCartController> _logger;
-        private static readonly string _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).TwoLetterISORegionName.ToLower();
-
-        public ShoppingCartController(WebShopRepository context, ILogger<ShoppingCartController> logger)
+        private static string _iso;
+        private static decimal _curr;
+        public ShoppingCartController([FromServices]FixerIO fixer,WebShopRepository context, ILogger<ShoppingCartController> logger)
         {
+            _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+            _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
             _logger = logger;
         }
-        public async Task<IActionResult> SearchArticles(int vendor, int category, int product, int subproduct)
+        public async Task<IActionResult> SearchArticles( int vendor, int category, int product, int subproduct)
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
@@ -44,7 +46,7 @@ namespace Webshop.Controllers
                           {
                               ArticleId = p.ArticleId,
                               ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice,
+                              ArticlePrice = p.ArticlePrice /_curr,
                               ArticleStock = p.ArticleStock,
                               ISActive = p.ISActive,
                               ISCampaign = p.ISCampaign,
@@ -89,16 +91,10 @@ namespace Webshop.Controllers
             var addedArticle = await _context.Articles
                 .SingleAsync(article => article.ArticleId == id);
 
-            var addedArticleName = await _context.ArticleTranslations
-               .SingleAsync(artT => artT.ArticleId == id);
-
-            //var addedArticleName = await _context.ArticleTranslations
-            //    .SingleAsync(artT => artT.ArticleId == id);
-
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(_context, HttpContext);
 
-            await cart.AddToCart(addedArticle, addedArticleName);
+            await cart.AddToCart(addedArticle);//, result);
 
             await _context.SaveChangesAsync(requestAborted);
             _logger.LogInformation("Article {0} was added to the cart.", addedArticle.ArticleId);

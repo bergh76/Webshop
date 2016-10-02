@@ -34,10 +34,7 @@ namespace Webshop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddressAndPayment(
-            [FromServices] WebShopRepository dbContext,
-            [FromForm] Order order,
-            CancellationToken requestAborted)
+        public async Task<IActionResult> AddressAndPayment([FromServices] WebShopRepository dbContext,[FromForm] Order order, CancellationToken requestAborted)
         {
             if (!ModelState.IsValid)
             {
