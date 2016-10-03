@@ -225,6 +225,7 @@ namespace Webshop.Models.BusinessLayers
                 ArticleNumber = artTrans.ArticleNumber
             };
             artTrans.ISTranslated = true;
+            //context.Entry(artTrans).State = EntityState.Modified;
             context.Add(trans);
             await context.SaveChangesAsync();
         }

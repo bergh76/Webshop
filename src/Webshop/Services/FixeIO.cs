@@ -24,16 +24,6 @@ namespace Webshop.Services
             var obj = JsonConvert.DeserializeObject<RootObj>(result.Content.ReadAsStringAsync().Result);
             return obj.rates.SEK;
         }
-        //public static decimal GetSEKToRate(string ISOCurrencySymbol)
-        //{
-        //    if (string.IsNullOrEmpty(ISOCurrencySymbol) || ISOCurrencySymbol.Length != 3)
-        //        return 1.0M;
-
-        //    var result = _client.GetAsync("http://api.fixer.io/latest?" + ISOCurrencySymbol).Result;
-        //    dynamic obj = JsonConvert.DeserializeObject<dynamic>(result.Content.ReadAsStringAsync().Result);
-
-        //    return decimal.Parse(obj.rates);
-        //}
         public class Rate
         {
             public decimal USD { get; set; }

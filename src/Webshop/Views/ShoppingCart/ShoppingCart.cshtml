@@ -18,7 +18,6 @@
     }
 }
 
-@section Scripts {
     <script type="text/javascript">
         $(function () {
             // Document.ready -> link up remove event handler
@@ -58,26 +57,57 @@
 
         });
     </script>
-}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#noTranslationTabel').DataTable({
+            dom: 'B<"clear"><lf<t>ip>',
+            buttons: [{ extend: 'copy', text: 'Kopiera', },
+                {
+                extend: 'excel',
+                text: 'Excel',
+                exportOptions: {  modifier: { page: 'current' } },
+            },
+            {
+                extend: 'pdf',
+                text: 'Pdf'
+            },
+            ],
+            "language": {
+                "lengthMenu": "Visa _MENU_ rader per sida",
+                "zeroRecords": "Din sökning gav inget - försök med ett annat sökord",
+                "info": "_PAGE_ av _PAGES_",
+                "infoEmpty": "Datatabellen är tom",
+                "infoFiltered": "(filtrerdad på _MAX_ antal poster)"
+            },
+            //"order": [[0, "asc", ]], //Column1
+            "processing": true,
+
+        })
+    });
+</script>
+
 <section class="container">
     <div class="row">
         <div class="col-xs-12 pad-top content-box">
             <h3>@Localizer["CartHeader"]</h3>
             <p id="update-message"> </p>
-            <table id="cart-summary" class="table table-responsive table-hover table-striped">
-                <tr>
-                    <th> </th>
+            <table id="noTranslationTabel cart-summary" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
+                <thead>
+                    <tr>
+                        <th></th>
 
-                    <th>@Localizer["Article"]</th>
+                        <th>@Localizer["Article"]</th>
 
-                    <th>@Localizer["Amount"]</th>
+                        <th>@Localizer["Amount"]</th>
 
-                    <th>@Localizer["Price"]</th>
+                        <th>@Localizer["Price"]</th>
 
-                    <th>@Localizer["RowTotal"]</th>
+                        <th>@Localizer["RowTotal"]</th>
 
-                    <th> </th>
-                </tr>
+                        <th> </th>
+                    </tr>
+                </thead>
                 @foreach (var item in Model.CartItems)
                 {
                     <tr id="row-@item.CartItemId">
@@ -102,7 +132,7 @@
                             </a>
                         </td>
                     </tr>
-                                }
+              }
             </table>
             <div class="pull-right" id="cart-total">
                 @{ var sumTotal = Model.CartTotal;
@@ -110,19 +140,25 @@
                 }
                 <h4>@Localizer["CartTotal"] @result</h4>
             </div>
-            @{ if (Model.CartTotal == 0)
 
-                {
-                    <div class="col-sm-12"><a asp-controller="CheckOut" asp-action="AddressAndPayment" class="btn btn-sm hidden btn-alert pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
+            @if (Model.CartTotal == 0)
 
-                }
+            {
+                <div class="col-sm-12"><a asp-controller="ShoppingCart" asp-action="AddressAndPayment" class="btn btn-sm hidden btn-alert pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
 
-                else
-                {
-                    <div class="col-sm-12"><a asp-controller="CheckOut" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
+            }
 
-                }
+            else
+            {
+                <div class="col-sm-12"><a asp-controller="ShoppingCart" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
+
             }
         </div>
     </div>
 </section>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

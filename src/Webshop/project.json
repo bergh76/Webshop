@@ -44,7 +44,8 @@
     "Microsoft.EntityFrameworkCore.Sqlite": "1.0.1",
     "Microsoft.AspNetCore.Session": "1.0.0",
     "Sakura.AspNetCore.Mvc.PagedList": "2.0.9",
-    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3"  },
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3",
+    "Microsoft.AspNetCore.Mvc.Core": "1.0.1"  },
 
   "tools": {
     "BundlerMinifier.Core": "2.0.238",
