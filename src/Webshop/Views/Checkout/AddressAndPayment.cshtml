@@ -1,10 +1,10 @@
 
-@model Webshop.Models.Order
+@*@model Webshop.Models.Order*@
 @{
     ViewBag.Title = "Address And Payment";
 }
 
-<section class="container">
+@*<section class="container">
     <div class="col-xs-12 pad-top content-box">
         <div class="col-md-12">
             @await Component.InvokeAsync("CheckOutCart")
@@ -13,13 +13,18 @@
             <form asp-antiforgery="true">
                 <h2 class="orange">Klarna checkout</h2>
                 <div>
+                    @Html.Partial("_KlarnaResult")
                     <a asp-action="Index">Back to List</a>
                     <input type="submit" value="Submit Order" />
                 </div>
             </form>
         </div>
     </div>
-</section>
+</section>*@
+@*@Html.Partial("_KlarnaResult")*@
+@Model string
+
+@Html.Raw(Model)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

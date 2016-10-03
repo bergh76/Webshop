@@ -144,13 +144,13 @@
             @if (Model.CartTotal == 0)
 
             {
-                <div class="col-sm-12"><a asp-controller="ShoppingCart" asp-action="AddressAndPayment" class="btn btn-sm hidden btn-alert pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
+                <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm hidden btn-alert pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
 
             }
 
             else
             {
-                <div class="col-sm-12"><a asp-controller="ShoppingCart" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
+                <div class="col-sm-12"><a asp-controller="Checkout" asp-action="AddressAndPayment" class="btn btn-sm btn-success pull-right margin-bottom">@Localizer["Checkout"]</a><p>&nbsp;</p></div>
 
             }
         </div>

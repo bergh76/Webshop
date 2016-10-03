@@ -51,6 +51,7 @@ namespace Webshop.Controllers
                               ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                              ArticleGuid = p.ArticleGuid,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
                               LangCode = pt.LangCode,
@@ -155,11 +156,6 @@ namespace Webshop.Controllers
                 return BadRequest(ModelState);
             }
             _context.Articles.Add(articles);
-            //foreach (var item in articles.Translations)
-            //{
-            //    _context.ArticleTranslations.Add(item);
-            //}
-
             try
             {
                 await _context.SaveChangesAsync();

@@ -104,68 +104,66 @@ namespace Webshop.Controllers
         }
 
         // GET: /Checkout/
-        public IActionResult AddressAndPayment()//string id, ShoppingCartViewModel items)
-        {
-        //    foreach (var item in items.CartItems.Where(x => x.CartId == id))
+        //public ViewResult AddressAndPayment()//string id, ShoppingCartViewModel items)
+        //{
+        //    //    foreach (var item in items.CartItems.Where(x => x.CartId == id))
+        //    //    {
+        //    var cartItems = new List<Dictionary<string, object>>
         //    {
-                var cartItems = new List<Dictionary<string, object>>
-                {
-                    new Dictionary<string, object>
-                        {
-                            { "reference", "123456" }, //item.Article.ArticleNumber },
-                            { "name", "Strumpor" },//item.ArticleName },
-                            { "quantity", 2 },//item.Count },
-                            { "unit_price", 9900 },// Convert.ToInt32(item.Article.ArticlePrice)*100 },
-                            { "discount_rate", 1000 },
-                            { "tax_rate", 2500 }
-                        },
-                    new Dictionary<string, object>
-                        {
-                            { "type", "shipping_fee" },
-                            { "reference", "SHIPPING" },
-                            { "name", "Shipping Fee" },
-                            { "quantity", 1 },
-                            { "unit_price", 4900 },
-                            { "tax_rate", 2500 }
-                        }
-                };
-                var cart = new Dictionary<string, object> { { "items", cartItems } };
+        //        new Dictionary<string, object>
+        //        {
+        //            { "reference", "123456" }, //item.Article.ArticleNumber },
+        //            { "name", "Strumpor" },//item.ArticleName },
+        //            { "quantity", 2 },//item.Count },
+        //            { "unit_price", 9900 },// Convert.ToInt32(item.Article.ArticlePrice)*100 },
+        //            { "discount_rate", 1000 },
+        //            { "tax_rate", 2500 }
+        //        },
+        //        new Dictionary<string, object>
+        //        {
+        //            { "type", "shipping_fee" },
+        //            { "reference", "SHIPPING" },
+        //            { "name", "Shipping Fee" },
+        //            { "quantity", 1 },
+        //            { "unit_price", 4900 },
+        //            { "tax_rate", 2500 }
+        //        }
+        //    };
+        //    var cart = new Dictionary<string, object> { { "items", cartItems } };
 
-                var data = new Dictionary<string, object>
-                {
-                    { "cart", cart }
-                };
-                var merchant = new Dictionary<string, object>
-                {
-                    { "id", "5160" },
-                    { "back_to_store_uri", "http://example.com" },
-                    { "terms_uri", "http://example.com/terms.aspx" },
-                    {
-                        "checkout_uri",
-                        "https://example.com/checkout.aspx"
-                    },
-                    {
-                        "confirmation_uri",
-                        "https://example.com/thankyou.aspx" +
-                        "?klarna_order_id={checkout.order.id}"
-                    },
-                    {
-                        "push_uri",
-                        "https://example.com/push.aspx" +
-                        "?klarna_order_id={checkout.order.id}"
-                    }
-               };
-                data.Add("purchase_country", "SE");
-                data.Add("purchase_currency", "SEK");
-                data.Add("locale", "sv-se");
-                data.Add("merchant", merchant);
-                Klarna k = new Klarna();
-                k.CreateOrder(JsonConvert.SerializeObject(data));
-            //var gui = k.CreateOrder(JsonConvert.SerializeObject(data));
+        //    var data = new Dictionary<string, object>
+        //    {
+        //        { "cart", cart }
+        //    };
+        //    var merchant = new Dictionary<string, object>
+        //    {
+        //        { "id", "5160" },
+        //        { "back_to_store_uri", "http://example.com" },
+        //        { "terms_uri", "http://example.com/terms.aspx" },
+        //        {
+        //            "checkout_uri",
+        //            "https://example.com/checkout.aspx"
+        //        },
+        //        {
+        //            "confirmation_uri",
+        //            "https://example.com/thankyou.aspx" +
+        //            "?klarna_order_id={checkout.order.id}"
+        //        },
+        //        {
+        //            "push_uri",
+        //            "https://example.com/push.aspx" +
+        //            "?klarna_order_id={checkout.order.id}"
+        //        }
+        //    };
+        //    data.Add("purchase_country", "SE");
+        //    data.Add("purchase_currency", "SEK");
+        //    data.Add("locale", "sv-se");
+        //    data.Add("merchant", merchant);
+        //    Klarna k = new Klarna();
+        //    var gui = k.CreateOrder(JsonConvert.SerializeObject(data));
 
-            //}
-            return View();
-        }
+        //    return View(gui);
+        //}
         //
         // AJAX: /ShoppingCart/RemoveFromCart/5
         [HttpPost]

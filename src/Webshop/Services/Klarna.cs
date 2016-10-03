@@ -19,15 +19,11 @@ namespace Webshop.Services
         public static HttpClient _client = new HttpClient();
         public readonly string Shared_Secret = "tE94QeKzSdUVJGe";
 
-        //public void CreateAutorization()
-        //{
-        //    string nubie = CreateAutho();
-        //}
-
         private string CreateAuthorization(string data)
         {
             //base64(hex(sha256 (request_payload + shared_secret)))
-            using (var algorithm = SHA256.Create())
+            using (HashAlgorithm algorithm = SHA256.Create())
+            //using (var algorithm = SHA256.Create())
             {
                 var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(data));
                 var base64 = System.Convert.ToBase64String(hash);
@@ -35,7 +31,7 @@ namespace Webshop.Services
             }
         }
 
-        public void CreateOrder(string jsondata)
+        public string CreateOrder(string jsondata)
         {
             HttpRequestMessage message = new HttpRequestMessage();
             message.RequestUri = new Uri("https://checkout.testdrive.klarna.com/checkout/orders");
@@ -54,8 +50,14 @@ namespace Webshop.Services
                 getmessage.Method = HttpMethod.Get;
                 getmessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
                 getmessage.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(Shared_Secret));
+
+                var getresponse = _client.SendAsync(getmessage).Result;
+                //var getresponsbody = getresponse.Content.ReadAsStringAsync().Result;
+
+                var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result).gui.snippet;
+                return guisnippet;
             }
-            var outN = response.StatusCode;
+            return response.StatusCode.ToString();
         }
 
         //public void CreateOrder(string jsondata)
