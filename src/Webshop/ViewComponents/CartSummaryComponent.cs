@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
+using Webshop.Services;
 using Webshop.ViewModels;
 
 namespace Webshop.Components
@@ -12,8 +14,12 @@ namespace Webshop.Components
     [ViewComponent(Name = "CartSummary")]
     public class CartSummaryComponent : ViewComponent
     {
+        private string _iso;
+        private decimal _curr;
         public CartSummaryComponent(WebShopRepository context)
         {
+            _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+            _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
         }
 

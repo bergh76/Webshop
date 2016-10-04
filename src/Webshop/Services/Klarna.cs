@@ -51,10 +51,11 @@ namespace Webshop.Services
                 getmessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
                 getmessage.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(Shared_Secret));
 
-                var getresponse = _client.SendAsync(getmessage).Result;
-                //var getresponsbody = getresponse.Content.ReadAsStringAsync().Result;
 
-                var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result).gui.snippet;
+                var getresponse = _client.SendAsync(getmessage).Result;
+                var getresponsbody = getresponse.Content.ReadAsStringAsync().Result;
+
+                var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponsbody).gui.snippet;
                 return guisnippet;
             }
             return response.StatusCode.ToString();
@@ -115,17 +116,5 @@ namespace Webshop.Services
             public string id { get; set; }
             public Gui gui { get; set; }
         }
-
-        //private static string KlarnaConnect()
-        //{
-        //    var result = _client.GetAsync("https://checkout.testdrive.klarna.com/checkout/orders").Result;
-        //    var obj = JsonConvert.DeserializeObject<>(result.Content.ReadAsStringAsync().Result);
-        //    return obj.rates.SEK;
-
-
-        //    //var connector = Connector.Create("sharedSecret", Connector.TestBaseUri);
-        //    //Order order = new Order(connector);
-        //    //order.Create(data);
-        //}
     }
 }

@@ -15,17 +15,20 @@ namespace Webshop.Models.BusinessLayers
     {
 
         private readonly WebShopRepository _context;
-        private readonly string _shoppingCartId;
-        private static readonly string _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
-        private static readonly decimal _curr = FixerIO.GetUDSToRate(_iso);
+        public readonly string _shoppingCartId ;
+        private static string _iso;// = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+        private static decimal _curr;// = FixerIO.GetUDSToRate(_iso);
 
         public decimal _sum { get; set; }
         public int _items { get; set; }
+
         public IEnumerable<CartItem> _cartItems { get; set; }
         public IEnumerable<CartItem> _artList {get;set;}
 
-        private ShoppingCart(WebShopRepository db, string id)
+        public ShoppingCart(WebShopRepository db, string id)
         {
+            _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+            _curr = FixerIO.GetUDSToRate(_iso);
             _context = db;
             _shoppingCartId = id;
         }
@@ -54,6 +57,9 @@ namespace Webshop.Models.BusinessLayers
                     ArticleName = _context.ArticleTranslations
                                      .Where(x => x.ArticleId == article.ArticleId)
                                      .Select(x => x.ArticleName)
+                                     .FirstOrDefault(),
+                    ArticleNumber = _context.Articles.Where(x => x.ArticleId == article.ArticleId)
+                                     .Select(x => x.ArticleNumber)
                                      .FirstOrDefault(),
                     CartId = _shoppingCartId,                    
                     Count = 1,
@@ -102,6 +108,8 @@ namespace Webshop.Models.BusinessLayers
                 .Where(cart => cart.CartId == _shoppingCartId)
                 .ToArrayAsync();
             _context.CartItems.RemoveRange(cartItems);
+            _context.SaveChanges();
+
         }
 
         public Task<List<CartItem>> GetCartItems()
@@ -144,7 +152,7 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Include(c => c.Article)
                 .Where(c => c.CartId == _shoppingCartId)
-                .Select(c => c.Article.ArticlePrice /_curr  * c.Count)
+                .Select(c => c.Article.ArticlePrice / _curr  * c.Count)
                 .SumAsync();
         }
 
@@ -162,22 +170,23 @@ namespace Webshop.Models.BusinessLayers
                 var orderDetail = new OrderDetail
                 {
                     ArticleId = item.ArticleId,
-                    //Article = item.ArticleName,
-
+                    ArticleNumber = item.ArticleNumber,
+                    ArticleName = item.ArticleName,
                     OrderId = order.OrderId,
-                    UnitPrice = article.ArticlePrice,
+                    UnitPrice = article.ArticlePrice / _curr,
                     Quantity = item.Count,
                 };
 
                 // Set the order total of the shopping cart
-                orderTotal += (item.Count * article.ArticlePrice);
+                orderTotal += (item.Count * article.ArticlePrice / _curr);
 
                 _context.OrderDetails.Add(orderDetail);
+                _context.SaveChanges();
             }
-
+            //_context.SaveChanges();
             // Set the order's total to the orderTotal count
             order.Total = orderTotal;
-
+            _context.SaveChanges();
             // Empty the shopping cart
             await EmptyCart();
 
@@ -186,7 +195,7 @@ namespace Webshop.Models.BusinessLayers
         }
 
         // We're using HttpContextBase to allow access to sessions.
-        private static string GetCartId(HttpContext context)
+        public static string GetCartId(HttpContext context)
         {
             var cartId = context.Session.GetString("Session");
             //var isCheckout = context.Session.IsAvailable;
@@ -198,6 +207,7 @@ namespace Webshop.Models.BusinessLayers
                 // Send cart Id as a cookie to the client.
                 context.Session.SetString("Session", cartId);
             }
+
             return cartId;
         }
 

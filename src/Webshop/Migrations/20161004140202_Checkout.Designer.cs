@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20161004140202_Checkout")]
+    partial class Checkout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -271,8 +272,6 @@ namespace Webshop.Migrations
 
                     b.Property<string>("ArticleName");
 
-                    b.Property<string>("ArticleNumber");
-
                     b.Property<int?>("ArticleTranslationArticleId");
 
                     b.Property<string>("ArticleTranslationLangCode");
@@ -389,8 +388,6 @@ namespace Webshop.Migrations
                     b.Property<int>("ArticleId");
 
                     b.Property<string>("ArticleName");
-
-                    b.Property<string>("ArticleNumber");
 
                     b.Property<int?>("ArticleTranslateArticleId");
 

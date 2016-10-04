@@ -13,7 +13,8 @@ namespace Webshop.Models
 
         [Required]
         public string CartId { get; set; }
-        public int ArticleId { get; set; }     
+        public int ArticleId { get; set; }   
+        public string ArticleNumber { get; set; }
         public string ArticleName { get; set; }  
         //public string ArticleImgPath { get; set; } 
 

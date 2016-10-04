@@ -1,10 +1,10 @@
 
-@*@model Webshop.Models.Order*@
+@model Webshop.Models.Order
 @{
     ViewBag.Title = "Address And Payment";
 }
 
-@*<section class="container">
+<section class="container">
     <div class="col-xs-12 pad-top content-box">
         <div class="col-md-12">
             @await Component.InvokeAsync("CheckOutCart")
@@ -20,11 +20,8 @@
             </form>
         </div>
     </div>
-</section>*@
-@*@Html.Partial("_KlarnaResult")*@
-@Model string
+</section>
 
-@Html.Raw(Model)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

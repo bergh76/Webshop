@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using Webshop.HelperClasses;
 using Webshop.Interfaces;
 using Webshop.Models;
 using Webshop.Services;
@@ -32,9 +33,11 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<CartModelBinder>();
             services.AddTransient<FixerIO>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddLocalization(option => option.ResourcesPath = "Resources");
+
             // Add framework services.
             services.AddDbContext<WebShopRepository>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -74,7 +77,9 @@ namespace Webshop
 
             //// Add session related services.
             services.AddSession();
-
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
