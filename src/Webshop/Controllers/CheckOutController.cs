@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Webshop.Services;
 using Newtonsoft.Json;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
 
 namespace Webshop.Controllers
 {
@@ -19,8 +20,14 @@ namespace Webshop.Controllers
         private const string PromoCode = "FREE";
         private readonly ILogger<CheckOutController> _logger;
         private readonly WebShopRepository _context;
-        public CheckOutController(ILogger<CheckOutController> logger, WebShopRepository context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public CheckOutController(
+             UserManager<ApplicationUser> userManager,
+            ILogger<CheckOutController> logger, 
+            WebShopRepository context)
         {
+            _userManager = userManager;
             _context = context;
             _logger = logger;
         }
@@ -34,16 +41,16 @@ namespace Webshop.Controllers
             CancellationToken requestAborted)//string id, ShoppingCartViewModel items)
         {
 
-            order.Username = HttpContext.User.Identity.Name;
-            order.OrderDate = DateTime.Now;
+            //order.Username = HttpContext.User.Identity.Name;
+            //order.OrderDate = DateTime.Now;
 
-            //Add the Order
-            dbContext.Orders.Add(order);
-            dbContext.SaveChanges();
+            //////Add the Order
+            //dbContext.Orders.Add(order);
+            ////dbContext.SaveChanges();
 
             //Process the order
             var getCart = ShoppingCart.GetCart(dbContext, HttpContext);
-            //await getCart.CreateOrder(order);
+            await getCart.CreateOrder(order);
 
 
             _logger.LogInformation("User {userName} started checkout of {orderId}.", order.Username, order.OrderId);
@@ -83,23 +90,6 @@ namespace Webshop.Controllers
                     };
                     var merchant = new Dictionary<string, object>
                     {
-                //                  { "id", "5160" },
-                //{ "back_to_store_uri", "http://example.com" },
-                //{ "terms_uri", "http://example.com/terms.aspx" },
-                //{
-                //    "checkout_uri",
-                //    "https://example.com/checkout.aspx"
-                //},
-                //{
-                //    "confirmation_uri",
-                //    "https://example.com/thankyou.aspx" +
-                //    "?klarna_order_id={checkout.order.id}"
-                //},
-                //{
-                //    "push_uri",
-                //    "https://example.com/push.aspx" +
-                //    "?klarna_order_id={checkout.order.id}"
-                //        }
                         { "id", "5160" },
                         { "back_to_store_uri", "http://localhost:5000/" },
                         { "terms_uri", "http://example.com/terms.aspx" },
@@ -125,6 +115,7 @@ namespace Webshop.Controllers
                     Klarna k = new Klarna();
                     var gui = k.CreateOrder(JsonConvert.SerializeObject(data));
 
+
                     return View("Checkout", gui);
                 }
                 catch (WebException ex)
@@ -139,18 +130,9 @@ namespace Webshop.Controllers
                     else
                     {
                         // In case there wasn't a WebException where you could get the response
-                        // (e.g. a protocol error, bad digest, etc) you might still be able to
-                        // get a hold of the response object.
-                        // ex.Data["Response"] as IHttpResponse
+                        var faultResponse = (string)ex.Data["Respone"];
+                        throw new Exception(faultResponse);
                     }
-                    // Additional data might be available in ex.Data.
-                    if (ex.Data.Contains("internal_message"))
-                    {
-                        // For instance, Content-Type application/vnd.klarna.error-v1+json has "internal_message".
-                        var internalMessage = (string)ex.Data["internal_message"];
-                        throw new WebException(internalMessage);
-                    }
-                    throw;
                 }
             }
             else
@@ -161,12 +143,25 @@ namespace Webshop.Controllers
             }
         }
 
-        public ViewResult Complete(string klarna_order_id)
+        public ViewResult Complete([FromForm] Order order, [FromServices] WebShopRepository dbContext, string klarna_order_id)
         {
+            //Order o = new Order();
+
+            order.Username = HttpContext.User.Identity.Name;
+            order.UserId = dbContext.Users.Where(x => x.UserName == HttpContext.User.Identity.Name)
+                            .Select(x => x.Id)
+                            .FirstOrDefault();
+            order.OrderDate = DateTime.Now;
+            order.KlarnaOrderId = klarna_order_id;
+            //Add the Order
+            dbContext.Orders.Add(order);
+            dbContext.SaveChanges();
+
             Klarna k = new Klarna();
             var gui = k.KlarnaConfirmation(klarna_order_id);
 
             return View("Complete", gui);
         }
+       
     }
 }        
