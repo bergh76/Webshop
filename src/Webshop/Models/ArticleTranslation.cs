@@ -55,6 +55,5 @@ namespace Webshop.Models
         //public Guid ArticleGuid { get; set; }
         public bool ISTranslated { get; set; }
 
-
     }
 }

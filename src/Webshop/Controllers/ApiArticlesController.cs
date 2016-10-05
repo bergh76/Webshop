@@ -19,9 +19,11 @@ namespace Webshop.Controllers
     public class ApiArticlesController : Controller
     {
         private readonly WebShopRepository _context; //crate a service for context
+        private readonly ArticleBusinessLayer _artBLL;
         //private readonly IHostingEnvironment _hostEnvironment;
-        public ApiArticlesController(WebShopRepository context) //IFormCollection form,,
+        public ApiArticlesController(WebShopRepository context, ArticleBusinessLayer artBLL) //IFormCollection form,,
         {
+            _artBLL = artBLL;
             _context = context;
             //_form = form;
         }
@@ -77,8 +79,6 @@ namespace Webshop.Controllers
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
-
-
                           select new ArticlesViewModel
                           {
                               ArticleId = p.ArticleId,
@@ -156,6 +156,10 @@ namespace Webshop.Controllers
                 return BadRequest(ModelState);
             }
             _context.Articles.Add(articles);
+            //foreach (var item in articles.Translations)
+            //{
+            //    await _artBLL.
+            //}
             try
             {
                 await _context.SaveChangesAsync();

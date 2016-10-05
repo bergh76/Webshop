@@ -49,7 +49,6 @@ namespace Webshop.Models.BusinessLayers
 
         internal async Task AddArticle(IFormFile file, IFormCollection form, WebShopRepository context, Articles article,ArticleTranslation artTranslate, IHostingEnvironment hostEnvironment, int VendorID, int ProductID, int CategoryID,int SubCategoryID)
         {
-
             var rootHost = RootHost(hostEnvironment);
 
             artTranslate.LangCode = "sv";
@@ -224,9 +223,13 @@ namespace Webshop.Models.BusinessLayers
                 LangCode = "en",
                 ArticleNumber = artTrans.ArticleNumber
             };
-            artTrans.ISTranslated = true;
-            //context.Entry(artTrans).State = EntityState.Modified;
             context.Add(trans);
+            var isTranslated = context.ArticleTranslations
+                .Where(x => x.ArticleId == id)
+                .Select(x => x.ISTranslated).FirstOrDefault();
+            isTranslated = true;
+            artTrans.ISTranslated = isTranslated;
+
             await context.SaveChangesAsync();
         }
     }

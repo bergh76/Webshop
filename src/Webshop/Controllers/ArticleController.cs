@@ -421,25 +421,26 @@ namespace Webshop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Translate(int id, string text, string one, string two, string three, string four,ArticlesViewModel artView, ArticleTranslation artTrans, ArticleBusinessLayer add)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
+            if (ModelState.IsValid )
+            {
+                try
+                {
                     await add.Translate(id, _context, artView, artTrans, text, one, two, three, four);
-                //}
-                //catch (DbUpdateConcurrencyException)
-                //{
-                //    if (!ArticleModelExists(artView.ArticleId))
-                //    {
-                //return NotFound();
-                //    }
-                //    else
-                //    {
-                //        throw;
-                //
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ArticleModelExists(artView.ArticleId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction("Create");
-            //}            
-            //return View();
+            }
+            return View();
         }
         public IActionResult NewVendor()
         {

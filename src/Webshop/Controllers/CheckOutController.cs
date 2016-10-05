@@ -33,6 +33,7 @@ namespace Webshop.Controllers
             OrderDetail orderDetials,
             CancellationToken requestAborted)//string id, ShoppingCartViewModel items)
         {
+
             order.Username = HttpContext.User.Identity.Name;
             order.OrderDate = DateTime.Now;
 
@@ -42,29 +43,29 @@ namespace Webshop.Controllers
 
             //Process the order
             var getCart = ShoppingCart.GetCart(dbContext, HttpContext);
-            await getCart.CreateOrder(order);
-            //var cId = order.OrderId;
-            
+            //await getCart.CreateOrder(order);
+
+
             _logger.LogInformation("User {userName} started checkout of {orderId}.", order.Username, order.OrderId);
-            if (order.OrderDetails != null)
+            //if (order.OrderDetails != null)
+            if (getCart.GetCartItems() != null)
             {
                 try
                 {
-                    
-                    var cartItems = new List<Dictionary<string, object>>
-                    {                      
-                    
-                        new Dictionary<string, object>
-                        {                                
-                            { "reference", "111111111" }, //item.ArticleId },
-                            { "name", "dfgsdf" }, //item.ArticleName },
-                            { "quantity", 1 }, //item.Quantity },
-                            { "unit_price", 12500 }, //Convert.ToInt32(item.UnitPrice)*100 },
-                            { "discount_rate", 1000 },
+                    var cartItems = new List<Dictionary<string, object>>();
+                    foreach (var item in await getCart.GetCartItems())
+                    {
+                        cartItems.Add(new Dictionary<string, object> {
+                            { "reference", item.ArticleNumber },
+                            { "name", item.ArticleName },
+                            { "quantity", item.Count },
+                            { "unit_price", (int)(item.Article.ArticlePrice)*100 },
+                            { "discount_rate", 000 },
                             { "tax_rate", 2500 }
-                      
-                        },
-                        new Dictionary<string, object>
+                        }
+                        );
+                    }
+                    new Dictionary<string, object>
                         {
                             { "type", "shipping_fee" },
                             { "reference", "SHIPPING" },
@@ -72,10 +73,9 @@ namespace Webshop.Controllers
                             { "quantity", 1 },
                             { "unit_price", 4900 },
                             { "tax_rate", 2500 }
-                        }
-                        
-                    };
-                
+                        };
+
+
                     var cart = new Dictionary<string, object> { { "items", cartItems } };
                     var data = new Dictionary<string, object>
                     {
@@ -83,12 +83,29 @@ namespace Webshop.Controllers
                     };
                     var merchant = new Dictionary<string, object>
                     {
+                //                  { "id", "5160" },
+                //{ "back_to_store_uri", "http://example.com" },
+                //{ "terms_uri", "http://example.com/terms.aspx" },
+                //{
+                //    "checkout_uri",
+                //    "https://example.com/checkout.aspx"
+                //},
+                //{
+                //    "confirmation_uri",
+                //    "https://example.com/thankyou.aspx" +
+                //    "?klarna_order_id={checkout.order.id}"
+                //},
+                //{
+                //    "push_uri",
+                //    "https://example.com/push.aspx" +
+                //    "?klarna_order_id={checkout.order.id}"
+                //        }
                         { "id", "5160" },
                         { "back_to_store_uri", "http://localhost:5000/" },
                         { "terms_uri", "http://example.com/terms.aspx" },
                         {
                             "checkout_uri",
-                            "http://localhost:5000/CheckOut/AddressAndPayment/"
+                            "http://localhost:5000/CheckOut/Checkout/"
                         },
                         {
                             "confirmation_uri",
@@ -107,7 +124,8 @@ namespace Webshop.Controllers
                     data.Add("merchant", merchant);
                     Klarna k = new Klarna();
                     var gui = k.CreateOrder(JsonConvert.SerializeObject(data));
-                    return View(gui);
+
+                    return View("Checkout", gui);
                 }
                 catch (WebException ex)
                 {
@@ -137,12 +155,18 @@ namespace Webshop.Controllers
             }
             else
             {
-                _logger.LogInformation("There was a problem wiht Order:{orderId}.", order.OrderId);
+                _logger.LogInformation("There was a problem with Order:{orderId}.", order.OrderId);
 
                 return PartialView("_ErrorCheckOut");
             }
         }
-    }
-}
 
-           
+        public ViewResult Complete(string klarna_order_id)
+        {
+            Klarna k = new Klarna();
+            var gui = k.KlarnaConfirmation(klarna_order_id);
+
+            return View("Complete", gui);
+        }
+    }
+}        

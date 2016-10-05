@@ -33,69 +33,33 @@ namespace Webshop.Services
 
         public string CreateOrder(string jsondata)
         {
+            HttpRequestMessage message = SendKlarnaRequestMessage(jsondata);
+            var response = _client.SendAsync(message).Result;
+            if (response.StatusCode == HttpStatusCode.Created)
+            {
+                var location = response.Headers.Location.AbsoluteUri;
+                // hämta ordern
+                HttpRequestMessage getmessage = GetKlarnaResponseMessage(location);
+                var getresponse = _client.SendAsync(getmessage).Result;
+                var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result).gui.snippet;
+                var obj = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result);
+                return guisnippet;
+            }
+            return response.StatusCode.ToString();
+        }
+
+        private HttpRequestMessage SendKlarnaRequestMessage(string jsondata)
+        {
             HttpRequestMessage message = new HttpRequestMessage();
             message.RequestUri = new Uri("https://checkout.testdrive.klarna.com/checkout/orders");
             message.Method = HttpMethod.Post;
             message.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(jsondata + Shared_Secret));
             message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
             message.Content = new StringContent(jsondata, Encoding.UTF8, "application/vnd.klarna.checkout.aggregated-order-v2+json");
-
-            var response = _client.SendAsync(message).Result;
-            if (response.StatusCode == HttpStatusCode.Created)
-            {
-                var location = response.Headers.Location.AbsoluteUri;
-                // hämta ordern
-                HttpRequestMessage getmessage = new HttpRequestMessage();
-                getmessage.RequestUri = new Uri(location);
-                getmessage.Method = HttpMethod.Get;
-                getmessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
-                getmessage.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(Shared_Secret));
-
-
-                var getresponse = _client.SendAsync(getmessage).Result;
-                var getresponsbody = getresponse.Content.ReadAsStringAsync().Result;
-
-                var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponsbody).gui.snippet;
-                return guisnippet;
-            }
-            return response.StatusCode.ToString();
+            return message;
         }
 
-        //public void CreateOrder(string jsondata)
-        //{
-        //    HttpRequestMessage message = new HttpRequestMessage();
-        //    var response = _client.SendAsync(message).Result;
-        //    if (response.StatusCode == HttpStatusCode.Created)
-        //    {
-        //        message.RequestUri = new Uri("https://checkout.testdrive.klarna.com/checkout/orders");
-        //        message.Method = HttpMethod.Post;
-        //        message.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(jsondata + Shared_Secret));
-        //        message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
-        //        message.Content = new StringContent(jsondata, Encoding.UTF8, "application/vnd.klarna.checkout.aggregated-order-v2+json");
-        //        response = _client.SendAsync(message).Result;
-        //    }
-        //    //var response = _client.SendAsync(message).Result;
-        //    if (response.StatusCode == HttpStatusCode.Created)
-        //    {
-        //        //var location = response.Headers.Location.AbsoluteUri;
-        //        // hämta ordern
-        //        string location = "https://checkout.testdrive.klarna.com/checkout/orders/";
-        //        HttpRequestMessage getmessage = CreateGetRequestMessage(location);
-        //        var getresponse = _client.SendAsync(getmessage).Result;
-        //        // var getresponsebody = getresponse.Content.ReadAsString().Result;
-        //        //HttpRequestMessage getmessage = new HttpRequestMessage();
-        //        getmessage.RequestUri = new Uri(location);
-        //        getmessage.Method = HttpMethod.Get;
-        //        getmessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
-        //        getmessage.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(Shared_Secret));
-
-        //        var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(response).gui.snippet;
-        //        return guisnippet;
-        //    }
-        //    //return response.StatusCode;
-        //}
-
-        private HttpRequestMessage CreateGetRequestMessage(string location)
+        private HttpRequestMessage GetKlarnaResponseMessage(string location)
         {
             HttpRequestMessage getmessage = new HttpRequestMessage();
             getmessage.RequestUri = new Uri(location);
@@ -105,6 +69,34 @@ namespace Webshop.Services
             return getmessage;
         }
 
+        public string GetKlarnaOrderUpdate(string jsondata)
+        {
+            HttpRequestMessage getmessage = new HttpRequestMessage();
+            getmessage.Method = HttpMethod.Get;
+            getmessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
+            getmessage.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(Shared_Secret));
+            // hämta ordern
+            var getresponse = _client.SendAsync(getmessage).Result;
+
+            var obj = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result);
+            var idOut = obj.id;
+            return idOut;
+        }
+
+        public string KlarnaConfirmation(string id)
+        {
+            HttpRequestMessage getmessage = new HttpRequestMessage();
+            getmessage.Method = HttpMethod.Get;
+            getmessage.RequestUri = new Uri("https://checkout.testdrive.klarna.com/checkout/orders/" +id );
+            getmessage.Headers.Authorization = new AuthenticationHeaderValue("Klarna", CreateAuthorization(Shared_Secret));
+            getmessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.klarna.checkout.aggregated-order-v2+json"));
+            // hämta ordern
+            var getresponse = _client.SendAsync(getmessage).Result;
+
+            var obj = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result);
+            var snippOut = obj.gui.snippet;
+            return snippOut;
+        }
 
         public class Gui
         {
