@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Webshop.ViewModels.OrderOverviewViewModel>
+
+@{
+    ViewData["Title"] = "View";
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#noTranslationTabel').DataTable({
+            dom: 'B<"clear"><lf<t>ip>',
+            buttons: [{ extend: 'copy', text: 'Kopiera', },
+                {
+                extend: 'excel',
+                text: 'Excel',
+                exportOptions: {  modifier: { page: 'current' } },
+            },
+            {
+                extend: 'pdf',
+                text: 'Pdf'
+            },
+            ],
+            "language": {
+                "lengthMenu": "Visa _MENU_ rader per sida",
+                "zeroRecords": "Din sökning gav inget - försök med ett annat sökord",
+                "info": "_PAGE_ av _PAGES_",
+                "infoEmpty": "Datatabellen är tom",
+                "infoFiltered": "(filtrerdad på _MAX_ antal poster)"
+            },
+            //"order": [[0, "asc", ]], //Column1
+            "processing": true,
+
+        })
+
+        //var table = $('#myDWPTable').DataTable();
+        //var expdata = table.buttons.exportData();
+        //console.log("Tabelldata \n", expdata);
+    });
+    </script>
+}
+<section class="container content-box">
+    <section class="row">
+        <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="col-md-12 pad-top">
+                <table id="noTranslationTabel" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed table-font" role="grid" aria-describedby="datatable-buttons_info">
+                    <thead>
+                        <tr>
+                            <th>OrderID</th>
+                            <th>Datum</th>
+                            <th>ArticleNumber</th>
+                            <th>Article</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>KlarnaId</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ArticleNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ArticleName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                <td>@Html.DisplayFor(modelItem => item.KlarnaOrderId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+

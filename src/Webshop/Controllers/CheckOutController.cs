@@ -25,7 +25,8 @@ namespace Webshop.Controllers
         public CheckOutController(
              UserManager<ApplicationUser> userManager,
             ILogger<CheckOutController> logger, 
-            WebShopRepository context)
+            WebShopRepository context
+            )
         {
             _userManager = userManager;
             _context = context;
@@ -38,19 +39,12 @@ namespace Webshop.Controllers
             [FromServices] WebShopRepository dbContext,
             [FromForm] Order order,
             OrderDetail orderDetials,
-            CancellationToken requestAborted)//string id, ShoppingCartViewModel items)
+            CancellationToken requestAborted
+            )
         {
 
-            //order.Username = HttpContext.User.Identity.Name;
-            //order.OrderDate = DateTime.Now;
-
-            //////Add the Order
-            //dbContext.Orders.Add(order);
-            ////dbContext.SaveChanges();
-
             //Process the order
-            var getCart = ShoppingCart.GetCart(dbContext, HttpContext);
-            await getCart.CreateOrder(order);
+            var getCart = ShoppingCart.GetCart(dbContext, HttpContext);  
 
 
             _logger.LogInformation("User {userName} started checkout of {orderId}.", order.Username, order.OrderId);
@@ -108,13 +102,31 @@ namespace Webshop.Controllers
                             "?klarna_order_id={checkout.order.id}"
                         }
                     };
-                    data.Add("purchase_country", "SE");
+                    //
+                    // have not yet obtained your merchant ID, please apply for API credentials
+                    // Testing environment: https://checkout.testdrive.klarna.com
+                    // Merchant ID (eid)and shared secret: Please use the Merchant ID(eid) and shared secret provided to you by Klarna.
+                    // E-mail address: checkout-se@testdrive.klarna.com
+                    // Postal code: 12345
+                    // Personal identity number: 410321-9202
+                    
+                                        data.Add("purchase_country", "SE");
                     data.Add("purchase_currency", "SEK");
                     data.Add("locale", "sv-se");
                     data.Add("merchant", merchant);
-                    Klarna k = new Klarna();
+                    var k = new Klarna();
                     var gui = k.CreateOrder(JsonConvert.SerializeObject(data));
 
+                    order.Username = HttpContext.User.Identity.Name;
+                    order.UserId = dbContext.Users.Where(x => x.UserName == HttpContext.User.Identity.Name)
+                                .Select(x => x.Id)
+                                .FirstOrDefault();
+                    order.OrderDate = DateTime.Now;
+
+                    //Add the Order
+                    dbContext.Orders.Add(order);
+                    dbContext.SaveChanges();
+                    await getCart.CreateOrder(order);
 
                     return View("Checkout", gui);
                 }
@@ -141,22 +153,12 @@ namespace Webshop.Controllers
 
                 return PartialView("_ErrorCheckOut");
             }
+           
         }
 
         public ViewResult Complete([FromForm] Order order, [FromServices] WebShopRepository dbContext, string klarna_order_id)
         {
-            //Order o = new Order();
-
-            order.Username = HttpContext.User.Identity.Name;
-            order.UserId = dbContext.Users.Where(x => x.UserName == HttpContext.User.Identity.Name)
-                            .Select(x => x.Id)
-                            .FirstOrDefault();
-            order.OrderDate = DateTime.Now;
-            order.KlarnaOrderId = klarna_order_id;
-            //Add the Order
-            dbContext.Orders.Add(order);
-            dbContext.SaveChanges();
-
+           
             Klarna k = new Klarna();
             var gui = k.KlarnaConfirmation(klarna_order_id);
 

@@ -18,7 +18,7 @@ namespace Webshop.Services
     {
         public static HttpClient _client = new HttpClient();
         public readonly string Shared_Secret = "tE94QeKzSdUVJGe";
-
+        public static string KlarnaOrderId { get; set; }
         private string CreateAuthorization(string data)
         {
             //base64(hex(sha256 (request_payload + shared_secret)))
@@ -43,6 +43,7 @@ namespace Webshop.Services
                 var getresponse = _client.SendAsync(getmessage).Result;
                 var guisnippet = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result).gui.snippet;
                 var obj = JsonConvert.DeserializeObject<KlarnaGetCartResponse>(getresponse.Content.ReadAsStringAsync().Result);
+                KlarnaOrderId = obj.id;
                 return guisnippet;
             }
             return response.StatusCode.ToString();

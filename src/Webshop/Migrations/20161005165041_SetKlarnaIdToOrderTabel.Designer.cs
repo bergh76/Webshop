@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20161005165041_SetKlarnaIdToOrderTabel")]
+    partial class SetKlarnaIdToOrderTabel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -366,6 +367,8 @@ namespace Webshop.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<string>("KlarnaOrderId");
+
                     b.Property<string>("LastName");
 
                     b.Property<DateTime>("OrderDate");
@@ -401,8 +404,6 @@ namespace Webshop.Migrations
                     b.Property<int?>("ArticleTranslateArticleId");
 
                     b.Property<string>("ArticleTranslateLangCode");
-
-                    b.Property<string>("KlarnaOrderId");
 
                     b.Property<int>("OrderId");
 

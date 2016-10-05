@@ -21,7 +21,7 @@ namespace Webshop.Models
         public string Email { get; set; }
         public decimal Total { get; set; }
         public DateTime OrderDate { get; set; }
-        public string KlarnaOrderId { get; set; }
+
         public List<OrderDetail> OrderDetails { get; set; }
     }
 }

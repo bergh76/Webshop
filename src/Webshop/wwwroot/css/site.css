@@ -7,9 +7,9 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
   /*font-family: 'Trebuchet MS','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
-  font-family: 'Raleway','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /*font-family: 'Raleway','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
    /*font-family: Corbel, Tahoma, Geneva, Verdana, sans-serif!important;*/
-  /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;*/
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;

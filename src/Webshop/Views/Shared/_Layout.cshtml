@@ -149,14 +149,14 @@
                         <ul class="dropdown-menu">
                             <li class="disabled">
                                 <span class="icon-padding-right-15"></span><button type="submit" class="logout-button green bg-primary">
-                                    @*<a asp-area="" asp-controller="Account" asp-action="Login">*@<span class="fa fa-sign-in icon-padding-right"></span>@UserManager.GetUserName(User)@*@Localizer["Logga in"]*@
-                                    @*</a>*@
-                                </button>
+                                    <span class="fa fa-sign-in icon-padding-right"></span>@UserManager.GetUserName(User)</button>
                             </li>
 
                             <li class="divider"></li>
                             <li>
-                                <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-history icon-padding-right"></span>@Localizer["Orderhistorik"]</button>
+                                <form asp-area="" asp-controller="User" asp-action="Orders" method="post" id="logoutForm">
+                                    <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-history icon-padding-right"></span>@Localizer["Orderhistorik"]</button>
+                                </form>
                             </li>
                             <li>
                                 <span class="icon-padding-right-15"></span><button type="submit" class="logout-button"><span class="fa fa-chain-broken icon-padding-right"></span>@Localizer["Ärenden & reklamationer"]</button>
