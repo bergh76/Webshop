@@ -171,7 +171,7 @@
                             <li class="divider"></li>
                         </ul>
                     </li>
-                    <li>@await Html.PartialAsync("_SelectLanguagePartial")</li>
+                    
                     }
                     else
                     {
@@ -179,6 +179,7 @@
                             <a asp-area="" asp-controller="Account" asp-action="Login"><span class="fa fa-sign-in icon-padding-right"></span>Logga in</a>
                         </li>
                     }
+                    <li>@await Html.PartialAsync("_SelectLanguagePartial")</li>
                 </ul>                
                 <div>
                     <ul class="nav-white navbar-nav pull-right">

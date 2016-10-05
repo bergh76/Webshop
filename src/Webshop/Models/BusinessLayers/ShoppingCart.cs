@@ -176,6 +176,8 @@ namespace Webshop.Models.BusinessLayers
                     UnitPrice = article.ArticlePrice / _curr,
                     Quantity = item.Count,
                     KlarnaOrderId = Klarna.KlarnaOrderId
+                   
+
                 };
 
                 // Set the order total of the shopping cart

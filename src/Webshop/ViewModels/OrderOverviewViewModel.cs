@@ -19,6 +19,7 @@ namespace Webshop.ViewModels
         public decimal Total { get; set; }
         public DateTime OrderDate { get; set; }
         public string KlarnaOrderId { get; set; }
+        public string UserId { get; set; }
         public virtual Articles Article { get; set; }
         public virtual ArticleTranslation ArticleTranslate { get; set; }
 

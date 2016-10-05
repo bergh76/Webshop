@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<Webshop.ViewModels.OrderOverviewViewModel>
-
+@using Webshop.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "View";
 }
@@ -39,6 +42,9 @@
     });
     </script>
 }
+
+@if (SignInManager.IsSignedIn(User)) //TODO: Check loggedin user an match orderId to populate OrderList
+{
 <section class="container content-box">
     <section class="row">
         <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -76,6 +82,7 @@
         </div>
     </section>
 </section>
+}
 
 
 
