@@ -42,13 +42,8 @@ namespace Webshop.Controllers
         //}
 
 
-        public async Task<IActionResult> Index(string vendor, string category, string product, string subcategory)
+        public async Task<IActionResult> Index()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-
             var artList = from p in _context.Articles
                               //where p.ISCampaign == true
                           join i in _context.Images on p.ArticleId equals i.ArtikelId

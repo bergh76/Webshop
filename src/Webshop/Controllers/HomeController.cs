@@ -168,6 +168,7 @@ namespace Webshop.Controllers
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ArticleImgPath = i.ImagePath + i.ImageName,
+                              VendorID = p.VendorId,
                           };
 
             IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
