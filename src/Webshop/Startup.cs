@@ -11,6 +11,7 @@ using System.Globalization;
 using Webshop.HelperClasses;
 using Webshop.Interfaces;
 using Webshop.Models;
+using Webshop.Models.BusinessLayers;
 using Webshop.Services;
 
 namespace Webshop
@@ -78,6 +79,7 @@ namespace Webshop
             //// Add session related services.
             services.AddSession();
             // Add application services.
+            services.AddTransient<ArticleBusinessLayer>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             // Configure supported cultures and localization options

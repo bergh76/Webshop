@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20161006125652_Fuck2")]
+    partial class Fuck2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -255,13 +256,13 @@ namespace Webshop.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 110);
 
-                    b.Property<int>("ArticleTranslationId");
+                    b.Property<int?>("ArticlesArticleId");
 
                     b.Property<bool>("ISTranslated");
 
                     b.HasKey("ArticleId", "LangCode");
 
-                    b.HasIndex("ArticleId");
+                    b.HasIndex("ArticlesArticleId");
 
                     b.ToTable("ArticleTranslations");
                 });
@@ -545,8 +546,7 @@ namespace Webshop.Migrations
                 {
                     b.HasOne("Webshop.Models.Articles")
                         .WithMany("Translations")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ArticlesArticleId");
                 });
 
             modelBuilder.Entity("Webshop.Models.CartItem", b =>

@@ -9,6 +9,8 @@ namespace Webshop.Models
     public class ArticleTranslation
     {
         [Key]
+        public int ArticleTranslationId { get; set; }
+
         public int ArticleId { get; set; }
 
         public string LangCode { get; set; }

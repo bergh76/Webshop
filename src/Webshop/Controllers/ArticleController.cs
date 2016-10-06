@@ -41,7 +41,7 @@ namespace Webshop.Controllers
         //}
 
 
-        public IActionResult Index(string vendor, string category, string product, string subcategory)
+        public async Task<IActionResult> Index(string vendor, string category, string product, string subcategory)
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
@@ -70,7 +70,7 @@ namespace Webshop.Controllers
                               ArticleImgPath = i.ImagePath + i.ImageName,
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
 
             return View(vModel);
 
@@ -223,7 +223,7 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(article, artTrans,_context,_hostEnvironment, id, file, form);
+                    await newArticle.EditArticle(article, artTrans, _context, _hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -246,46 +246,6 @@ namespace Webshop.Controllers
         }
 
 
-
-        // POST: Article/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Translate(int id, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
-        //{
-        //    if (id != article.ArticleId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await newArticle.Translate(article, artTrans, _context, _hostEnvironment, id);
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ArticleModelExists(article.ArticleId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorId);
-        //    ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductId);
-        //    ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryId);
-        //    ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
-        //    return View(article);
-        //}
-
-
-
-        // GET: Article/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -419,9 +379,9 @@ namespace Webshop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Translate(int id, string text, string one, string two, string three, string four,ArticlesViewModel artView, ArticleTranslation artTrans, ArticleBusinessLayer add)
+        public async Task<IActionResult> Translate(int id, string text, string one, string two, string three, string four, ArticlesViewModel artView, ArticleTranslation artTrans, ArticleBusinessLayer add)
         {
-            if (ModelState.IsValid )
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -610,7 +570,7 @@ namespace Webshop.Controllers
             }
             return View(subCategory);
         }
-    
+
 
         private bool ArticleModelExists(int id)
         {
@@ -618,3 +578,4 @@ namespace Webshop.Controllers
         }
     }
 }
+

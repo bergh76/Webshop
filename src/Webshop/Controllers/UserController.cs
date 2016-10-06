@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Webshop.Models;
 using System.Globalization;
 using Webshop.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Webshop.Controllers
 {
     public class UserController : Controller
     {
+        [Authorize(Roles ="Users")]
         public IActionResult Orders([FromServices] WebShopRepository dbContext)
         {
             var artList = from o in dbContext.Orders

@@ -155,11 +155,9 @@ namespace Webshop.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             _context.Articles.Add(articles);
-            //foreach (var item in articles.Translations)
-            //{
-            //    await _artBLL.
-            //}
+           
             try
             {
                 await _context.SaveChangesAsync();
