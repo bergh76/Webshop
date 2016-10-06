@@ -8,9 +8,10 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopRepository))]
-    partial class WebShopRepositoryModelSnapshot : ModelSnapshot
+    [Migration("20161006171301_ArticleTranslateUpdate")]
+    partial class ArticleTranslateUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -179,6 +180,8 @@ namespace Webshop.Migrations
 
                     b.Property<DateTime>("ArticleAddDate");
 
+                    b.Property<Guid>("ArticleGuid");
+
                     b.Property<string>("ArticleNumber");
 
                     b.Property<decimal>("ArticlePrice");
@@ -208,6 +211,8 @@ namespace Webshop.Migrations
                     b.Property<int?>("_VendorID");
 
                     b.HasKey("ArticleId");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("_CategoryID");
 
@@ -513,6 +518,11 @@ namespace Webshop.Migrations
 
             modelBuilder.Entity("Webshop.Models.Articles", b =>
                 {
+                    b.HasOne("Webshop.Models.ImageModel", "_Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Webshop.Models.CategoryModel", "_Category")
                         .WithMany()
                         .HasForeignKey("_CategoryID");

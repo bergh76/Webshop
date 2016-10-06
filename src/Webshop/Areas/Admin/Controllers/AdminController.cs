@@ -55,7 +55,7 @@ namespace Webshop.Areas.Admin.Controllers
 
             var artList = from p in _context.Articles
                               //where p.ISCampaign == true
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -91,7 +91,7 @@ namespace Webshop.Areas.Admin.Controllers
             }
 
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -114,7 +114,6 @@ namespace Webshop.Areas.Admin.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -169,7 +168,7 @@ namespace Webshop.Areas.Admin.Controllers
                 return NotFound();
             }
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -192,7 +191,6 @@ namespace Webshop.Areas.Admin.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -251,45 +249,6 @@ namespace Webshop.Areas.Admin.Controllers
         }
 
 
-
-        // POST: Article/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Translate(int id, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle)
-        //{
-        //    if (id != article.ArticleId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            await newArticle.Translate(article, artTrans, _context, _hostEnvironment, id);
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ArticleModelExists(article.ArticleId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorId);
-        //    ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductId);
-        //    ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryId);
-        //    ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
-        //    return View(article);
-        //}
-
-
-
         // GET: Article/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -298,7 +257,7 @@ namespace Webshop.Areas.Admin.Controllers
                 return NotFound();
             }
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -321,7 +280,6 @@ namespace Webshop.Areas.Admin.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -383,7 +341,7 @@ namespace Webshop.Areas.Admin.Controllers
                 return NotFound();
             }
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -404,7 +362,6 @@ namespace Webshop.Areas.Admin.Controllers
                               ISTranslated = pt.ISTranslated,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               ISActive = p.ISActive,
                               ISCampaign = p.ISCampaign
                           };

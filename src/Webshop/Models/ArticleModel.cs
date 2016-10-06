@@ -24,17 +24,14 @@ namespace Webshop.Models
         [Required(ErrorMessage = "ErrorArticleStock")]
         public int ArticleStock { get; set; }
 
-        [Display(Name = "Active", ResourceType = typeof(Resources.Articles))] //lang independent
-        public bool ISActive { get; set; }
-
         [Display(Name = "Date/Time")] //lang independent
         [DataType(DataType.Date)]
         public DateTime ArticleAddDate { get; set; }
+        [Display(Name = "Active", ResourceType = typeof(Resources.Articles))] //lang independent
+        public bool ISActive { get; set; }
 
         [Display(Name = "Campaign", ResourceType = typeof(Resources.Articles))] //lang independent
         public bool ISCampaign { get; set; }
-
-        public Guid ArticleGuid { get; set; } //lang independent
 
         public VendorModel _Vendor { get; set; }
         [Display(Name = "Brand", ResourceType = typeof(Resources.Articles))]
@@ -56,7 +53,6 @@ namespace Webshop.Models
         [Required(ErrorMessage = "ErrorSubCategory")]
         public int SubCategoryId { get; set; } //lang independent
 
-        public ImageModel _Image { get; set; }
         public int ImageId { get; set; } //lang independent
 
         //[Required]

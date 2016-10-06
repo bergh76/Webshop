@@ -58,7 +58,7 @@ namespace Webshop.Controllers
             ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             var artList = from p in dbContext.Articles
                           where  p.ISCampaign == true
-                          join i in dbContext.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in dbContext.Images on p.ArticleId equals i.ArtikelId
                           join pt in dbContext.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -81,7 +81,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -101,7 +100,7 @@ namespace Webshop.Controllers
                 return NotFound();
             }
             var artList = from p in dbContext.Articles
-                          join i in dbContext.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in dbContext.Images on p.ArticleId equals i.ArtikelId
                           join pt in dbContext.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -124,7 +123,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -151,7 +149,7 @@ namespace Webshop.Controllers
                           where p.CategoryId == category || category == 0
                           where p.ProductId == product || product == 0
                           where p.SubCategoryId == subproduct || subproduct == 0
-                          join i in dbContext.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in dbContext.Images on p.ArticleId equals i.ArtikelId
                           join pt in dbContext.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }

@@ -15,10 +15,6 @@ namespace Webshop.Models
 
         public string LangCode { get; set; }
 
-        [Display(Name = "ArticelNumber")] //lang independent
-        [DataType(DataType.Text)]
-        public string ArticleNumber { get; set; }
-
         [Display(Name = "ArticleName", ResourceType = typeof(Resources.ArticlesTranslation))]
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "ErrorArticleName")]
@@ -54,7 +50,6 @@ namespace Webshop.Models
         [Required(ErrorMessage = "ErrorProductdata")]
         public string ArticleFeaturesFour { get; set; }
 
-        //public Guid ArticleGuid { get; set; }
         public bool ISTranslated { get; set; }
 
     }

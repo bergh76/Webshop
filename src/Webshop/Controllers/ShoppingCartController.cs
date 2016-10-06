@@ -38,7 +38,7 @@ namespace Webshop.Controllers
                           where p.CategoryId == category || category == 0
                           where p.ProductId == product || product == 0
                           where p.SubCategoryId == subproduct || subproduct == 0
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }

@@ -24,7 +24,7 @@ namespace Webshop.Models.BusinessLayers
         private IFormCollection _form;
 
         DateTime date = DateTime.Now.ToLocalTime();
-        private static Guid guidID;
+        private static int _articleId;
         private static string root;
         string tempArtNr;
         private int _vendorID;
@@ -52,38 +52,40 @@ namespace Webshop.Models.BusinessLayers
             var rootHost = RootHost(hostEnvironment);
 
             artTranslate.LangCode = "sv";
-            // get vendor
+            // get vendor and set value to articleTranslate
             GetVendor(context, article, VendorID);
-            // get category
+            // get category set value to articleTranslate
             GetCategory(context, article, CategoryID);
-            // get product
+            // get product set value to articleTranslate
             GetProduct(context, article, ProductID);
-            // get subcategory
+            // get subcategory set value to articleTranslate
             GetSubCategory(context, article, SubCategoryID);
             // set tempfilename for image upload
-            SetTemFileName(article, artTranslate);
+            SetTempFileName(article);
             // creates a gui for image<>article relation
-            Guid guidID = CreatGuid();
-            article.ArticleGuid = guidID;
+
             article.ArticleAddDate = date;
             artTranslate.ISTranslated = false;
+            context.Articles.Add(article);
+            await context.SaveChangesAsync();
+            var imgId = context.Articles.Select(x => x.ArticleId).LastOrDefault();
+            _articleId = imgId;
+
+            await context.SaveChangesAsync();
 
             await Image(_hostEnvironment, context, article, file, form, _vendor, _category, _product, _subproduct);
-            context.Articles.Add(article);
-            article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
-
-            await context.SaveChangesAsync();
-            artTranslate.ArticleId = context.Articles.Where(x => x.ArticleGuid == guidID).Select(x => x.ArticleId).FirstOrDefault();
+            artTranslate.ArticleId = _articleId;
             context.ArticleTranslations.Add(artTranslate);
-            await context.SaveChangesAsync();
-        }
 
-        private void SetTemFileName(Articles article, ArticleTranslation artTranslate)
-        {
-            tempArtNr = String.Format("{0}{1}{2}{3}", _vendorID, _categoryID, _productID, _subproductID);
-            article.ArticleNumber = tempArtNr;
-            artTranslate.ArticleNumber = tempArtNr;
+            article.ImageId = context.Images.Where(x => x.ArtikelId == article.ArticleId).Select(x => x.ImageId).LastOrDefault();
+            await context.SaveChangesAsync();
+
         }
+        private static string RootHost(IHostingEnvironment host)
+        {
+            return root = host.WebRootPath;
+        }
+       
 
         private void GetSubCategory(WebShopRepository context, Articles article, int SubCategoryID)
         {
@@ -111,6 +113,21 @@ namespace Webshop.Models.BusinessLayers
             _vendorID = VendorID;
             _vendor = context.Vendors.Where(x => x.VendorID == _vendorID).Select(n => n.VendorName).FirstOrDefault();
             article.VendorId = Convert.ToInt32(_vendorID);
+        }
+
+
+        private void SetTempFileName(Articles article)
+        {
+            tempArtNr = String.Format("{0}{1}{2}{3}", _vendorID, _categoryID, _productID, _subproductID);
+            article.ArticleNumber = tempArtNr;
+
+        }
+        // checks if file is image
+        private static bool IsImage(IFormFile file)
+        {   
+            if (file == null) return false;
+            return file.ContentType.Contains("image") ||
+                _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task Image(IHostingEnvironment hostEnvironment,  WebShopRepository context, Articles article, IFormFile file, IFormCollection form, string _vendor, string _category, string _product, string _subproduct)
@@ -153,6 +170,13 @@ namespace Webshop.Models.BusinessLayers
             string tmpNameThree = string.Format("{0}{1}{2}", tmpNameTwo, dash, addCount);
             newFnameExists = tmpNameThree.Replace(" ", "_") + ext.ToString();
         }
+        private async Task FileUpload(WebShopRepository context, IFormFile file, string serverPath, string uploads, string newFilename)
+        {
+            using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }           
+        }
 
         private async Task IfFileExistsUpload(WebShopRepository context, IFormFile file, string serverPath, string uploads, string newFnameExists)
         {
@@ -165,28 +189,12 @@ namespace Webshop.Models.BusinessLayers
                 ImageDate = date,
                 ImageName = newFnameExists,
                 ImagePath = String.Format("{0}", serverPath),
-                ArticleGuid = guidID
+                ArtikelId = _articleId
             };
             context.Images.Add(imgExists);
             await context.SaveChangesAsync();
         }
 
-        private async Task FileUpload(WebShopRepository context, IFormFile file, string serverPath, string uploads, string newFilename)
-        {
-            using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-            ImageModel img = new ImageModel
-            {
-                ImageDate = date,
-                ImageName = newFilename,
-                ImagePath = String.Format("{0}", serverPath),
-                ArticleGuid = guidID
-            };
-            context.Images.Add(img);
-            await context.SaveChangesAsync();
-        }
 
         internal async Task EditArticle(Articles article, ArticleTranslation artTrans, WebShopRepository context, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
         {
@@ -219,11 +227,11 @@ namespace Webshop.Models.BusinessLayers
                     ImageDate = date,
                     ImageName = newFilename,
                     ImagePath = String.Format("{0}", serverPath),
-                    ArticleGuid = article.ArticleGuid
+                    ArtikelId = id
                 };
                 context.Images.Add(img);
                 context.SaveChanges();
-                article.ImageId = context.Images.Where(x => x.ArticleGuid == article.ArticleGuid).Select(x => x.ImageId).FirstOrDefault();
+                article.ImageId = context.Images.Where(x => x.ArtikelId == id).Select(x => x.ImageId).FirstOrDefault();
                 context.Update(article);
                 context.Update(artTrans);
                 await context.SaveChangesAsync();
@@ -233,24 +241,8 @@ namespace Webshop.Models.BusinessLayers
             await context.SaveChangesAsync();
         }
 
-        private Guid CreatGuid()
-        {
-            guidID = Guid.NewGuid();
-            return guidID;
-        }
 
-        private static string RootHost(IHostingEnvironment host)
-        {
-            return root = host.WebRootPath;
-        }
 
-        private static bool IsImage(IFormFile file)
-        {   
-            // checks if file is image
-            if (file == null) return false;
-            return file.ContentType.Contains("image") ||
-                _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
-        }
 
         internal async Task Translate(int id, WebShopRepository context,ArticlesViewModel artView, ArticleTranslation artTrans,string text, string one, string two, string three, string four)
         {
@@ -279,7 +271,7 @@ namespace Webshop.Models.BusinessLayers
                 ArticleFeaturesFour = four,
                 ISTranslated = true,
                 LangCode = "en",
-                ArticleNumber = artTrans.ArticleNumber
+                //ArticleNumber = artTrans.ArticleNumber
             };
             context.Add(trans);
         }

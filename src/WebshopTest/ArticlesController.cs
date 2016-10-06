@@ -82,14 +82,14 @@ namespace Webshop.Controllers
             }
             using (var context = new WebShopRepository(options))
             {
-                context.Images.Add(new ImageModel
-                {
-                    ImageDate = DateTime.Now,
-                    ImageName = "TestImage.jpg",
-                    ImagePath = "/images/products/",
-                    ArticleGuid = _guid
+                //context.Images.Add(new ImageModel
+                //{
+                //    ImageDate = DateTime.Now,
+                //    ImageName = "TestImage.jpg",
+                //    ImagePath = "/images/products/",
+                //    ArtikelId = id
                     
-                });
+                //});
                 context.SaveChanges();
                 Articles article = new Articles()
                 {
@@ -104,9 +104,7 @@ namespace Webshop.Controllers
                     SubCategoryId = subProductID,
                     ISActive = true,
                     ISCampaign = false,
-                    ArticleGuid = _guid,
                     _Category = null,
-                    _Image = null,
                     _Product = null,
                     _SubCategory = null,
                     _Vendor = null
@@ -123,7 +121,7 @@ namespace Webshop.Controllers
                     ArticleFeaturesThree = "Three",
                     ArticleFeaturesFour = "Four",
                     LangCode = "sv",
-                    ArticleNumber = "123456789",
+                    //ArticleNumber = "123456789",
                     ISTranslated = true
                     
                 };
@@ -229,9 +227,7 @@ namespace Webshop.Controllers
                     SubCategoryId = 4444,
                     ISActive = true,
                     ISCampaign = false,
-                    ArticleGuid = _guid,
                     _Category = null,
-                    _Image = null,
                     _Product = null,
                     _SubCategory = null,
                     _Vendor = null
@@ -246,7 +242,7 @@ namespace Webshop.Controllers
                     ArticleFeaturesThree = "Three",
                     ArticleFeaturesFour = "Four",
                     LangCode = "sv",
-                    ArticleNumber = "123456789",
+                    //ArticleNumber = "123456789",
                     ISTranslated = true,
                 });
                 context.SaveChanges();

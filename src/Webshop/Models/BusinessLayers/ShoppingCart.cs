@@ -175,8 +175,7 @@ namespace Webshop.Models.BusinessLayers
                     OrderId = order.OrderId,
                     UnitPrice = article.ArticlePrice / _curr,
                     Quantity = item.Count,
-                    KlarnaOrderId = Klarna.KlarnaOrderId
-                   
+                    KlarnaOrderId = Klarna.KlarnaOrderId             
 
                 };
 
@@ -190,7 +189,7 @@ namespace Webshop.Models.BusinessLayers
             // Set the order's total to the orderTotal count
             order.Total = orderTotal;
             _context.SaveChanges();
-            // Empty the shopping cart
+            //Empty the shopping cart
             await EmptyCart();
 
             // Return the OrderId as the confirmation number

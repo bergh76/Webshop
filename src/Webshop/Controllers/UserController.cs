@@ -12,7 +12,7 @@ namespace Webshop.Controllers
 {
     public class UserController : Controller
     {
-        [Authorize(Roles ="Users")]
+        [Authorize(Roles ="User")]
         public IActionResult Orders([FromServices] WebShopRepository dbContext)
         {
             var artList = from o in dbContext.Orders

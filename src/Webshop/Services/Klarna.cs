@@ -11,6 +11,7 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using System.Net;
+using Webshop.Models.BusinessLayers;
 
 namespace Webshop.Services
 {

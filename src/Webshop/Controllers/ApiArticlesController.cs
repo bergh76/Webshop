@@ -33,7 +33,7 @@ namespace Webshop.Controllers
         public IEnumerable<ArticlesViewModel> GetArticles()
         {
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -53,7 +53,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                              ArticleGuid = p.ArticleGuid,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
                               LangCode = pt.LangCode,
@@ -75,7 +74,7 @@ namespace Webshop.Controllers
             }
             var artList = from p in _context.Articles
                           where p.ArticleId == id
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -97,7 +96,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -197,7 +195,8 @@ namespace Webshop.Controllers
             _context.ArticleTranslations.Remove(artT);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute("GetArticles", new { id = articles.ArticleId }, articles);
+            return CreatedAtAction("GetArticles", articles);
+            //return CreatedAtAction("GetArticles", new { id = articles.ArticleId }, articles);
         }
 
         private bool ArticlesExists(int id)

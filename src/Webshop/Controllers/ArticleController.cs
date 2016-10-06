@@ -17,6 +17,7 @@ using Webshop.ViewModels;
 
 namespace Webshop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ArticleController : Controller
     {
         private readonly WebShopRepository _context;
@@ -50,7 +51,7 @@ namespace Webshop.Controllers
 
             var artList = from p in _context.Articles
                               //where p.ISCampaign == true
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -86,7 +87,7 @@ namespace Webshop.Controllers
             }
 
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -109,7 +110,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -125,6 +125,7 @@ namespace Webshop.Controllers
         }
 
         // GET: Article/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             //ViewData["LangCode"] = new SelectList(_context.Languages, "ID", "LangCode");
@@ -140,6 +141,7 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("ArticleId,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
         {
             if (ModelState.IsValid)
@@ -164,7 +166,7 @@ namespace Webshop.Controllers
                 return NotFound();
             }
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -187,7 +189,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -253,7 +254,7 @@ namespace Webshop.Controllers
                 return NotFound();
             }
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -276,7 +277,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ISActive = p.ISActive,
@@ -338,7 +338,7 @@ namespace Webshop.Controllers
                 return NotFound();
             }
             var artList = from p in _context.Articles
-                          join i in _context.Images on p.ArticleGuid equals i.ArticleGuid
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
                           join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
@@ -359,7 +359,6 @@ namespace Webshop.Controllers
                               ISTranslated = pt.ISTranslated,
                               ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
-                              ArticleGuid = p.ArticleGuid,
                               ISActive = p.ISActive,
                               ISCampaign = p.ISCampaign
                           };

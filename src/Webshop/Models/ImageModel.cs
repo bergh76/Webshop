@@ -13,7 +13,7 @@ namespace Webshop.Models
         public string ImageName { get; set; }
         public string ImagePath { get; set; }
         public DateTime ImageDate { get; set; }
-        public Guid ArticleGuid { get; set; }
+        public int ArtikelId { get; set; }
 
     }
 }
