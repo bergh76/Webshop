@@ -20,11 +20,23 @@
             </div>
 
             <div class="col-xs-4 padding-x-off">
-                <div class="productDetailImageWrap">
-                    <a href="#" class="clear">
-                        <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="@Model.ArticleImgPath" />
-                    </a>
-                </div>
+                @if (Model.ArticleImgPath != null)
+                {
+                    <div class="productDetailImageWrap">
+                        <a href="#" class="clear">
+                            <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="productDetailImageWrap">
+                        <a href="#" class="clear">
+                            <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="@Model.ArticleImgPath" />
+                        </a>
+                    </div>
+                }               
+                
             </div>
 
             <div class="productDetailDescription">

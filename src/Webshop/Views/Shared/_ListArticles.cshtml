@@ -38,14 +38,24 @@ if (count == 0)
                                     <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
                                 </div>
                             </div>
-
                             <div class="col-xs-4 padding-x-off">
                                 <div class="col-md-12">
-                                    <div class="productDetailImageWrap">
+                                    @if (item.ArticleImgPath != null)
+                                    {
+                                        <div class="productDetailImageWrap">
                                         <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
                                             <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@item.ArticleImgPath" />
                                         </a>
                                     </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="productDetailImageWrap">
+                                            <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
+                                                <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)"  src="/images/imageupload/NoImage/NO_product_fount.png" />
+                                            </a>
+                                        </div>                                       
+                                    }                                    
                                 </div>
                             </div>
 

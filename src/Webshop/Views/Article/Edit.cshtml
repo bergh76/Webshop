@@ -22,9 +22,19 @@
                 <div class="custom-file-upload pull-left">
                     <input type="file" name="file" multiple />
                 </div>
+                @if (Model.ArticleImgPath != null)
+                {
                 <div class="image-container">
                     <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/@Model.ArticleImgPath" />
                 </div>
+                }
+                else
+                {
+                    <div class="image-container">
+                        <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />
+                    </div>
+
+                }
             </div>
 
             <div class="col-md-8 padding-x-off">

@@ -16,7 +16,8 @@
                     <input type="hidden" asp-for="@Model.ArticleImgPath" />
                     <input type="hidden" asp-for="@Model.ImageId" />
                     <input type="hidden" asp-for="@Model.LangCode" />
-
+                    @if (Model.ArticleImgPath != null)
+                    {
                     <div class="col-md-4 pull-left">
                         <div class="col-md-12">
                             <div class="image-container">
@@ -24,7 +25,17 @@
                             </div>
                         </div>
                     </div>
-
+                    }
+                    else
+                    {
+                        <div class="col-md-4 pull-left">
+                            <div class="col-md-12">
+                                <div class="image-container">
+                                    <img class="img-responsive" alt="@Model.ArticleName" src="~/images/imageupload/NoImage/NO_product_fount.png" />
+                                </div>
+                            </div>
+                        </div>
+                    }
                     <div class="col-md-8 padding-x-off">
 
                         <div class="col-md-5">

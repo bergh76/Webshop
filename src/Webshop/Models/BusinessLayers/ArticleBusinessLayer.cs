@@ -196,7 +196,7 @@ namespace Webshop.Models.BusinessLayers
         }
 
 
-        internal async Task EditArticle(Articles article, ArticleTranslation artTrans, WebShopRepository context, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
+        internal async Task EditArticle(Articles article, ArticleTranslation artTrans, WebShopRepository context, ImageModel img, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
         {
             var image = IsImage(file);
             if (image == true)
@@ -222,14 +222,11 @@ namespace Webshop.Models.BusinessLayers
                 {
                     await file.CopyToAsync(fileStream);
                 }
-                ImageModel img = new ImageModel
-                {
-                    ImageDate = date,
-                    ImageName = newFilename,
-                    ImagePath = String.Format("{0}", serverPath),
-                    ArtikelId = id
-                };
-                context.Images.Add(img);
+                img.ImageDate = date;
+                img.ImageName = newFilename;
+                img.ImagePath = String.Format("{0}", serverPath);
+                img.ArtikelId = id;
+                context.Entry(img).State = EntityState.Modified;
                 context.SaveChanges();
                 article.ImageId = context.Images.Where(x => x.ArtikelId == id).Select(x => x.ImageId).FirstOrDefault();
                 context.Update(article);

@@ -25,7 +25,6 @@
                             {
                                 @foreach (var item in Model)
                                 {
-                                    @Html.HiddenFor(modelItem => item.ArticleGuid)
                                     <tr>
                                         <td>
                                             <div class="productItemDetailBox">
@@ -34,7 +33,17 @@
                                                     <span class="small right"></span>
                                                 </div>
                                                 <div class="image-container">
-                                                    <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@item.ArticleImgPath" /></a>
+                                                    @if (item.ArticleImgPath != null)
+                                                    {
+                                                        <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="@item.ArticleImgPath" /></a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId"> <img class="img-responsive" alt="@Html.DisplayFor(modelItem => item.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />
+" /></a>
+                                                        
+                                                    }
                                                 </div>
                                                 <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId">
                                                     <div class="content-block">

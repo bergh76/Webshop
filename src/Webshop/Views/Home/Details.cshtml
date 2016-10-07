@@ -35,11 +35,18 @@
                             <div class="col-xs-4 padding-x-off">
                                 <div class="productDetailImageWrap">
                                     <a href="#" class="clear">
-                                        <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="~/@Model.ArticleImgPath" />
+                                        @if (Model.ArticleImgPath != null)
+                                        {
+                                            <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="~/@Model.ArticleImgPath" />
+                                        }
+
+                                        else
+                                        {
+                                            <img class="img-responsive" alt="@Html.DisplayFor(model => Model.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />                                        
+                                        }
                                     </a>
                                 </div>
                             </div>
-
                             <div class="productDetailDescription">
                                 <div>
                                     <h3 class="margin-x-md">@Html.DisplayFor(model => Model.ArticleName)</h3>
