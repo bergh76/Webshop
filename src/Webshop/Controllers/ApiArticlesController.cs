@@ -53,7 +53,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                              ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
@@ -94,7 +93,6 @@ namespace Webshop.Controllers
                               ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
                               ArticleFeaturesThree = pt.ArticleFeaturesThree,
                               ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                              ImageId = i.ImageId,
                               ArticleImgPath = i.ImagePath + i.ImageName,
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
@@ -124,7 +122,9 @@ namespace Webshop.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(articles).State = EntityState.Modified;
+            //_context.Entry(articles).State = EntityState.Modified;
+            _context.Update(articles);
+
 
             try
             {
@@ -142,7 +142,7 @@ namespace Webshop.Controllers
                 }
             }
 
-            return Ok();
+            return CreatedAtAction("GetArticles", new { id = articles.ArticleId }, articles);
         }
 
         // POST: api/ApiArticles
@@ -158,6 +158,19 @@ namespace Webshop.Controllers
            
             try
             {
+                await _context.SaveChangesAsync();
+                ImageModel img = new ImageModel()
+                {
+                    ArtikelId = articles.ArticleId,
+                    ImageDate = DateTime.Now,
+                    ImageName = "NO_product_fount.png",
+                    ImagePath = "images/imageupload/NoImage/"
+                };
+                _context.Images.Add(img);
+                await _context.SaveChangesAsync();
+                articles.ArticleAddDate = DateTime.Now;
+                articles.ImageId = img.ImageId;
+                _context.Entry(articles).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)

@@ -25,11 +25,11 @@ namespace Webshop.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly WebShopRepository _context;
-        private readonly IStringLocalizer<ArticleController> _localizer;
+        private readonly IStringLocalizer<AdminController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment; // service that provides some useful environment information such as the current file path
         private static string _iso;
         private static decimal _curr;
-        public AdminController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
+        public AdminController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<AdminController> localizer)
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);

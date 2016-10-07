@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
@@ -23,24 +25,19 @@ namespace Webshop.Controllers
         private readonly WebShopRepository _context;
         private readonly IStringLocalizer<ArticleController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment; // service that provides some useful environment information such as the current file path
+        private readonly ILogger<ArticleController> _logger;
+
         private static string _iso;
         private static decimal _curr;
-        public ArticleController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer)
+        public ArticleController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, ILogger<ArticleController> logger)
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
+            _logger = logger;
         }
-        // GET: Article
-
-        //public async Task<IActionResult> Index()
-        //{
-        //    var webShopRepository = _context.Articles.Include(a => a.Category).Include(a => a.Product).Include(a => a.SubCategory).Include(a => a.Vendor);
-        //    return View(await webShopRepository.ToListAsync());
-        //}
-
 
         public async Task<IActionResult> Index()
         {
@@ -134,26 +131,28 @@ namespace Webshop.Controllers
         // POST: Article/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("ArticleId,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(articleModel);
-                _context.Add(artTranslate);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorId);
-            ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductId);
-            ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryId);
-            ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", articleModel.SubCategoryId);
-            return View(articleModel);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Create([Bind("ArticleId,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(articleModel);
+        //        _context.Add(artTranslate);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorId);
+        //    ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductId);
+        //    ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryId);
+        //    ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", articleModel.SubCategoryId);
+        //    return View(articleModel);
+        //}
 
         // GET: Article/Edit/5
+
+
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -208,6 +207,7 @@ namespace Webshop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, IFormFile file, IFormCollection form, [Bind("Translation,ArticleId,ArticleName,ArticleNumber,ArticleAddDate,ArticleFeaturesOne,ArticleFeaturesTwo,ArticleFeaturesThree,ArticleFeaturesFour,ArticleGuid,ArticlePrice,ArticleShortText,ArticleStock,CategoryId,ISActive,ISCampaign,ProductId,ProductImgPathID,SubCategoryId,VendorId,ArticleImgPath,ImageId,LangCode")]Articles article, ArticleTranslation artTrans, ArticleBusinessLayer newArticle, ImageModel img)
         {
             if (id != article.ArticleId)
@@ -289,13 +289,41 @@ namespace Webshop.Controllers
         // POST: Article/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
-            var artTrans = await _context.ArticleTranslations.SingleOrDefaultAsync(d => d.ArticleId == id);
-            _context.ArticleTranslations.Remove(artTrans);
-            _context.Articles.Remove(article);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {
+                var article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
+                var artTrans = await _context.ArticleTranslations.Where(d => d.ArticleId == id).ToListAsync();
+                foreach (ArticleTranslation item in artTrans)
+                {
+                    _context.ArticleTranslations.Remove(item);
+                }
+                _context.Articles.Remove(article);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (WebException ex)
+                {
+                    var webException = ex.InnerException as WebException;
+                    if (webException != null)
+                    {
+                        // Here you can check for timeouts, and other connection related errors.
+                        // webException.Response could contain the response object.
+                        throw new WebException(webException.Message);
+                    }
+                    else
+                    {
+                        // In case there wasn't a WebException where you could get the response
+                        var faultResponse = (string)ex.Data["Respone"];
+                        throw new Exception(faultResponse);
+                    }
+                }
+            }
+            _logger.LogInformation("Article {0} was deleted successfully:",id);
+
             return RedirectToAction("Index");
         }
 
@@ -316,7 +344,6 @@ namespace Webshop.Controllers
         //[Authorize]
         public async Task<IActionResult> NewArticle(IFormFile file, IFormCollection form, int VendorID, int ProductID, int CategoryID, int SubCategoryID, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")]Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add)
         {
-
             if (ModelState.IsValid)
             {
                 await add.AddArticle(file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
@@ -326,7 +353,7 @@ namespace Webshop.Controllers
         }
 
         // GET: Article/Create
-        public IActionResult Translate(int? id)
+        public async Task <IActionResult> Translate(int? id)
         {
             if (id == null)
             {
@@ -353,20 +380,18 @@ namespace Webshop.Controllers
                               LangCode = pt.LangCode,
                               ISTranslated = pt.ISTranslated,
                               ImageId = i.ImageId,
-                              ArticleImgPath = i.ImagePath + i.ImageName,
-                              ISActive = p.ISActive,
-                              ISCampaign = p.ISCampaign
+                              ArticleImgPath = i.ImagePath + i.ImageName
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
             return View(vModel.SingleOrDefault());
         }
 
@@ -394,8 +419,10 @@ namespace Webshop.Controllers
                 }
                 return RedirectToAction("Create");
             }
+            _logger.LogInformation("Article {0} was translated not successfully:", id);
             return View();
         }
+
         public IActionResult NewVendor()
         {
             return View();

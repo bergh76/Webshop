@@ -176,14 +176,14 @@ namespace Webshop.Controllers
             return View(vModel.ToList());
         }
 
-        public IActionResult _SearchBar([FromServices] WebShopRepository dbContext)
-        {
-            ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            return View();
-        }
+        //public IActionResult _SearchBar([FromServices] WebShopRepository dbContext)
+        //{
+        //    ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+        //    ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+        //    ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+        //    ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+        //    return View();
+        //}
 
         public IActionResult Contact([FromServices]IDateTime _datetime)
         {

@@ -8,7 +8,7 @@
 
 <section class="container">
     <form asp-action="Edit" asp-controller="Article" enctype="multipart/form-data">
-        <div class="col-xs-12 content-box">
+        <div class="col-xs-12 content-box pad-top">
             <div asp-validation-summary="ModelOnly" class="text-danger">
             </div>
             <input type="hidden" asp-for="ArticleId" />
@@ -22,20 +22,17 @@
                 <div class="custom-file-upload pull-left">
                     <input type="file" name="file" multiple />
                 </div>
-                @if (Model.ArticleImgPath != null)
-                {
                 <div class="image-container">
-                    <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/@Model.ArticleImgPath" />
+                    @if (Model.ArticleImgPath != null)
+                    {
+                        <img class="img-responsive pad-top" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/@Model.ArticleImgPath" />
+                    }
+                    else
+                    {
+                        <img class="img-responsive pad-top" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />
+                    }
                 </div>
-                }
-                else
-                {
-                    <div class="image-container">
-                        <img class="img-responsive" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />
-                    </div>
-
-                }
-            </div>
+                </div>
 
             <div class="col-md-8 padding-x-off">
                 <div class="col-md-4">
@@ -178,7 +175,7 @@
     </form>
 </section>
 <!-- Modal NewVendor-->
-<!--<div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -190,9 +187,9 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <!-- Modal NewCategory-->
-<!--<div class="modal fade" id="NewCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="NewCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -204,9 +201,9 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <!-- Modal NewProduct-->
-<!--<div class="modal fade" id="NewProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="NewProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -218,9 +215,9 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <!-- Modal NewSubCategory-->
-<!--<div class="modal fade" id="NewSubCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="NewSubCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -232,7 +229,7 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

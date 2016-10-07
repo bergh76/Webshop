@@ -16,133 +16,128 @@
                     <input type="hidden" asp-for="@Model.ArticleImgPath" />
                     <input type="hidden" asp-for="@Model.ImageId" />
                     <input type="hidden" asp-for="@Model.LangCode" />
-                    @if (Model.ArticleImgPath != null)
-                    {
                     <div class="col-md-4 pull-left">
                         <div class="col-md-12">
                             <div class="image-container">
-                                <img class="img-responsive" alt="@Model.ArticleName" src="~/@Model.ArticleImgPath" />
-                            </div>
-                        </div>
-                    </div>
-                    }
-                    else
-                    {
-                        <div class="col-md-4 pull-left">
-                            <div class="col-md-12">
-                                <div class="image-container">
+                                @if (!string.IsNullOrEmpty(Model.ArticleImgPath.ToString()))
+                                {
+                                    <img class="img-responsive" alt="@Model.ArticleName" src="~/@Model.ArticleImgPath" />
+                                }
+                                else
+                                {
                                     <img class="img-responsive" alt="@Model.ArticleName" src="~/images/imageupload/NoImage/NO_product_fount.png" />
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    <div class="col-md-8 padding-x-off">
-
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div><label asp-for="@Model.ArticleName" class="col-md-10 control-label"></label></div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
-                                        <input type="text" class="form-control" placeholder="@Model.ArticleName" aria-describedby="basic-addon1" readonly>
-                                    </div>
-                                    <div class="input-group pad-top-5">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
-                                        <input asp-for="ArticleName" type="text" class="form-control" aria-describedby="basic-addon1">
-                                        <span asp-validation-for="ArticleName" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12 pad-top">
-                                    <div><label asp-for="@Model.ArticleShortText" class="col-md-10 control-label"></label></div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
-                                        <input asp-for="ArticleShortText" type="text" class="form-control" placeholder="@Model.ArticleShortText" aria-describedby="basic-addon1" readonly>
-                                    </div>
-                                    <div class="input-group pad-top-5">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
-                                        <input name="text" type="text" class="form-control" aria-describedby="basic-addon1">
-                                        <span asp-validation-for="ArticleShortText" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12 pad-top">
-                                    <div><label asp-for="@Model.ArticleFeaturesOne" class="col-md-10 control-label"></label></div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
-                                        <input asp-for="ArticleFeaturesOne"  type="text" class="form-control" placeholder="@Model.ArticleFeaturesOne" aria-describedby="basic-addon1" readonly>
-                                    </div>
-                                    <div class="input-group pad-top-5">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
-                                        <input name="one" type="text" class="form-control" aria-describedby="basic-addon1">
-                                        <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-12 pad-top">
-                                    <div><label asp-for="@Model.ArticleFeaturesTwo" class="col-md-10 control-label"></label></div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
-                                        <input asp-for="ArticleFeaturesTwo" type="text" class="form-control" placeholder="@Model.ArticleFeaturesTwo" aria-describedby="basic-addon1" readonly>
-                                    </div>
-                                    <div class="input-group pad-top-5">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
-                                        <input name="two" type="text" class="form-control" aria-describedby="basic-addon1">
-                                        <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
-                                    </div>
+                                }
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <div class="col-md-12 ">
-                                    <div><label asp-for="@Model.ArticleFeaturesThree" class="col-md-10 control-label"></label></div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
-                                        <input asp-for="ArticleFeaturesThree" type="text" class="form-control" placeholder="@Model.ArticleFeaturesThree" aria-describedby="basic-addon1" readonly>
+                        <div class="col-md-8 padding-x-off">
+
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div><label asp-for="@Model.ArticleName" class="col-md-10 control-label"></label></div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
+                                            <input type="text" class="form-control" placeholder="@Model.ArticleName" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <div class="input-group pad-top-5">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
+                                            <input asp-for="ArticleName" type="text" class="form-control" aria-describedby="basic-addon1">
+                                            <span asp-validation-for="ArticleName" class="text-danger" />
+                                        </div>
                                     </div>
-                                    <div class="input-group pad-top-5">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
-                                        <input name="three" type="text" class="form-control" aria-describedby="basic-addon1">
-                                        <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12 pad-top">
+                                        <div><label asp-for="@Model.ArticleShortText" class="col-md-10 control-label"></label></div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
+                                            <input asp-for="ArticleShortText" type="text" class="form-control" placeholder="@Model.ArticleShortText" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <div class="input-group pad-top-5">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
+                                            <input name="text" type="text" class="form-control" aria-describedby="basic-addon1">
+                                            <span asp-validation-for="ArticleShortText" class="text-danger" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12 pad-top">
+                                        <div><label asp-for="@Model.ArticleFeaturesOne" class="col-md-10 control-label"></label></div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
+                                            <input asp-for="ArticleFeaturesOne" type="text" class="form-control" placeholder="@Model.ArticleFeaturesOne" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <div class="input-group pad-top-5">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
+                                            <input name="one" type="text" class="form-control" aria-describedby="basic-addon1">
+                                            <span asp-validation-for="ArticleFeaturesOne" class="text-danger" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12 pad-top">
+                                        <div><label asp-for="@Model.ArticleFeaturesTwo" class="col-md-10 control-label"></label></div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
+                                            <input asp-for="ArticleFeaturesTwo" type="text" class="form-control" placeholder="@Model.ArticleFeaturesTwo" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <div class="input-group pad-top-5">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
+                                            <input name="two" type="text" class="form-control" aria-describedby="basic-addon1">
+                                            <span asp-validation-for="ArticleFeaturesTwo" class="text-danger" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-md-12 pad-top">
-                                    <div><label asp-for="@Model.ArticleFeaturesFour" class="col-md-10 control-label"></label></div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
-                                        <input asp-for="ArticleFeaturesFour" type="text" class="form-control" placeholder="@Model.ArticleFeaturesFour" aria-describedby="basic-addon1" readonly>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="col-md-12 ">
+                                        <div><label asp-for="@Model.ArticleFeaturesThree" class="col-md-10 control-label"></label></div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
+                                            <input asp-for="ArticleFeaturesThree" type="text" class="form-control" placeholder="@Model.ArticleFeaturesThree" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <div class="input-group pad-top-5">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
+                                            <input name="three" type="text" class="form-control" aria-describedby="basic-addon1">
+                                            <span asp-validation-for="ArticleFeaturesThree" class="text-danger" />
+                                        </div>
                                     </div>
-                                    <div class="input-group pad-top-5">
-                                        <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
-                                        <input  name="four" type="text" class="form-control" aria-describedby="basic-addon1">
-                                        <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12 pad-top">
+                                        <div><label asp-for="@Model.ArticleFeaturesFour" class="col-md-10 control-label"></label></div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-se"></i></span>
+                                            <input asp-for="ArticleFeaturesFour" type="text" class="form-control" placeholder="@Model.ArticleFeaturesFour" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <div class="input-group pad-top-5">
+                                            <span class="input-group-addon" id="basic-addon1"><i class="flag-icon flag-icon-gb"></i></span>
+                                            <input name="four" type="text" class="form-control" aria-describedby="basic-addon1">
+                                            <span asp-validation-for="ArticleFeaturesFour" class="text-danger" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pad-top margin-bottom">
+                            <div>
+                                <div class="action-row pull-right">
+                                    <div class="form-actions no-color ">
+                                        <input type="submit" value=@Localizer["Save"] class="btn btn-danger" />
+                                        <a class="btn btn-success" asp-action="Index">@Localizer["Back"]</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 pad-top margin-bottom">
-                        <div>
-                            <div class="action-row pull-right">
-                                <div class="form-actions no-color ">
-                                    <input type="submit" value=@Localizer["Save"] class="btn btn-danger" />
-                                    <a class="btn btn-success" asp-action="Index">@Localizer["Back"]</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </form>
         </section>

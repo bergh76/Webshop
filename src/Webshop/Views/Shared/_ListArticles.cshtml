@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = Localizer["Index"];
 }
+
 @{  var count = Model.Select(x => x.ArticleId).Count();
 if (count == 0)
 {
@@ -12,80 +13,89 @@ if (count == 0)
     }
     else
     {
-        foreach (var item in Model)
-        {
-            <div class="row"></div>
-            <div class="col-xs-12 padding-x-off">
-                <div class="col-md-2">
-                    <div class="col-md-12">
-                        <div class="container">
-                            <div class="container-white">
+        
+                @foreach (var item in Model)
+                {
+                    
+                            <div class="row"></div>
+                            <div class="col-xs-12 padding-x-off">
+                                <div class="col-md-2">
+                                    <div class="col-md-12">
+                                        <div class="container">
+                                            <div class="container-white">
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="col-md-12">
-                        <div class="productItemDetailBox">
-                            <div class="col-xs-4 pull-right">
-                                <div class="priceInfo super">
-                                    <span class="priceHeader">
-                                        <span class="symbol pull-left icon-superpris"></span>
-                                        <span class="description">-29%</span>
-                                    </span>
-                                    <span class="price animated">@Html.DisplayFor(model => item.ArticlePrice)</span>
-                                    <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
-                                </div>
-                            </div>
-                            <div class="col-xs-4 padding-x-off">
-                                <div class="col-md-12">
-                                    @if (item.ArticleImgPath != null)
-                                    {
-                                        <div class="productDetailImageWrap">
-                                        <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
-                                            <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@item.ArticleImgPath" />
-                                        </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="productDetailImageWrap">
-                                            <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
-                                                <img class="img-responsive" alt="@Html.DisplayFor(model => item.ArticleName)"  src="/images/imageupload/NoImage/NO_product_fount.png" />
-                                            </a>
-                                        </div>                                       
-                                    }                                    
-                                </div>
-                            </div>
-
-                            <div class="productDetailDescription">
-                                <div>
-                                    <h3 class="margin-x-md">@Html.DisplayFor(model => item.ArticleName)</h3>
                                 </div>
 
-                                <span class="description">@Html.DisplayFor(model => item.ArticleShortText)</span>
-                                <ul class="list-group shortSpec">
-                                    <li>@Html.DisplayFor(model => item.ArticleNumber)</li>
-                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesOne)</li>
-                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesTwo) </li>
-                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesThree)</li>
-                                    <li>@Html.DisplayFor(model => item.ArticleFeaturesFour)</li>
-                                </ul>
-                                <div class="btn-group">
-                                    <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående">
-                                        <span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => item.ArticleStock) @Localizer["In Stock"]</span>
-                                    </span>
+
+                                <div class="col-md-10">
+                                    <div class="col-md-12">
+                                        <div class="productItemDetailBox">
+                                            <div class="col-xs-4 pull-right">
+                                                <div class="priceInfo super">
+                                                    <span class="priceHeader">
+                                                        <span class="symbol pull-left icon-superpris"></span>
+                                                        <span class="description">-29%</span>
+                                                    </span>
+                                                    <span class="price animated">@Html.DisplayFor(model => item.ArticlePrice)</span>
+                                                    <span class="small right">@Localizer["Ord.Price"] 8 490 kr</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 padding-x-off">
+                                                <div class="col-md-12">
+                                                    <div class="productDetailImageWrap">
+                                                        @if (!string.IsNullOrEmpty(item.ArticleImgPath.ToString()))
+                                                        {
+                                                            <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
+                                                                <img class="img-responsive pad-top" alt="@Html.DisplayFor(model => item.ArticleName)" src="~/@item.ArticleImgPath" />
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a asp-action="Details" asp-controller="Article" asp-route-id="@item.ArticleId" class="clear">
+                                                                <img class="img-responsive pad-top" alt="@Html.DisplayFor(model => item.ArticleName)" src="/images/imageupload/NoImage/NO_product_fount.png" />
+                                                            </a>
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                                <div class="productDetailDescription">
+                                                    <div>
+                                                        <h3 class="margin-x-md">@Html.DisplayFor(model => item.ArticleName)</h3>
+                                                    </div>
+
+                                                    <span class="description">@Html.DisplayFor(model => item.ArticleShortText)</span>
+                                                    <ul class="list-group shortSpec">
+                                                        <li>@Html.DisplayFor(model => item.ArticleNumber)</li>
+                                                        <li>@Html.DisplayFor(model => item.ArticleFeaturesOne)</li>
+                                                        <li>@Html.DisplayFor(model => item.ArticleFeaturesTwo) </li>
+                                                        <li>@Html.DisplayFor(model => item.ArticleFeaturesThree)</li>
+                                                        <li>@Html.DisplayFor(model => item.ArticleFeaturesFour)</li>
+                                                    </ul>
+                                                    <div class="btn-group">
+                                                        <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip" data-original-title="Skickas omgående">
+                                                            <span class="small text-muted icon-padding-right"> +@Html.DisplayFor(model => item.ArticleStock) @Localizer["In Stock"]</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                @*@using (Html.BeginForm("AddToCart", "ShoppingCart", FormMethod.Post ))
+                                                    {*@
+                                                @*<input type="submit" asp-route-id="@item.ArticleId" />*@
+                                                <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy rubberBand"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
+                                                @*}*@
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy rubberBand"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            }
-        }
+                }
     }
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+            @section Scripts {
+             }
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
+            }

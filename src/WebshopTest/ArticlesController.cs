@@ -21,7 +21,6 @@ namespace Webshop.Controllers
     {
         private readonly IHostingEnvironment hostEnvironment;
         private readonly IStringLocalizer<ArticleController> localizer;
-        public static Guid _guid = new Guid("90b45d27-7767-4a77-8936-b1db338d3442");
     
         private static DbContextOptions<WebShopRepository> CreateNewContextOptions()
         {
@@ -83,7 +82,6 @@ namespace Webshop.Controllers
                     ArticlePrice = 1234,
                     ArticleAddDate = DateTime.Now,
                     ArticleStock = 2,
-                    ImageId = 1,
                     VendorId = vendorID,
                     CategoryId = categoryID,
                     ProductId = productID,
@@ -116,6 +114,7 @@ namespace Webshop.Controllers
             }
 
         }
+
         [Fact] //OK
         public async Task IndexListAllArticles()
         {
@@ -160,7 +159,6 @@ namespace Webshop.Controllers
                     ArticlePrice = 1234,
                     ArticleAddDate = DateTime.Now,
                     ArticleStock = 2,
-                    ImageId = 1,
                     VendorId = vendorID,
                     CategoryId = categoryID,
                     ProductId = productID,
@@ -195,7 +193,7 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(null, context, hostEnvironment, localizer);
+                var service = new ArticleController(null, context, hostEnvironment, localizer, null);
                 //Act
                 var result = await service.Index();
                 //Assert
@@ -312,7 +310,6 @@ namespace Webshop.Controllers
                     ArticlePrice = 1234,
                     ArticleAddDate = DateTime.Now,
                     ArticleStock = 2,
-                    ImageId = 1,
                     VendorId = vendorID,
                     CategoryId = categoryID,
                     ProductId = productID,
@@ -348,7 +345,7 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(null, context, null, null);
+                var service = new ArticleController(null, context, null, null, null);
                 //Act
                 var result = await service.DeleteConfirmed(1);
                 //Assert
@@ -507,7 +504,6 @@ namespace Webshop.Controllers
                     ArticlePrice = 1234,
                     ArticleAddDate = DateTime.Now,
                     ArticleStock = 2,
-                    ImageId = 1,
                     VendorId = vendorID,
                     CategoryId = categoryID,
                     ProductId = productID,

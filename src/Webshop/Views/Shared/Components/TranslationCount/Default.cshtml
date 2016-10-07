@@ -52,9 +52,10 @@
             <form asp-action="Translate" asp-controller="Article">
                 <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
                     <div class="col-md-12">
-                        <table id="noTranslationTabel" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
+                        <table id="noTranslationTabel" class="table table-font table-striped dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th>Id</th>
@@ -73,6 +74,7 @@
 
                                 {
                                     <tr>
+                                        <td><span class="flag-icon flag-icon-gb"></span></td>
                                         <td>@i</td>
                                         <td><a asp-action="Translate" asp-route-id="@item.ArticleId" class="btn btn-success btn-sm fa fa-align-center fa-pencil-square-o"></a></td>
                                         <td>@item.ArticleId</td>
