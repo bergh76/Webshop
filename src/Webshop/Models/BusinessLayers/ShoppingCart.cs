@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Webshop.HelperClasses;
 using Webshop.Resources;
 using Webshop.Services;
 
@@ -152,7 +154,7 @@ namespace Webshop.Models.BusinessLayers
                 .CartItems
                 .Include(c => c.Article)
                 .Where(c => c.CartId == _shoppingCartId)
-                .Select(c => c.Article.ArticlePrice / _curr  * c.Count)
+                .Select(c => c.Article.ArticlePrice / _curr * c.Count )
                 .SumAsync();
         }
 
@@ -185,7 +187,7 @@ namespace Webshop.Models.BusinessLayers
                 _context.OrderDetails.Add(orderDetail);
                 _context.SaveChanges();
             }
-            //_context.SaveChanges();
+
             // Set the order's total to the orderTotal count
             order.Total = orderTotal;
             _context.SaveChanges();
@@ -205,11 +207,10 @@ namespace Webshop.Models.BusinessLayers
             {
                 //A GUID to hold the cartId. 
                 cartId = Guid.NewGuid().ToString();
-
+                var cookie = new CartModelBinder();
                 // Send cart Id as a cookie to the client.
                 context.Session.SetString("Session", cartId);
             }
-
             return cartId;
         }
 

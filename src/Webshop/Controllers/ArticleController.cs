@@ -19,7 +19,7 @@ using Webshop.ViewModels;
 
 namespace Webshop.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ArticleController : Controller
     {
         private readonly WebShopRepository _context;
@@ -39,36 +39,39 @@ namespace Webshop.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var artList = from p in _context.Articles
-                              //where p.ISCampaign == true
-                          join i in _context.Images on p.ArticleId equals i.ArtikelId
-                          join pt in _context.ArticleTranslations on
-                                           new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
-                                           equals new { pt.ArticleId, Second = pt.LangCode }
-                          where p.ISActive == true
-                          select new ArticlesViewModel
-                          {
-                              ArticleId = p.ArticleId,
-                              ArticleNumber = p.ArticleNumber,
-                              ArticlePrice = p.ArticlePrice / _curr,
-                              ArticleStock = p.ArticleStock,
-                              ArticleName = pt.ArticleName,
-                              ArticleShortText = pt.ArticleShortText,
-                              ArticleFeaturesOne = pt.ArticleFeaturesOne,
-                              ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
-                              ArticleFeaturesThree = pt.ArticleFeaturesThree,
-                              ArticleFeaturesFour = pt.ArticleFeaturesFour,
-                              ArticleImgPath = i.ImagePath + i.ImageName,
-                          };
+            if (ModelState.IsValid)
+            {
+                var artList = from p in _context.Articles
+                                  //where p.ISCampaign == true
+                              join i in _context.Images on p.ArticleId equals i.ArtikelId
+                              join pt in _context.ArticleTranslations on
+                                               new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                               equals new { pt.ArticleId, Second = pt.LangCode }
+                              where p.ISActive == true
+                              select new ArticlesViewModel
+                              {
+                                  ArticleId = p.ArticleId,
+                                  ArticleNumber = p.ArticleNumber,
+                                  ArticlePrice = p.ArticlePrice / _curr,
+                                  ArticleStock = p.ArticleStock,
+                                  ArticleName = pt.ArticleName,
+                                  ArticleShortText = pt.ArticleShortText,
+                                  ArticleFeaturesOne = pt.ArticleFeaturesOne,
+                                  ArticleFeaturesTwo = pt.ArticleFeaturesTwo,
+                                  ArticleFeaturesThree = pt.ArticleFeaturesThree,
+                                  ArticleFeaturesFour = pt.ArticleFeaturesFour,
+                                  ArticleImgPath = i.ImagePath + i.ImageName,
+                              };
 
-            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
-
-            return View(vModel);
+                IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
+                return View(vModel);
+            }
+            return View();
 
         }
-
 
         // GET: Article/Details/5
         public IActionResult Details(int? id)
@@ -151,7 +154,6 @@ namespace Webshop.Controllers
         //}
 
         // GET: Article/Edit/5
-
 
         public IActionResult Edit(int? id)
         {
@@ -341,7 +343,7 @@ namespace Webshop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> NewArticle(IFormFile file, IFormCollection form, int VendorID, int ProductID, int CategoryID, int SubCategoryID, [Bind("ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")]Articles article, ArticleTranslation artTranslate, ArticleBusinessLayer add)
         {
             if (ModelState.IsValid)
@@ -592,7 +594,10 @@ namespace Webshop.Controllers
             return View(subCategory);
         }
 
-
+        public IActionResult AccessDenied()
+        {
+            return View("~/Views/Shared/AccessDenied.cshtml");
+        }
         private bool ArticleModelExists(int id)
         {
             return _context.Articles.Any(e => e.ArticleId == id);

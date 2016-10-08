@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -33,10 +34,8 @@ namespace Webshop.Controllers
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
-            //_context = context; WebShopRepository context,
            _localizer = localizer;
             _logger = logger;
-            //_appSettings = options.Value;
         }
 
         [HttpPost]
@@ -50,8 +49,11 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public async Task<IActionResult> Index([FromServices] WebShopRepository dbContext)
+        public async Task<IActionResult> Index(
+            [FromServices] WebShopRepository dbContext,
+             [FromServices] IMemoryCache cache)
         {
+            var getCachData = ShoppingCart(dbContext,cache);
             ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
@@ -91,6 +93,27 @@ namespace Webshop.Controllers
             return View(vModel);
         }
 
+        public async Task<IActionResult> ShoppingCart(
+            [FromServices] WebShopRepository dbContext,
+            [FromServices] IMemoryCache cache)
+        {
+            var cart = cache.Get(cache); // gets all items from context.CartItems
+            List<CartItem> cartItems;
+            if (!cache.TryGetValue(cart, out cartItems))
+            {
+                ////cartItems = new ShoppingCartViewModel
+                ////// Set up our ViewModel
+                //if (cartItems != null && cartItems.Count() > 0)
+                //{
+                //    cache.Set(cart)
+                //    CartItems = ;
+                //    CartTotal = await cart.GetTotal()
+                ////};
+                //}
+            }
+                // Return the view
+                return View("ShoppingCart", cart);
+        }
         [HttpGet]
         // GET: Article/Details/5
         public async Task<IActionResult> Details([FromServices] WebShopRepository dbContext, int? id)
@@ -176,15 +199,6 @@ namespace Webshop.Controllers
             return View(vModel.ToList());
         }
 
-        //public IActionResult _SearchBar([FromServices] WebShopRepository dbContext)
-        //{
-        //    ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-        //    ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-        //    ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-        //    ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-        //    return View();
-        //}
-
         public IActionResult Contact([FromServices]IDateTime _datetime)
         {
             ContactViewModel vmodel = new ContactViewModel();
@@ -202,5 +216,14 @@ namespace Webshop.Controllers
         {
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+            return View("~/Views/Shared/AccessDenied.cshtml");
+        }
+        public IActionResult CookieInfo()
+        {
+            return View();
+        }
+             
     }
 }

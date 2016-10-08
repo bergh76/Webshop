@@ -101,11 +101,11 @@
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript">
         window.cookieconsent_options = {
-            "message": "This website uses cookies to ensure you get the best experience on our website",
-            "dismiss": "Got it!",
-            "learnMore": "More info",
-            "link": null,
-            "theme": "light-bottom"
+            "message": "<div><span class='flag-icon flag-icon-se'></span> Den här sidan använder cookies för att ge så bra upplevelse som möjlighet.</div><p></p><div><span class='flag-icon flag-icon-gb'></span> This website uses cookies to ensure you get the best experience on our website.</div><p></p>",
+            "dismiss": "OK!",
+            "learnMore": "<div><span>Cookies </span><i class='fa fa-question-circle-o'></i></div>",
+            "link": 'http://localhost:5000/Home/CookieInfo/',
+            "theme": "light-floating"//"light-bottom"
         };
     </script>
 
@@ -115,9 +115,6 @@
 </head>
 
 <body>
-
-    @*@await Html.PartialAsync("_LoginPartial")*@
-
     <section class="nav-white navbar-fixed-top end-border">
         <div class="container">
             <div class="navbar-header">
@@ -131,9 +128,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav-white navbar-nav">
-                    <li class="dropdown">
-                        <a asp-area="" asp-controller="" asp-action="" class="navbar-brand">Ipsum</a>
-                    </li>
                     <li class="dropdown">
                         <a asp-area="" asp-controller="Article" asp-action="Index" class="navbar-brand">@Localizer["Produkter"]</a>
                     </li>
@@ -201,22 +195,6 @@
         </div>
     </section>
 
-    <!--SMALL MODAL LOGIN-->
-    @*<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>*@
-    @*LARGE MODAL LOGIN*@
-    @*<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>*@
     <div class="container-details-wide">
         @RenderBody()
         <section class="nav-white bottom">

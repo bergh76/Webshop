@@ -117,6 +117,7 @@ namespace Webshop
                 new CultureInfo("sv-SE"),
                 new CultureInfo("en-GB")
             };
+
             //var localizationOptions = new RequestLocalizationOptions
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
@@ -124,32 +125,48 @@ namespace Webshop
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
             });
-            //app.RequestCultureProviders.Insert(0, new HelperClasses.UrlCultureProvider());
 
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug(); // Dependencyinjection
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug(); // Dependencyinjection
+            loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error/");
             }
+                        
             app.UseStatusCodePages();
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                   name: "areaRoute",
+                   template: "{area:exists}/{controller}/{action}",
+                   defaults: new { action = "Index" });
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" });
+
+                routes.MapRoute(
+                    name: "api",
+                    template: "{controller}/{id?}");
                 //routes.MapRoute("areaRoute", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
                 //routes.MapRoute(
                 //    name: "lang",
                 //    template: "{country}-{lang}/{controller}/{action}/{id?}");
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                //routes.MapRoute(
+                //    name: "default",
+                //    template: "{controller=Home}/{action=Index}/{id?}");
                 //routes.MapRoute(
                 //    name: "culture",
                 //    template: "{language:regex(^[a-z]{{2}}(-[A-Z]{{2}})*$)}/{ controller = Home}/{ action = Index}/{ id ?}");

@@ -43,46 +43,64 @@
     </script>
 }
 
-@if (SignInManager.IsSignedIn(User)) //TODO: Check loggedin user an match orderId to populate OrderList
+@if (SignInManager.IsSignedIn(User)) //Check loggedin user and match orderId<=>UserId in controller to populate OrderList
 {
-<section class="container content-box">
-    <section class="row">
-        <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-            <div class="col-md-12 pad-top">
-                <table id="noTranslationTabel" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed table-font" role="grid" aria-describedby="datatable-buttons_info">
-                    <thead>
-                        <tr>
-                            <th>OrderID</th>
-                            <th>Datum</th>
-                            <th>ArticleNumber</th>
-                            <th>Article</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>KlarnaId</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
-                                <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
-                                <td>@Html.DisplayFor(modelItem => item.ArticleNumber)</td>
-                                <td>@Html.DisplayFor(modelItem => item.ArticleName)</td>
-                                <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-                                <td>@Html.DisplayFor(modelItem => item.KlarnaOrderId)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Total)</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-</section>
+        <section class="container content-box">
+            <section class="row">   
+                <div class="col-md-12 pad-top">
+                    <div><!-- TODO: Add a holder for user data Interface/Serviece/ViewComponent--> </div>
+                    <hr />
+                </div>         
+                <div id="datatable-buttons_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                    <div class="col-md-12 pad-top">
+                        <table id="noTranslationTabel" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>Datum</th>
+                                    <th>ArticleNumber</th>
+                                    <th>Article</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>KlarnaId</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                     @foreach (var item in Model)
+                                     {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ArticleNumber)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ArticleName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.KlarnaOrderId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                        </tr>
+                                     }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </section>
 }
-
-
 

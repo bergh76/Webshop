@@ -438,7 +438,10 @@ namespace Webshop.Controllers
         }
 
         #region Helpers
-
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
+        }
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

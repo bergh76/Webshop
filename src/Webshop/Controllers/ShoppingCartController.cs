@@ -74,7 +74,7 @@ namespace Webshop.Controllers
             // Set up our ViewModel
             var viewModel = new ShoppingCartViewModel
             {
-                CartItems = await cart.GetCartItems()   ,
+                CartItems = await cart.GetCartItems(),
                 CartTotal = await cart.GetTotal()
             };
 
