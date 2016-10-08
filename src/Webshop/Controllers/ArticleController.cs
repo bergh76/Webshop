@@ -355,11 +355,17 @@ namespace Webshop.Controllers
         }
 
         // GET: Article/Create
+        [Authorize(Roles = "Admin")]
         public async Task <IActionResult> Translate(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
+            }
+            else if (_iso != "SEK")
+            {
+                return View("Error");
             }
             var artList = from p in _context.Articles
                           join i in _context.Images on p.ArticleId equals i.ArtikelId
@@ -388,13 +394,9 @@ namespace Webshop.Controllers
             IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
-                return NotFound();
+                return View("Error");
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            return View(vModel.SingleOrDefault());
+            return View(vModel.FirstOrDefault());
         }
 
 

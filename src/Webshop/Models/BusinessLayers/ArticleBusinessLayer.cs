@@ -89,7 +89,7 @@ namespace Webshop.Models.BusinessLayers
         private static string RootHost(IHostingEnvironment host)
         {
             return _root = host.WebRootPath;
-        }       
+        }
 
         private void GetSubCategory(WebShopRepository context, Articles article, int SubCategoryID)
         {
