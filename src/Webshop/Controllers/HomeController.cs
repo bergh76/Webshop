@@ -50,10 +50,8 @@ namespace Webshop.Controllers
         }
 
         public async Task<IActionResult> Index(
-            [FromServices] WebShopRepository dbContext,
-             [FromServices] IMemoryCache cache)
+            [FromServices] WebShopRepository dbContext)
         {
-            var getCachData = ShoppingCart(dbContext,cache);
             ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
@@ -93,27 +91,6 @@ namespace Webshop.Controllers
             return View(vModel);
         }
 
-        public async Task<IActionResult> ShoppingCart(
-            [FromServices] WebShopRepository dbContext,
-            [FromServices] IMemoryCache cache)
-        {
-            var cart = cache.Get(cache); // gets all items from context.CartItems
-            List<CartItem> cartItems;
-            if (!cache.TryGetValue(cart, out cartItems))
-            {
-                ////cartItems = new ShoppingCartViewModel
-                ////// Set up our ViewModel
-                //if (cartItems != null && cartItems.Count() > 0)
-                //{
-                //    cache.Set(cart)
-                //    CartItems = ;
-                //    CartTotal = await cart.GetTotal()
-                ////};
-                //}
-            }
-                // Return the view
-                return View("ShoppingCart", cart);
-        }
         [HttpGet]
         // GET: Article/Details/5
         public async Task<IActionResult> Details([FromServices] WebShopRepository dbContext, int? id)

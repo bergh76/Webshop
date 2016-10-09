@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/imagedropzone.js" />
 /// <reference path="js/responsiveslides.min.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />

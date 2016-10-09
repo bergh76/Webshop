@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.DotNet.Cli.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,28 +28,26 @@ namespace Webshop.Models.BusinessLayers
         public IEnumerable<CartItem> _cartItems { get; set; }
         public IEnumerable<CartItem> _artList {get;set;}
 
-        public ShoppingCart(WebShopRepository db, string id)
+        public ShoppingCart(WebShopRepository context, string id)
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
-            _context = db;
+            _context = context;
             _shoppingCartId = id;
         }
 
-        public static ShoppingCart GetCart(WebShopRepository db, HttpContext context)
-            => GetCart(db, GetCartId(context));
+        public static ShoppingCart GetCart(WebShopRepository context, HttpContext httpctx)
+            => GetCart(context, GetCartId(httpctx));
 
-        public static ShoppingCart GetCart(WebShopRepository db, string cartId)
-            => new ShoppingCart(db, cartId);
+        public static ShoppingCart GetCart(WebShopRepository context, string cartId)
+            => new ShoppingCart(context, cartId);
 
         public async Task AddToCart(Articles article)//, ArticleTranslation artT)
         {
-            // Get the matching cart and album instances
+            // Get the matching cart and items instances
             var cartItem = await _context.CartItems.SingleOrDefaultAsync(
                 c => c.CartId == _shoppingCartId
                 && c.ArticleId == article.ArticleId);
-                //&& c.ArticleId == artT.ArticleId);
-
 
             if (cartItem == null)
             {
@@ -199,19 +198,20 @@ namespace Webshop.Models.BusinessLayers
         }
 
         // We're using HttpContextBase to allow access to sessions.
-        public static string GetCartId(HttpContext context)
+        public static string GetCartId(HttpContext httpctx)
         {
-            var cartId = context.Session.GetString("Session");
-            //var isCheckout = context.Session.IsAvailable;
+            var cartId = httpctx.Session.GetString("Session");
+            //var isCheckout = hctx.Session.IsAvailable;
             if (cartId == null)
             {
                 //A GUID to hold the cartId. 
                 cartId = Guid.NewGuid().ToString();
-                var cookie = new CartModelBinder();
+                //var cookie = new CartModelBinder();
                 // Send cart Id as a cookie to the client.
-                context.Session.SetString("Session", cartId);
+                httpctx.Session.SetString("Session", cartId);
             }
             return cartId;
+
         }
 
     }
