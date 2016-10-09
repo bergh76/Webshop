@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Webshop.Controllers;
+using Webshop.Interfaces;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
 using Webshop.Services;
@@ -25,17 +26,19 @@ namespace Webshop.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly WebShopRepository _context;
+        private readonly IDateTime _datetime;
         private readonly IStringLocalizer<AdminController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment; // service that provides some useful environment information such as the current file path
         private static string _iso;
         private static decimal _curr;
-        public AdminController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<AdminController> localizer)
+        public AdminController([FromServices]FixerIO fixer, IDateTime datetime, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<AdminController> localizer)
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
+            _datetime = datetime;
         }
         // GET: Article
 
@@ -226,7 +229,7 @@ namespace Webshop.Areas.Admin.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(article, artTrans, _context, img, _hostEnvironment, id, file, form);
+                    await newArticle.EditArticle(_datetime,article, artTrans, _context, img, _hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -327,7 +330,7 @@ namespace Webshop.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                await add.AddArticle(file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
+                await add.AddArticle(_datetime,file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
                 return RedirectToAction("Create");
             }
             return View(article);

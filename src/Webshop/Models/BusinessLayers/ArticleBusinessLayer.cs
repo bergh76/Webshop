@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Webshop.Controllers;
+using Webshop.Interfaces;
 using Webshop.ViewModels;
 
 namespace Webshop.Models.BusinessLayers
@@ -19,12 +20,12 @@ namespace Webshop.Models.BusinessLayers
     {
         private static readonly string[] _imageFileExtensions = { ".jpg", ".png", ".gif", ".jpeg" }; // for image checking
         private readonly WebShopRepository _context;
+        private readonly IDateTime _datetime;
         private readonly IHostingEnvironment _hostEnvironment;
         private readonly IStringLocalizer<ArticleBusinessLayer> _localizer;
         private readonly ILogger<ArticleBusinessLayer> _logger;
         private IFormFile _file;
         private IFormCollection _form;
-        private static DateTime _datetime = DateTime.Now;
         private static int _articleId;
         private static string _root;
         private string tempArtNr;
@@ -39,7 +40,7 @@ namespace Webshop.Models.BusinessLayers
 
         public ArticleBusinessLayer() { }
 
-        public ArticleBusinessLayer(IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleBusinessLayer> localizer, WebShopRepository context, IFormFile file, IFormCollection form, ILogger<ArticleBusinessLayer> logger)
+        public ArticleBusinessLayer(IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleBusinessLayer> localizer, WebShopRepository context, IFormFile file, IFormCollection form, ILogger<ArticleBusinessLayer> logger)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
@@ -47,10 +48,11 @@ namespace Webshop.Models.BusinessLayers
             _logger = logger;
             _file = file;
             _form = form;
+            _datetime = datetime;
         }
 
         // method to start AddArticles from crontroller
-        internal async Task AddArticle(IFormFile file, IFormCollection form, WebShopRepository context, Articles article,ArticleTranslation artTranslate, IHostingEnvironment hostEnvironment, int VendorID, int ProductID, int CategoryID,int SubCategoryID)
+        internal async Task AddArticle(IDateTime datetime ,IFormFile file, IFormCollection form, WebShopRepository context, Articles article,ArticleTranslation artTranslate, IHostingEnvironment hostEnvironment, int VendorID, int ProductID, int CategoryID,int SubCategoryID)
         {
             var rootHost = RootHost(hostEnvironment);
 
@@ -67,7 +69,7 @@ namespace Webshop.Models.BusinessLayers
             SetTempFileName(article);
             // creates a gui for image<>article relation
 
-            article.ArticleAddDate = _datetime;
+            article.ArticleAddDate = datetime.Now;
             artTranslate.ISTranslated = false;
             context.Articles.Add(article);
             await context.SaveChangesAsync();
@@ -76,7 +78,7 @@ namespace Webshop.Models.BusinessLayers
 
             await context.SaveChangesAsync();
 
-            await SetImagePathAndDirectoryForImageUpload(_hostEnvironment, context, article, file, form, _vendor, _category, _product, _subproduct);
+            await SetImagePathAndDirectoryForImageUpload(datetime,_hostEnvironment,  context, article, file, form, _vendor, _category, _product, _subproduct);
             artTranslate.ArticleId = _articleId;
             context.ArticleTranslations.Add(artTranslate);
 
@@ -135,7 +137,7 @@ namespace Webshop.Models.BusinessLayers
                 _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task SetImagePathAndDirectoryForImageUpload(IHostingEnvironment hostEnvironment,  WebShopRepository context, Articles article, IFormFile file, IFormCollection form, string _vendor, string _category, string _product, string _subproduct)
+        public async Task SetImagePathAndDirectoryForImageUpload(IDateTime datetime,IHostingEnvironment hostEnvironment,  WebShopRepository context, Articles article, IFormFile file, IFormCollection form, string _vendor, string _category, string _product, string _subproduct)
         {
             if (IsImage(file)==true)
             {
@@ -143,6 +145,7 @@ namespace Webshop.Models.BusinessLayers
                 var uploads = _root + "/" + serverPath;
                 Directory.CreateDirectory(uploads); //creates directory if not exists else use allready created
 
+                // filename parser
                 string ext = Path.GetExtension(file.FileName);
                 var tmpName = form["ArticleName"] + "_" + tempArtNr; //date.ToString("_yyyymmddmmhhss");
                 var tmpNameTwo = tmpName.Replace("\"", "");
@@ -152,19 +155,19 @@ namespace Webshop.Models.BusinessLayers
                 {
                     string newFnameExists;
 
-                    SetFileNameIfFileExists(file, form, uploads, out ext, out tmpName, out tmpNameTwo, out newFnameExists);
+                    SetFileNameIfFileExists(datetime,file, form, uploads, out ext, out tmpName, out tmpNameTwo, out newFnameExists);
 
-                    await IfFileExistsUpload(context, file, serverPath, uploads, newFnameExists);
+                    await IfFileExistsUpload( context,datetime, file, serverPath, uploads, newFnameExists);
 
                 }
                 else
                 {
-                    await FileUpload(context, file, serverPath, uploads, newFilename);
+                    await FileUpload(context, datetime,file, serverPath, uploads, newFilename);
                 }
             }
         }
 
-        private void SetFileNameIfFileExists(IFormFile file, IFormCollection form, string uploads, out string ext, out string tmpName, out string tmpNameTwo, out string newFnameExists)
+        private void SetFileNameIfFileExists(IDateTime datetime,IFormFile file, IFormCollection form, string uploads, out string ext, out string tmpName, out string tmpNameTwo, out string newFnameExists)
         {
             ext = Path.GetExtension(file.FileName); // get file extention
             tmpName = form["ArticleName"] + "_" + tempArtNr;
@@ -176,7 +179,7 @@ namespace Webshop.Models.BusinessLayers
             newFnameExists = tmpNameThree.Replace(" ", "_") + ext.ToString();
         }
 
-        private async Task FileUpload(WebShopRepository context, IFormFile file, string serverPath, string uploads, string newFilename)
+        private async Task FileUpload(WebShopRepository context,IDateTime datetime, IFormFile file, string serverPath, string uploads, string newFilename)
         {
             using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
             {
@@ -184,7 +187,7 @@ namespace Webshop.Models.BusinessLayers
             }
             ImageModel imgExists = new ImageModel
             {
-                ImageDate = _datetime,
+                ImageDate = datetime.Now,
                 ImageName = newFilename,
                 ImagePath = String.Format("{0}", serverPath),
                 ArtikelId = _articleId
@@ -193,7 +196,7 @@ namespace Webshop.Models.BusinessLayers
             await context.SaveChangesAsync();
         }
 
-        private async Task IfFileExistsUpload(WebShopRepository context, IFormFile file, string serverPath, string uploads, string newFnameExists)
+        private async Task IfFileExistsUpload(WebShopRepository context, IDateTime datetime, IFormFile file, string serverPath, string uploads, string newFnameExists)
         {
             using (var fileStream = new FileStream(Path.Combine(uploads, newFnameExists), FileMode.Create))
             {
@@ -201,7 +204,7 @@ namespace Webshop.Models.BusinessLayers
             }
             ImageModel imgExists = new ImageModel
             {
-                ImageDate = _datetime,
+                ImageDate = datetime.Now,
                 ImageName = newFnameExists,
                 ImagePath = String.Format("{0}", serverPath),
                 ArtikelId = _articleId
@@ -210,7 +213,7 @@ namespace Webshop.Models.BusinessLayers
             await context.SaveChangesAsync();
         }
 
-        internal async Task EditArticle(Articles article, ArticleTranslation artTrans, WebShopRepository context, ImageModel img, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
+        internal async Task EditArticle(IDateTime datetime,Articles article, ArticleTranslation artTrans, WebShopRepository context, ImageModel img, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
         {
             var image = IsImage(file);
             if (image == true)
@@ -219,7 +222,7 @@ namespace Webshop.Models.BusinessLayers
                 _categoryId = article.CategoryId;
                 _productId = article.ProductId;
                 _subproductId = article.SubCategoryId;
-                article.ArticleAddDate =_datetime;
+                article.ArticleAddDate =_datetime.Now;
                 string tempArtNr = String.Format("{0}{1}{2}{3}", _vendorId, _categoryId, _productId, _subproductId);
                 article.ArticleNumber = tempArtNr;
                 var serverPath = String.Format("images/imageupload/v/{0}/c/{1}/p/{2}/s/{3}/", _vendorId, _categoryId, _productId, _subproductId);
@@ -236,7 +239,7 @@ namespace Webshop.Models.BusinessLayers
                     await file.CopyToAsync(fileStream);
                 }
                 
-                img.ImageDate = _datetime;
+                img.ImageDate = _datetime.Now;
                 img.ImageName = newFilename;
                 img.ImagePath = String.Format("{0}", serverPath);
                 img.ArtikelId = id;
@@ -275,53 +278,6 @@ namespace Webshop.Models.BusinessLayers
 
         }
 
-        //private static void AddTranslation(int id, WebShopRepository context, ArticleTranslation artTrans, string text, string one, string two, string three, string four)
-        //{
-        //    ArticleTranslation trans = new ArticleTranslation
-        //    {
-        //        ArticleId = id,
-        //        ArticleName = artTrans.ArticleName,
-        //        ArticleShortText = text,
-        //        ArticleFeaturesOne = one,
-        //        ArticleFeaturesTwo = two,
-        //        ArticleFeaturesThree = three,
-        //        ArticleFeaturesFour = four,
-        //        ISTranslated = true,
-        //        LangCode = "en",
-        //    };
-        //    context.Add(trans);
-        //}
-
-        //internal async Task DeleteArticle(int id)
-        //{
-        //    var article = await _context.Articles.SingleOrDefaultAsync(m => m.ArticleId == id);
-        //    var artTrans = await _context.ArticleTranslations.Where(d => d.ArticleId == id).ToListAsync();
-        //    foreach (ArticleTranslation item in artTrans)
-        //    {
-        //        _context.ArticleTranslations.Remove(item);
-        //    }
-        //    _context.Articles.Remove(article);
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (WebException ex)
-        //    {
-        //        var webException = ex.InnerException as WebException;
-        //        if (webException != null)
-        //        {
-        //            // Here you can check for timeouts, and other connection related errors.
-        //            // webException.Response could contain the response object.
-        //            throw new WebException(webException.Message);
-        //        }
-        //        else
-        //        {
-        //            // In case there wasn't a WebException where you could get the response
-        //            var faultResponse = (string)ex.Data["Respone"];
-        //            throw new Exception(faultResponse);
-        //        }
-        //    }
-        //}
 
         private bool ArticleModelExists(int id)
         {

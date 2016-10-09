@@ -68,7 +68,7 @@ namespace Webshop
             });
 
             // Add framework services.
-            services.AddSingleton<IDateTime, SystemDateTime>();
+            services.AddSingleton<IDateTime, StaticServerDateTime>();
             services.AddMvc()
                 // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
