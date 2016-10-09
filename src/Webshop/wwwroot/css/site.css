@@ -1212,8 +1212,8 @@ text-transform: uppercase;
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #ff713d;
-    border-color: rgba(16, 23, 23, 0.23);
+    /*background-color: #ff713d;*/
+    /*border-color: rgba(16, 23, 23, 0.23);*/
 }
 
 .col-searchnav {
