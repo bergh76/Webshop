@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Webshop.Interfaces;
 using Webshop.Models;
 using Webshop.Models.BusinessLayers;
 using Webshop.Services;
@@ -22,6 +23,7 @@ namespace Webshop.Controllers
     [Authorize]
     public class ArticleController : Controller
     {
+        private readonly IDateTime _datetime;
         private readonly WebShopRepository _context;
         private readonly IStringLocalizer<ArticleController> _localizer;
         private readonly IHostingEnvironment _hostEnvironment; // service that provides some useful environment information such as the current file path
@@ -29,7 +31,7 @@ namespace Webshop.Controllers
 
         private static string _iso;
         private static decimal _curr;
-        public ArticleController([FromServices]FixerIO fixer, WebShopRepository context, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, ILogger<ArticleController> logger)
+        public ArticleController([FromServices]FixerIO fixer, WebShopRepository context,IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, ILogger<ArticleController> logger)
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
@@ -37,6 +39,7 @@ namespace Webshop.Controllers
             _hostEnvironment = hostEnvironment;
             _localizer = localizer;
             _logger = logger;
+            _datetime = datetime;
         }
 
         [Authorize(Roles = "Admin")]
@@ -221,7 +224,7 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(article, artTrans,  _context, img, _hostEnvironment, id, file, form);
+                    await newArticle.EditArticle(_datetime, article, artTrans,  _context, img, _hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -348,18 +351,24 @@ namespace Webshop.Controllers
         {
             if (ModelState.IsValid)
             {
-                await add.AddArticle(file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
+                await add.AddArticle(_datetime, file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
                 return RedirectToAction("Create");
             }
             return View(article);
         }
 
         // GET: Article/Create
+        [Authorize(Roles = "Admin")]
         public async Task <IActionResult> Translate(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
+            }
+            else if (_iso != "SEK")
+            {
+                return View("Error");
             }
             var artList = from p in _context.Articles
                           join i in _context.Images on p.ArticleId equals i.ArtikelId
@@ -388,13 +397,9 @@ namespace Webshop.Controllers
             IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
-                return NotFound();
+                return View("Error");
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            //ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            //ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            //ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            return View(vModel.SingleOrDefault());
+            return View(vModel.FirstOrDefault());
         }
 
 

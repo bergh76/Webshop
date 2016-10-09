@@ -7,7 +7,6 @@ function openNav() {
     $("#selectLanguage select").change(function () {
         $(this).parent().submit();
         //console.log("Dropdown val")
-
     });
 }());
 //(function () {

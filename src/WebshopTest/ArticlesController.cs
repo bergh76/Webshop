@@ -193,7 +193,7 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(null, context, hostEnvironment, localizer, null);
+                var service = new ArticleController(null, context, null, hostEnvironment, localizer, null);
                 //Act
                 var result = await service.Index();
                 //Assert
@@ -345,7 +345,7 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new ArticleController(null, context, null, null, null);
+                var service = new ArticleController(null, context, null, null, null, null);
                 //Act
                 var result = await service.DeleteConfirmed(1);
                 //Assert
