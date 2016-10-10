@@ -1,3 +1,24 @@
 ﻿@model string
-
-@Html.Raw(Model)
+<section class="container">
+    <div class="row">
+        <div class="col-md-12 pad-top content-box">
+            <div class="col-md-6 pad-top">
+                <div>@await Component.InvokeAsync("CheckOutCart") </div>          
+            </div>
+            <div class="col-md-6 pad-top">
+                <div class="text-muted">
+                    <p>
+                        Testing environment: https://checkout.testdrive.klarna.com
+                        Merchant ID (eid)and shared secret: Please use the Merchant ID(eid) and shared secret provided to you by Klarna.
+                        <ul>
+                            <li>E-mail address: checkout-se@testdrive.klarna.com</li>
+                            <li>Postal code: 12345</li>
+                            <li> Personal identity number: 410321-9202</li>
+                        </ul>
+                    </p>
+                    </div>
+                 <div>@Html.Raw(Model)</div>
+            </div>
+        </div>
+    </div>
+</section>

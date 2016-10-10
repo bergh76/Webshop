@@ -6,9 +6,6 @@
 @{
     ViewData["Title"] = "View";
 }
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
     <script type="text/javascript">
     $(document).ready(function () {
         $('#noTranslationTabel').DataTable({
@@ -41,7 +38,6 @@
         //console.log("Tabelldata \n", expdata);
     });
     </script>
-}
 
 @if (SignInManager.IsSignedIn(User)) //Check loggedin user and match orderId<=>UserId in controller to populate OrderList
 {
@@ -57,7 +53,7 @@
                             <thead>
                                 <tr>
                                     <th>OrderID</th>
-                                    <th>Datum</th>
+                                    <th>OrderDatum</th>
                                     <th>ArticleNumber</th>
                                     <th>Article</th>
                                     <th>Price</th>
@@ -72,7 +68,7 @@
                                      @foreach (var item in Model)
                                      {
                                         <tr>
-                                            <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.OrderId)</td>                                            
                                             <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
                                             <td>@Html.DisplayFor(modelItem => item.ArticleNumber)</td>
                                             <td>@Html.DisplayFor(modelItem => item.ArticleName)</td>
@@ -86,6 +82,7 @@
                                 else
                                 {
                                     <tr>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

@@ -1,3 +1,9 @@
 ﻿@model string
-
-@Html.Raw(Model)
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 pad-top content-box">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">@Html.Raw(Model)</div>
+        </div>
+    </div>
+</section>

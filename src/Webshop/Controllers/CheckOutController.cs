@@ -110,7 +110,7 @@ namespace Webshop.Controllers
                     // Postal code: 12345
                     // Personal identity number: 410321-9202
                     
-                                        data.Add("purchase_country", "SE");
+                    data.Add("purchase_country", "SE");
                     data.Add("purchase_currency", "SEK");
                     data.Add("locale", "sv-se");
                     data.Add("merchant", merchant);
@@ -156,12 +156,14 @@ namespace Webshop.Controllers
            
         }
 
-        public ViewResult Complete([FromForm] Order order, [FromServices] WebShopRepository dbContext, string klarna_order_id)
+        public async Task <ViewResult> Complete([FromForm] Order order, [FromServices] WebShopRepository dbContext, string klarna_order_id)
         {
-           
+            var getCart = ShoppingCart.GetCart(dbContext, HttpContext);
+            string cartId = getCart._shoppingCartId;
             Klarna k = new Klarna();
             var gui = k.KlarnaConfirmation(klarna_order_id);
-
+            ShoppingCart clearCart = new ShoppingCart(dbContext,cartId);
+            await clearCart.EmptyCart(cartId);
             return View("Complete", gui);
         }
        

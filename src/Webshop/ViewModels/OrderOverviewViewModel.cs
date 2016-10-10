@@ -12,6 +12,7 @@ namespace Webshop.ViewModels
         //public Order Order { get; set; }
         //public OrderDetail OrderDetails { get; set; }
         public int OrderId { get; set; }
+        public int ArticleId { get; set; }
         public string ArticleNumber { get; set; }
         public string ArticleName { get; set; }
         public int Quantity { get; set; }

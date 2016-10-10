@@ -102,11 +102,11 @@ namespace Webshop.Models.BusinessLayers
             return itemCount;
         }
 
-        public async Task EmptyCart()
+        public async Task EmptyCart(string cartId)
         {
             var cartItems = await _context
                 .CartItems
-                .Where(cart => cart.CartId == _shoppingCartId)
+                .Where(cart => cart.CartId == cartId)
                 .ToArrayAsync();
             _context.CartItems.RemoveRange(cartItems);
             _context.SaveChanges();
@@ -172,12 +172,9 @@ namespace Webshop.Models.BusinessLayers
                 {
                     ArticleId = item.ArticleId,
                     ArticleNumber = item.ArticleNumber,
-                    ArticleName = item.ArticleName,
                     OrderId = order.OrderId,
                     UnitPrice = article.ArticlePrice / _curr,
                     Quantity = item.Count,
-                    KlarnaOrderId = Klarna.KlarnaOrderId             
-
                 };
 
                 // Set the order total of the shopping cart
@@ -188,10 +185,11 @@ namespace Webshop.Models.BusinessLayers
             }
 
             // Set the order's total to the orderTotal count
+            order.KlarnaOrderId = Klarna.KlarnaOrderId;
             order.Total = orderTotal;
             _context.SaveChanges();
             //Empty the shopping cart
-            await EmptyCart();
+            //await EmptyCart();
 
             // Return the OrderId as the confirmation number
             return order.OrderId;

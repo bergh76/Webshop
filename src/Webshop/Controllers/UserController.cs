@@ -29,32 +29,41 @@ namespace Webshop.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var userId = dbContext.Users.Where(x => x.UserName == Convert.ToString(user)).Select(x => x.Id).SingleOrDefault();
-            if (userId == dbContext.Orders.Where(x => x.Username == Convert.ToString(user))
-                                .Select(x => x.UserId)
-                                .FirstOrDefault())
+
+            if (userId == dbContext.Orders
+                .Distinct()
+                .Where(x => x.Username == Convert.ToString(user))
+                .Select(x => x.UserId)
+                .SingleOrDefault())
             {
                 var artList = from o in dbContext.Orders
                               join od in dbContext.OrderDetails on o.OrderId equals od.OrderId
                               join u in dbContext.Users on o.UserId equals u.Id
-
+                              //join a in dbContext.ArticleTranslations on od.ArticleId equals a.ArticleId
+                              
                               select new OrderOverviewViewModel
                               {
                                   OrderId = o.OrderId,
+                                  ArticleId = od.ArticleId,
                                   ArticleNumber = od.ArticleNumber,
-                                  ArticleName = od.ArticleName,
+                                  ArticleName = dbContext.ArticleTranslations
+                                                                     .Where(x => x.ArticleId == od.ArticleId)
+                                                                     .Select(x => x.ArticleName)
+                                                                     .FirstOrDefault(),
                                   Quantity = od.Quantity,
                                   UnitPrice = od.UnitPrice,
                                   Total = o.Total,
                                   OrderDate = o.OrderDate,
-                                  KlarnaOrderId = od.KlarnaOrderId,
+                                  KlarnaOrderId = o.KlarnaOrderId,
                                   UserId = o.UserId
                               };
+                
                 
 
                 IEnumerable<OrderOverviewViewModel> vModel = artList.ToList();
                 return View(vModel);
             }
-            return View("Orders");
+            return View();
         }
         private Task<ApplicationUser> GetCurrentUserAsync()
         {

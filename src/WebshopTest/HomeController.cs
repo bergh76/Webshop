@@ -126,9 +126,9 @@ namespace Webshop.Controllers
             // Use a clean instance of the context to run the test
             using (var context = new WebShopRepository(options))
             {
-                var service = new HomeController(null, null);
+                var service = new HomeController(null, null,null);
                 //Act
-                var query = await service.SearchArticles(context, vendorID, 0, 0, 0);
+                var query = await service.SearchArticles(vendorID, 0, 0, 0);
 
                 //Assert
                 var viewResult = Assert.IsType<ViewResult>(query);
