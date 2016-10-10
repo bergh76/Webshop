@@ -12,7 +12,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger">
             </div>
             <input type="hidden" asp-for="ArticleId" />
-            <input type="hidden" asp-for="ArticleGuid" />
             <input type="hidden" asp-for="ArticleNumber" />
             <input type="hidden" asp-for="ArticleImgPath" />
             <input type="hidden" asp-for="ImageId" />
@@ -32,7 +31,7 @@
                         <img class="img-responsive pad-top" alt="@Html.DisplayFor(model => model.ArticleName)" src="~/images/imageupload/NoImage/NO_product_fount.png" />
                     }
                 </div>
-                </div>
+            </div>
 
             <div class="col-md-8 padding-x-off">
                 <div class="col-md-4">
@@ -175,7 +174,7 @@
     </form>
 </section>
 <!-- Modal NewVendor-->
-<div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+@*<div class="modal fade" id="NewVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -229,7 +228,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

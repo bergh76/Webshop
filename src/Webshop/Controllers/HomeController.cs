@@ -25,16 +25,17 @@ namespace Webshop.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        //private WebShopRepository _context;
-        private readonly IStringLocalizer<HomeController> _localizer;
+        private WebShopRepository _context;
+        //private readonly IStringLocalizer<HomeController> _localizer;
         private readonly ILogger<HomeController> _logger;
         private static string _iso;
         private static decimal _curr;
-        public HomeController([FromServices]FixerIO fixer,IStringLocalizer<HomeController> localizer, ILogger<HomeController> logger)
+        public HomeController([FromServices] WebShopRepository dbContext,[FromServices]FixerIO fixer,ILogger<HomeController> logger)//, IStringLocalizer<HomeController> localizer)
         {
+            _context = dbContext;
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
-           _localizer = localizer;
+           //_localizer = localizer;
             _logger = logger;
         }
 
@@ -49,17 +50,16 @@ namespace Webshop.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public async Task<IActionResult> Index(
-            [FromServices] WebShopRepository dbContext)
+        public async Task<IActionResult> Index()
         {
-            ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            var artList = from p in dbContext.Articles
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            var artList = from p in _context.Articles
                           where  p.ISCampaign == true
-                          join i in dbContext.Images on p.ArticleId equals i.ArtikelId
-                          join pt in dbContext.ArticleTranslations on
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
+                          join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
 
@@ -93,15 +93,15 @@ namespace Webshop.Controllers
 
         [HttpGet]
         // GET: Article/Details/5
-        public async Task<IActionResult> Details([FromServices] WebShopRepository dbContext, int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var artList = from p in dbContext.Articles
-                          join i in dbContext.Images on p.ArticleId equals i.ArtikelId
-                          join pt in dbContext.ArticleTranslations on
+            var artList = from p in _context.Articles
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
+                          join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
                           where p.ArticleId == id
@@ -138,19 +138,19 @@ namespace Webshop.Controllers
         }
 
         //[AjaxOnly]
-        public async Task<IActionResult> SearchArticles([FromServices] WebShopRepository dbContext, int vendor, int category, int product, int subproduct)
+        public async Task<IActionResult> SearchArticles(int vendor, int category, int product, int subproduct)
         {
-            ViewData["CategoryID"] = new SelectList(dbContext.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
-            ViewData["ProductID"] = new SelectList(dbContext.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
-            ViewData["SubCategoryID"] = new SelectList(dbContext.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
-            ViewData["VendorID"] = new SelectList(dbContext.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
-            var artList = from p in dbContext.Articles
+            ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
+            ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
+            ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
+            ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            var artList = from p in _context.Articles
                           where p.VendorId == vendor || vendor == 0
                           where p.CategoryId == category || category == 0
                           where p.ProductId == product || product == 0
                           where p.SubCategoryId == subproduct || subproduct == 0
-                          join i in dbContext.Images on p.ArticleId equals i.ArtikelId
-                          join pt in dbContext.ArticleTranslations on
+                          join i in _context.Images on p.ArticleId equals i.ArtikelId
+                          join pt in _context.ArticleTranslations on
                                            new { p.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                            equals new { pt.ArticleId, Second = pt.LangCode }
                           select new ArticlesViewModel

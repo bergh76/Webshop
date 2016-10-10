@@ -14,6 +14,10 @@ body {
   color: #333;
   background-color: #fff;
 }
+.productTitle h3{
+    /*font-family: 'Raleway';*/
+    font-size: 1.4em;
+}
 .table-font{
     font-family: 'Roboto';
     font-size: 0.7em;
@@ -264,8 +268,8 @@ body {
 }
 .productItemBox .productDescription {
     overflow: hidden;
-    height: 80px;
-    /*padding-top: 10px;*/
+    /*height: 80px;*/
+    padding-top: 10px;
 }
 .productItemBox .productDescriptionList {
     overflow: hidden;
@@ -292,8 +296,12 @@ body {
     background-color: #7ee100;
 
 }
+.productItemBox .img-responsive {
+    max-height: 180px;
+}
 .productItemBox .productImageWrap {
     min-height: 180px;
+    max-height: 180px;
         display: -ms-flexbox;
     display: flex;
     align-items: center;
@@ -336,7 +344,6 @@ body {
 .productItemBox .btn-buy {
     z-index: 999;
     position: page;
-    /*margin-right: 70px;*/
     bottom: 5px;
     /*float: left;*/
 }
@@ -351,7 +358,7 @@ body {
     /*float: left;*/
  position: absolute;
  padding-left: 8px;
- bottom: 5px;
+ bottom: 15px;
 }
     /*DETAILPRODUCTSTYLE*/
 .content-block{
@@ -444,11 +451,22 @@ body {
 .productDetailImageWrap{
     margin: 10px 10px 0 20px;
 }
+.productDetailImageWrap .image-container{
+    width: 100%;
+}
 .productDetailItemBox .productDetailImageWrap .img {
     position: absolute;
     max-width: 100%;
 }
+.image-container-details .img-responsive{
+    margin-right: auto;
+    margin-left: auto;
+    max-height: 250px;
+}
 
+.image-container .img-responsive{
+        max-height: 180px;
+}
 .productItemDetailBox .productDetailDescription .shortSpec {
     padding: 5px 15px;
     list-style-type: circle;

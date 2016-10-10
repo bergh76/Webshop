@@ -5,40 +5,6 @@
 @section Scripts {
 <!--ajax script-->
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#noTranslationTabel').DataTable({
-            //dom: 'B<"clear"><lf<t>ip>',
-            //buttons: [{ extend: 'copy', text: 'Kopiera', },
-            //    {
-            //    extend: 'excel',
-            //    text: 'Excel',
-            //    exportOptions: {  modifier: { page: 'current' } },
-            //},
-            //{
-            //    extend: 'pdf',
-            //    text: 'Pdf'
-            //},
-            //],
-            "language": {
-                "lengthMenu": "Visa _MENU_ rader per sida",
-                "zeroRecords": "Din sökning gav inget - försök med ett annat sökord",
-                "info": "_PAGE_ av _PAGES_",
-                "infoEmpty": "Datatabellen är tom",
-                "infoFiltered": "(filtrerdad på _MAX_ antal poster)"
-            },
-            //"order": [[0, "asc", ]], //Column1
-            "processing": true,
-
-        })
-
-        //var table = $('#myDWPTable').DataTable();
-        //var expdata = table.buttons.exportData();
-        //console.log("Tabelldata \n", expdata);
-    });
-</script>
-<!--ajax script end-->
-
     }
 @inject IViewLocalizer Localizer
 @{
@@ -66,7 +32,7 @@
                         </div>
                         <div class="productTitle">
                             <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ArticleId">
-                                <h4 class="text-muted orange">@Html.DisplayFor(modelItem => item.ArticleName)</h4>
+                                <h3 class="text-muted orange">@Html.DisplayFor(modelItem => item.ArticleName)</h3>
                             </a>
                         </div>
                         <div class="productImageWrap">
@@ -98,9 +64,9 @@
                             <i class="fa fa-exchange text-muted valign-text-bottom icon-padding-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Jämför produkten"> </i>
                             <i class="fa-colored-check-square-green"></i>
                             <span class="fa fa-cubes green icon-padding-right" title="" data-placement="top" data-container="body" data-toggle="tooltip"><span class="small green">@Html.DisplayFor(modelItem => item.ArticleStock) @Localizer["Stock"]</span></span>
-                        </div>
-                        <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a>
 
+                            <div class="pull-right "><a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@item.ArticleId" class="btn submit-sm-button btn-buy"><i class="fa fa-cart-plus"></i>@Localizer["Buy"]</a></div>
+                        </div>
                     </div>
                 </div>
             }

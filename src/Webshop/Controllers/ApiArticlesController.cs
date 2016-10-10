@@ -18,10 +18,9 @@ namespace Webshop.Controllers
     [Route("api/ApiArticles")]
     public class ApiArticlesController : Controller
     {
-        private readonly WebShopRepository _context; //crate a service for context
+        private readonly WebShopRepository _context;
         private readonly ArticleBusinessLayer _artBLL;
-        //private readonly IHostingEnvironment _hostEnvironment;
-        public ApiArticlesController(WebShopRepository context, ArticleBusinessLayer artBLL) //IFormCollection form,,
+        public ApiArticlesController([FromServices]WebShopRepository context, ArticleBusinessLayer artBLL)
         {
             _artBLL = artBLL;
             _context = context;
@@ -121,10 +120,7 @@ namespace Webshop.Controllers
             {
                 return BadRequest();
             }
-
-            //_context.Entry(articles).State = EntityState.Modified;
             _context.Update(articles);
-
 
             try
             {

@@ -229,7 +229,7 @@ namespace Webshop.Areas.Admin.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(_datetime,article, artTrans, _context, img, _hostEnvironment, id, file, form);
+                    await newArticle.EditArticle(_context, _datetime, article, artTrans, img, _hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -330,7 +330,7 @@ namespace Webshop.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                await add.AddArticle(_datetime,file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
+                await add.AddArticle(_context, article, artTranslate, _datetime, file, form, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
                 return RedirectToAction("Create");
             }
             return View(article);

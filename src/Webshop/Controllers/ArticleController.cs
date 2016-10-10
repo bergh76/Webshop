@@ -31,7 +31,7 @@ namespace Webshop.Controllers
 
         private static string _iso;
         private static decimal _curr;
-        public ArticleController([FromServices]FixerIO fixer, WebShopRepository context,IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, ILogger<ArticleController> logger)
+        public ArticleController([FromServices]FixerIO fixer, [FromServices] WebShopRepository context,IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleController> localizer, ILogger<ArticleController> logger)
         {
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
@@ -126,6 +126,7 @@ namespace Webshop.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+
             //ViewData["LangCode"] = new SelectList(_context.Languages, "ID", "LangCode");
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
@@ -158,7 +159,7 @@ namespace Webshop.Controllers
 
         // GET: Article/Edit/5
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -194,11 +195,12 @@ namespace Webshop.Controllers
                               ISCampaign = p.ISCampaign
                           };
 
-            IEnumerable<ArticlesViewModel> vModel = artList.ToList();
+            IEnumerable<ArticlesViewModel> vModel = await artList.ToListAsync();
             if (vModel == null)
             {
                 return NotFound();
             }
+
             ViewData["CategoryID"] = new SelectList(_context.Categories.OrderBy(x => x.CategoryName), "CategoryID", "CategoryName");
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
@@ -224,7 +226,7 @@ namespace Webshop.Controllers
             {
                 try
                 {
-                    await newArticle.EditArticle(_datetime, article, artTrans,  _context, img, _hostEnvironment, id, file, form);
+                    await newArticle.EditArticle(_context, _datetime, article, artTrans,  img, _hostEnvironment, id, file, form);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -239,14 +241,22 @@ namespace Webshop.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            PopoulateDropdown(article);
+            //ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorId);
+            //ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductId);
+            //ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryId);
+            //ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
+            return View(article);
+        }
+
+        public void PopoulateDropdown(Articles article)
+        {
             ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorId);
             ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductId);
             ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryId);
             ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
-            return View(article);
+
         }
-
-
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -327,8 +337,6 @@ namespace Webshop.Controllers
                     }
                 }
             }
-            _logger.LogInformation("Article {0} was deleted successfully:",id);
-
             return RedirectToAction("Index");
         }
 
@@ -351,7 +359,7 @@ namespace Webshop.Controllers
         {
             if (ModelState.IsValid)
             {
-                await add.AddArticle(_datetime, file, form, _context, article, artTranslate, _hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
+                await add.AddArticle(_context, article, artTranslate, _datetime, file, form,_hostEnvironment, VendorID, ProductID, CategoryID, SubCategoryID);
                 return RedirectToAction("Create");
             }
             return View(article);
@@ -603,6 +611,7 @@ namespace Webshop.Controllers
         {
             return View("~/Views/Shared/AccessDenied.cshtml");
         }
+
         private bool ArticleModelExists(int id)
         {
             return _context.Articles.Any(e => e.ArticleId == id);
