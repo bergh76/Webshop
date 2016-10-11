@@ -34,7 +34,7 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<CartModelBinder>();
+            //services.AddSingleton<CartModelBinder>();
             services.AddTransient<FixerIO>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddLocalization(option => option.ResourcesPath = "Resources");
@@ -75,7 +75,9 @@ namespace Webshop
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
                 .AddDataAnnotationsLocalization();
-
+            // Add memory cache services
+            services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
             //// Add session related services.
             services.AddSession();
             // Add application services.

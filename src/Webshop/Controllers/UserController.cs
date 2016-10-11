@@ -31,25 +31,23 @@ namespace Webshop.Controllers
             var userId = dbContext.Users.Where(x => x.UserName == Convert.ToString(user)).Select(x => x.Id).SingleOrDefault();
 
             if (userId == dbContext.Orders
-                .Distinct()
                 .Where(x => x.Username == Convert.ToString(user))
                 .Select(x => x.UserId)
                 .SingleOrDefault())
             {
                 var artList = from o in dbContext.Orders
                               join od in dbContext.OrderDetails on o.OrderId equals od.OrderId
+                              join a in dbContext.Articles on od.ArticleId equals a.ArticleId
                               join u in dbContext.Users on o.UserId equals u.Id
-                              //join a in dbContext.ArticleTranslations on od.ArticleId equals a.ArticleId
-                              
+                              join at in dbContext.ArticleTranslations on  
+                                                            new { a.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
+                                                            equals new { at.ArticleId, Second = at.LangCode }
                               select new OrderOverviewViewModel
                               {
                                   OrderId = o.OrderId,
                                   ArticleId = od.ArticleId,
                                   ArticleNumber = od.ArticleNumber,
-                                  ArticleName = dbContext.ArticleTranslations
-                                                                     .Where(x => x.ArticleId == od.ArticleId)
-                                                                     .Select(x => x.ArticleName)
-                                                                     .FirstOrDefault(),
+                                  ArticleName = at.ArticleName,
                                   Quantity = od.Quantity,
                                   UnitPrice = od.UnitPrice,
                                   Total = o.Total,

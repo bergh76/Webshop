@@ -197,6 +197,7 @@ namespace Webshop.Controllers
         {
             return View("~/Views/Shared/AccessDenied.cshtml");
         }
+
         public IActionResult CookieInfo()
         {
             return View();

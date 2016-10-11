@@ -40,7 +40,7 @@ namespace Webshop.Models.BusinessLayers
 
         public ArticleBusinessLayer() { }
 
-        public ArticleBusinessLayer([FromServices] WebShopRepository context,IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleBusinessLayer> localizer, IFormFile file, IFormCollection form, ILogger<ArticleBusinessLayer> logger)
+        public ArticleBusinessLayer(WebShopRepository context,IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleBusinessLayer> localizer, IFormFile file, IFormCollection form, ILogger<ArticleBusinessLayer> logger)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
@@ -52,7 +52,7 @@ namespace Webshop.Models.BusinessLayers
         }
 
         // method to start AddArticles from crontroller
-        internal async Task AddArticle([FromServices] WebShopRepository context, Articles article, ArticleTranslation artTranslate, IDateTime datetime ,IFormFile file, IFormCollection form, IHostingEnvironment hostEnvironment, int VendorID, int ProductID, int CategoryID,int SubCategoryID)
+        internal async Task AddArticle(WebShopRepository context, Articles article, ArticleTranslation artTranslate, IDateTime datetime ,IFormFile file, IFormCollection form, IHostingEnvironment hostEnvironment, int VendorID, int ProductID, int CategoryID,int SubCategoryID)
         {
             var rootHost = RootHost(hostEnvironment);
 
@@ -93,7 +93,7 @@ namespace Webshop.Models.BusinessLayers
             return _root = host.WebRootPath;
         }
 
-        private void GetSubCategory([FromServices] WebShopRepository context,Articles article, int SubCategoryID)
+        private void GetSubCategory(WebShopRepository context,Articles article, int SubCategoryID)
         {
             _subproductId = SubCategoryID;
             _subproduct = context.SubCategories.Where(x => x.SubCategoryID == _subproductId).Select(n => n.SubCategoryName).FirstOrDefault();
@@ -114,7 +114,7 @@ namespace Webshop.Models.BusinessLayers
             article.CategoryId = _categoryId;
         }
 
-        private void GetVendor([FromServices] WebShopRepository context,Articles article, int VendorID)
+        private void GetVendor(WebShopRepository context,Articles article, int VendorID)
         {
             _vendorId = VendorID;
             _vendor = context.Vendors.Where(x => x.VendorID == _vendorId).Select(n => n.VendorName).FirstOrDefault();
@@ -136,7 +136,7 @@ namespace Webshop.Models.BusinessLayers
                 _imageFileExtensions.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task SetImagePathAndDirectoryForImageUpload([FromServices] WebShopRepository context,IDateTime datetime,IHostingEnvironment hostEnvironment, Articles article, IFormFile file, IFormCollection form, string _vendor, string _category, string _product, string _subproduct)
+        public async Task SetImagePathAndDirectoryForImageUpload(WebShopRepository context,IDateTime datetime,IHostingEnvironment hostEnvironment, Articles article, IFormFile file, IFormCollection form, string _vendor, string _category, string _product, string _subproduct)
         {
             if (IsImage(file)==true)
             {
@@ -178,7 +178,7 @@ namespace Webshop.Models.BusinessLayers
             newFnameExists = tmpNameThree.Replace(" ", "_") + ext.ToString();
         }
 
-        private async Task FileUpload([FromServices] WebShopRepository context, IDateTime datetime, IFormFile file, string serverPath, string uploads, string newFilename)
+        private async Task FileUpload(WebShopRepository context, IDateTime datetime, IFormFile file, string serverPath, string uploads, string newFilename)
         {
             using (var fileStream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
             {
@@ -195,7 +195,7 @@ namespace Webshop.Models.BusinessLayers
             await _context.SaveChangesAsync();
         }
 
-        private async Task IfFileExistsUpload([FromServices] WebShopRepository context, IDateTime datetime, IFormFile file, string serverPath, string uploads, string newFnameExists)
+        private async Task IfFileExistsUpload(WebShopRepository context, IDateTime datetime, IFormFile file, string serverPath, string uploads, string newFnameExists)
         {
             using (var fileStream = new FileStream(Path.Combine(uploads, newFnameExists), FileMode.Create))
             {
@@ -212,7 +212,7 @@ namespace Webshop.Models.BusinessLayers
             await _context.SaveChangesAsync();
         }
 
-        internal async Task EditArticle([FromServices] WebShopRepository context,IDateTime datetime,Articles article, ArticleTranslation artTrans, ImageModel img, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
+        internal async Task EditArticle(WebShopRepository context,IDateTime datetime,Articles article, ArticleTranslation artTrans, ImageModel img, IHostingEnvironment hostEnvironment, int id, IFormFile file, IFormCollection form)
         {
             var image = IsImage(file);
             if (image == true)
@@ -254,7 +254,7 @@ namespace Webshop.Models.BusinessLayers
             await _context.SaveChangesAsync();
         }
 
-        internal async Task Translate(int id, [FromServices] WebShopRepository context, ArticlesViewModel artView, ArticleTranslation artTrans,string text, string one, string two, string three, string four)
+        internal async Task Translate(int id,WebShopRepository context, ArticlesViewModel artView, ArticleTranslation artTrans,string text, string one, string two, string three, string four)
         {
             ArticleTranslation trans = new ArticleTranslation
             {

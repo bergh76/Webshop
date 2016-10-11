@@ -66,12 +66,15 @@
                                 @if (Model != null)
                                 {
                                      @foreach (var item in Model)
-                                     {
+                                     { 
+
                                         <tr>
                                             <td>@Html.DisplayFor(modelItem => item.OrderId)</td>                                            
                                             <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.ArticleNumber)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.ArticleName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.ArticleNumber)@Html.HiddenFor(modelItem => item.ArticleId)</td>
+                                            <td>
+                                                <a asp-controller="Article" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a>
+                                            </td>
                                             <td>@Html.DisplayFor(modelItem => item.UnitPrice)</td>
                                             <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
                                             <td>@Html.DisplayFor(modelItem => item.KlarnaOrderId)</td>
