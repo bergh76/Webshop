@@ -35,8 +35,7 @@ namespace Webshop.Controllers
             _context = dbContext;
             _iso = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
             _curr = FixerIO.GetUDSToRate(_iso);
-           //_localizer = localizer;
-            _logger = logger;
+             _logger = logger;
         }
 
         [HttpPost]
@@ -197,7 +196,6 @@ namespace Webshop.Controllers
         {
             return View("~/Views/Shared/AccessDenied.cshtml");
         }
-
         public IActionResult CookieInfo()
         {
             return View();

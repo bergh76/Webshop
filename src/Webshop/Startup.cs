@@ -34,10 +34,7 @@ namespace Webshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton<CartModelBinder>();
-            services.AddTransient<FixerIO>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            services.AddLocalization(option => option.ResourcesPath = "Resources");
 
             // Add framework services.
             services.AddDbContext<WebShopRepository>(options =>
@@ -47,14 +44,6 @@ namespace Webshop
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddEntityFrameworkStores<WebShopRepository>()
                .AddDefaultTokenProviders();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", builder =>
-                {
-                    builder.WithOrigins("http://example.com");
-                });
-            });
 
             // Configure Auth
             services.AddAuthorization(options =>
@@ -66,24 +55,43 @@ namespace Webshop
                         authBuilder.RequireClaim("ManageStore", "Allowed");
                     });
             });
+            // Add application services.
+            services.AddTransient<ArticleBusinessLayer>();
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            // Add framework services.
+            services.AddSingleton<CartModelBinder>();
+            // add currency converter service
+            services.AddTransient<FixerIO>();
+            services.AddLocalization(option => option.ResourcesPath = "Resources");
+            // Add the system clock service
             services.AddSingleton<IDateTime, StaticServerDateTime>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.WithOrigins("http://example.com");
+                });
+            });
+
+
             services.AddMvc()
                 // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 // Add support for localizing strings in data annotations (e.g. validation messages) via the
                 // IStringLocalizer abstractions.
                 .AddDataAnnotationsLocalization();
+
             // Add memory cache services
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
+
             //// Add session related services.
             services.AddSession();
-            // Add application services.
-            services.AddTransient<ArticleBusinessLayer>();
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
+
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {

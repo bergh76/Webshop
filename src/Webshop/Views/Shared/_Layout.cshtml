@@ -176,7 +176,8 @@
                     <li>@await Html.PartialAsync("_SelectLanguagePartial")</li>
                 </ul>                
                 <div>
-                    <ul class="nav-white navbar-nav pull-right">
+                    @await Html.PartialAsync("_Cart")
+                    @*<ul class="nav-white navbar-nav pull-right">
                         <li class="dropdown pull-right cart pad-right-15">
                             <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="/shoppingcart">
                                 <label class="cartValue dropdown-toggle-cart">@await Component.InvokeAsync("CartTotalSum")</label>
@@ -189,7 +190,7 @@
                                 </li>
                             </ul>
                         </li>
-                    </ul>
+                    </ul>*@
                 </div>
             </div>
         </div>

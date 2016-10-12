@@ -30,8 +30,9 @@
                                     <select asp-for="VendorID" class="form-control placeholder" asp-items="ViewBag.VendorID">
                                         <option value="">@Localizer["AddVendor1"]</option>
                                     </select>
+                                    <span class="text-danger">@ViewData["Vendor"]</span>
                                     <!-- Button trigger modal -->
-                                    <a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a>
+                                    <p><a data-toggle="modal" data-target="#NewVendor"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="VendorID"></label></span></a></p>
                                 </div>
                             </div>
                         </div>
@@ -43,8 +44,9 @@
                                     <select asp-for="CategoryID" class="form-control placeholder" asp-items="ViewBag.CategoryID">
                                         <option value="">@Localizer["AddCategory1"]</option>
                                     </select>
+                                    <span class="text-danger">@ViewData["Category"]</span>
                                     <!-- Button trigger modal -->
-                                    <a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="CategoryID"></label></span></a>
+                                    <p><a data-toggle="modal" data-target="#NewCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="CategoryID"></label></span></a></p>
                                 </div>
                             </div>
                         </div>
@@ -56,8 +58,9 @@
                                     <select asp-for="ProductID" class="form-control placeholder" asp-items="ViewBag.ProductID">
                                         <option value="">@Localizer["AddProduct1"]</option>
                                     </select>
+                                    <span class="text-danger">@ViewData["Message"]</span>
                                     <!-- Button trigger modal -->
-                                    <a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="ProductID"></label></span></a>
+                                    <p><a data-toggle="modal" data-target="#NewProduct"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="ProductID"></label></span></a></p>
                                 </div>
                             </div>
 
@@ -69,8 +72,9 @@
                                     <select asp-for="SubCategoryID" class="form-control placeholder" asp-items="ViewBag.SubCategoryID">
                                         <option value="">@Localizer["AddProductType1"]</option>
                                     </select>
+                                    <span class="text-danger">@ViewData["Message"]</span>
                                     <!-- Button trigger modal -->
-                                    <a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="SubCategoryID"></label></span></a>
+                                    <p><a data-toggle="modal" data-target="#NewSubCategory"><span class="modal-pointer"><i class="fa fa-plus-circle lime-green"></i><label class="modal-pointer no-bold" asp-for="SubCategoryID"></label></span></a></p>
                                 </div>
                             </div>
                         </div>

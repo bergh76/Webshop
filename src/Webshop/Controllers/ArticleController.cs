@@ -132,32 +132,12 @@ namespace Webshop.Controllers
             ViewData["ProductID"] = new SelectList(_context.Products.OrderBy(x => x.ProductName), "ProductID", "ProductName");
             ViewData["SubCategoryID"] = new SelectList(_context.SubCategories.OrderBy(x => x.SubCategoryName), "SubCategoryID", "SubCategoryName");
             ViewData["VendorID"] = new SelectList(_context.Vendors.OrderBy(x => x.VendorName), "VendorID", "VendorName");
+            ViewData["Vendor"] = ArticleBusinessLayer.vendorMessage;
+            ViewData["Category"] = ArticleBusinessLayer.categoryMessage;
+            ViewData["Product"] = ArticleBusinessLayer.productMessage;
+            ViewData["SubCategory"] = ArticleBusinessLayer.subcatMessage;
             return View();
         }
-
-        // POST: Article/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<IActionResult> Create([Bind("ArticleId,ArticleAddDate,ArticleFeaturesFour,ArticleFeaturesOne,ArticleFeaturesThree,ArticleFeaturesTwo,ArticleGuid,ArticleName,ArticleNumber,ArticlePrice,ArticleShortText,ArticleStock,CategoryID,ISActive,ISCampaign,ProductID,ProductImgPathID,SubCategoryID,VendorID")] Articles articleModel, ArticleTranslation artTranslate)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(articleModel);
-        //        _context.Add(artTranslate);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", articleModel.VendorId);
-        //    ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", articleModel.ProductId);
-        //    ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", articleModel.CategoryId);
-        //    ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", articleModel.SubCategoryId);
-        //    return View(articleModel);
-        //}
-
-        // GET: Article/Edit/5
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -208,7 +188,6 @@ namespace Webshop.Controllers
             return View(vModel.SingleOrDefault());
         }
 
-
         // POST: Article/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -242,10 +221,6 @@ namespace Webshop.Controllers
                 return RedirectToAction("Index");
             }
             PopoulateDropdown(article);
-            //ViewData["Vendors"] = new SelectList(_context.Vendors, "VendorID", "VendorName", article.VendorId);
-            //ViewData["Products"] = new SelectList(_context.Products, "ProductID", "ProductName", article.ProductId);
-            //ViewData["Categories"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", article.CategoryId);
-            //ViewData["SubCategories"] = new SelectList(_context.SubCategories, "SubCategoryID", "SubCategoryName", article.SubCategoryId);
             return View(article);
         }
 
@@ -449,30 +424,11 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewVendor([Bind("VendorID, VendorName, VendorWebPage, ISActive")]VendorModel vendor)
+        public async Task<IActionResult> NewVendor([Bind("VendorID, VendorName, VendorWebPage, ISActive")]VendorModel vendor, ArticleBusinessLayer artBLL)
         {
             if (ModelState.IsValid)
             {
-                var nameInput = vendor.VendorName;
-                var exists = _context.Vendors.ToList().Where(x => x.VendorName == nameInput).Select(x => x.VendorName).FirstOrDefault();
-                do while (nameInput == exists)
-                    {
-                        return RedirectToAction("Create");
-                    }
-                while (false);
-                var v = _context.Vendors.ToList().Select(x => x.VendorID).Count();
-                if (v == 0)
-                {
-                    int tempV = 9001;
-                    vendor.VendorID = tempV;
-                }
-                else
-                {
-                    var getLastID = _context.Vendors.ToList().OrderBy(x => x.VendorID).Select(x => x.VendorID).Last();
-                    vendor.VendorID = getLastID + 1;
-                }
-                _context.Add(vendor);
-                await _context.SaveChangesAsync();
+                await artBLL.AddNewVendor(_context, vendor);
                 return RedirectToAction("Create");
             }
             return View(vendor);
@@ -489,34 +445,12 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewProduct([Bind("ProductID, ProductName, ISActive")] ProductModel product)
+        public async Task<IActionResult> NewProduct([Bind("ProductID, ProductName, ISActive")] ProductModel product, ArticleBusinessLayer artBLL)
         {
 
             if (ModelState.IsValid)
             {
-                var nameInput = product.ProductName;
-                var exists = _context.Products.ToList().Where(x => x.ProductName == nameInput).Select(x => x.ProductName).FirstOrDefault();
-                do while (nameInput == exists)
-                    {
-                        return RedirectToAction("Create");
-                    }
-                while (false);
-                var p = _context.Products.ToList().Select(x => x.ProductID).Count();
-                if (p == 0)
-                {
-                    int tempP = 4001;
-                    product.ProductID = tempP;
-
-                }
-                else
-                {
-                    var getLastID = _context.Products.ToList().OrderBy(x => x.ProductID).Select(x => x.ProductID).Last();
-                    var tempIntProdID = Convert.ToInt32(getLastID);
-                    product.ProductID = tempIntProdID + 1;
-
-                }
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                await artBLL.AddNewProduct(_context, product);
                 return RedirectToAction("Create");
             }
             return View(product);
@@ -533,32 +467,12 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewCategory([Bind("CategoryID, CategoryName, ISActive")] CategoryModel category)
+        public async Task<IActionResult> NewCategory([Bind("CategoryID, CategoryName, ISActive")] CategoryModel category, ArticleBusinessLayer artBLL)
         {
 
             if (ModelState.IsValid)
             {
-                var nameInput = category.CategoryName;
-                var exists = _context.Categories.ToList().Where(x => x.CategoryName == nameInput).Select(x => x.CategoryName).FirstOrDefault();
-                do while (nameInput == exists)
-                    {
-                        return RedirectToAction("Create");
-                    }
-                while (false);
-                var c = _context.Categories.ToList().Select(x => x.CategoryID).Count();
-                if (c == 0)
-                {
-                    int tempC = 1010;
-                    category.CategoryID = tempC;
-
-                }
-                else
-                {
-                    var getLastID = _context.Categories.ToList().OrderBy(x => x.CategoryID).Select(x => x.CategoryID).Last();
-                    category.CategoryID = getLastID + 100;
-                }
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                await artBLL.AddNewCategory(_context,category);
                 return RedirectToAction("Create");
             }
             return View(category);
@@ -575,33 +489,12 @@ namespace Webshop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Authorize]
-        public async Task<IActionResult> NewSubCategory([Bind("SubCategoryID, SubCategoryName, ISActive")] SubCategoryModel subCategory)
+        public async Task<IActionResult> NewSubCategory([Bind("SubCategoryID, SubCategoryName, ISActive")] SubCategoryModel subCategory, ArticleBusinessLayer artBLL)
         {
 
             if (ModelState.IsValid)
             {
-                var nameInput = subCategory.SubCategoryName;
-                var exists = _context.SubCategories.ToList().Where(x => x.SubCategoryName == nameInput).Select(x => x.SubCategoryName).FirstOrDefault();
-                do while (nameInput == exists)
-                    {
-                        return RedirectToAction("Create");
-                    }
-                while (false);
-                var s = _context.SubCategories.ToList().Select(x => x.SubCategoryID).Count();
-
-                if (s == 0)
-                {
-                    int tempS = 1001;
-                    subCategory.SubCategoryID = tempS;
-                }
-
-                else
-                {
-                    var getLastID = _context.SubCategories.ToList().OrderBy(x => x.SubCategoryID).Select(x => x.SubCategoryID).Last();
-                    subCategory.SubCategoryID = getLastID + 1;
-                }
-                _context.Add(subCategory);
-                await _context.SaveChangesAsync();
+                await artBLL.AddNewSubProduct(_context, subCategory);
                 return RedirectToAction("Create");
             }
             return View(subCategory);

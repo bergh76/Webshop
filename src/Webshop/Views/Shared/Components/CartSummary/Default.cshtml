@@ -15,14 +15,10 @@
         return Xsrf.GetAndStoreTokens(Context).RequestToken;
     }
 }
-
-
-@section Scripts {
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
+<script type="text/javascript">
         $(function () {
             // Document.ready -> link up remove event handler
-            $(".RemoveFromCart").click(function () {
+            $(".RemoveFromCart").click(function (e) {
                 // Get the id from the link
                 var recordToDelete = $(this).attr("data-id");
                 var PostToUrl = $(this).attr("data-url");
@@ -57,7 +53,11 @@
             });
 
         });
-    </script>
+</script>
+
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 @if (Model._cartItems != null)
 {
@@ -83,12 +83,12 @@
 
                         <td id="item-count-@item.CartItemId">@item.Count</td>
                         
-                        <td>@item.Article.ArticlePrice</td>
+                        <td>@Convert.ToDecimal(Math.Round(item.Article.ArticlePrice / Model._curr, 2))</td>
 
                         <td>
                             @{var price = item.Article.ArticlePrice;
                                 var i = item.Count;
-                                var sum = Convert.ToDecimal(Math.Round(price * i, 2));}
+                                var sum = Convert.ToDecimal(Math.Round((price * i) / Model._curr, 2));}
                                 @sum
                         </td>
 

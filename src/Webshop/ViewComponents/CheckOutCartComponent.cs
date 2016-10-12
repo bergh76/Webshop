@@ -30,7 +30,7 @@ namespace Webshop.Components
             ShoppingCart cart = ShoppingCart.GetCart(_context, HttpContext);
             cart._cartItems = await cart.GetCartItems();
             cart._artList = await cart.GetCartItems();
-            var sum = await cart.GetTotal() / _curr;
+            var sum = await cart.GetTotal();
             cart._sum = Math.Round(sum, 2);
             return View(cart);
         }

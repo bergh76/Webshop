@@ -22,7 +22,6 @@ namespace Webshop.Components
             _curr = FixerIO.GetUDSToRate(_iso);
             _context = context;
         }
-
         private WebShopRepository _context { get; }
 
         public async Task<IViewComponentResult> InvokeAsync()

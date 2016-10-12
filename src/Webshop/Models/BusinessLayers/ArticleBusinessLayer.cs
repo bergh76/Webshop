@@ -37,7 +37,10 @@ namespace Webshop.Models.BusinessLayers
         private string _category;
         private string _product;
         private string _subproduct;
-
+        public static string vendorMessage;
+        public static string productMessage;
+        public static string categoryMessage;
+        public static string subcatMessage;
         public ArticleBusinessLayer() { }
 
         public ArticleBusinessLayer(WebShopRepository context,IDateTime datetime, IHostingEnvironment hostEnvironment, IStringLocalizer<ArticleBusinessLayer> localizer, IFormFile file, IFormCollection form, ILogger<ArticleBusinessLayer> logger)
@@ -91,6 +94,116 @@ namespace Webshop.Models.BusinessLayers
         private static string RootHost(IHostingEnvironment host)
         {
             return _root = host.WebRootPath;
+        }
+
+        internal async Task AddNewVendor(WebShopRepository context, VendorModel vendor)
+        {
+            var nameInput = vendor.VendorName;
+            var exists = await context.Vendors.Where(x => x.VendorName == nameInput).Select(x => x.VendorName).FirstOrDefaultAsync();
+            do while (nameInput == exists)
+                {
+                    vendorMessage = "Tillverkaren finns redan";
+                    return;
+                }
+            while (false);
+            var v = context.Vendors.ToList().Select(x => x.VendorID).Count();
+            if (v == 0)
+            {
+                int tempV = 9001;
+                vendor.VendorID = tempV;
+            }
+            else
+            {
+                var getLastID = context.Vendors.ToList().OrderBy(x => x.VendorID).Select(x => x.VendorID).Last();
+                vendor.VendorID = getLastID + 1;
+            }
+            context.Add(vendor);
+            await context.SaveChangesAsync();
+        }
+
+        internal async Task AddNewCategory(WebShopRepository context, CategoryModel category)
+        {
+            var nameInput = category.CategoryName;
+            var exists = await context.Categories
+                .Where(x => x.CategoryName == nameInput)
+                .Select(x => x.CategoryName)
+                .FirstOrDefaultAsync();
+            do while (nameInput == exists)
+                {
+                    categoryMessage = "Kategorin finns redan";
+
+                    return;
+                }
+            while (false);
+            var c = context.Categories.ToList().Select(x => x.CategoryID).Count();
+            if (c == 0)
+            {
+                int tempC = 1010;
+                category.CategoryID = tempC;
+
+            }
+            else
+            {
+                var getLastID = context.Categories.ToList().OrderBy(x => x.CategoryID).Select(x => x.CategoryID).Last();
+                category.CategoryID = getLastID + 100;
+            }
+            context.Add(category);
+            await context.SaveChangesAsync();
+        }
+
+        internal async Task AddNewProduct(WebShopRepository context, ProductModel product)
+        {
+            var nameInput = product.ProductName;
+            var exists = await context.Products.Where(x => x.ProductName == nameInput).Select(x => x.ProductName).FirstOrDefaultAsync();
+            do while (nameInput == exists)
+                {
+                    productMessage = "Produkten finns redan";
+                    return;
+                }
+            while (false);
+            var p = context.Products.ToList().Select(x => x.ProductID).Count();
+            if (p == 0)
+            {
+                int tempP = 4001;
+                product.ProductID = tempP;
+
+            }
+            else
+            {
+                var getLastID = context.Products.ToList().OrderBy(x => x.ProductID).Select(x => x.ProductID).Last();
+                var tempIntProdID = Convert.ToInt32(getLastID);
+                product.ProductID = tempIntProdID + 1;
+
+            }
+            context.Add(product);
+            await context.SaveChangesAsync();
+        }
+
+        internal async Task AddNewSubProduct(WebShopRepository context, SubCategoryModel subCategory)
+        {
+            var nameInput = subCategory.SubCategoryName;
+            var exists = await context.SubCategories.Where(x => x.SubCategoryName == nameInput).Select(x => x.SubCategoryName).FirstOrDefaultAsync();
+            do while (nameInput == exists)
+                {
+                    subcatMessage = "Underkategorin finns redan";
+                    return;
+                }
+            while (false);
+            var s = context.SubCategories.ToList().Select(x => x.SubCategoryID).Count();
+
+            if (s == 0)
+            {
+                int tempS = 1001;
+                subCategory.SubCategoryID = tempS;
+            }
+
+            else
+            {
+                var getLastID = context.SubCategories.ToList().OrderBy(x => x.SubCategoryID).Select(x => x.SubCategoryID).Last();
+                subCategory.SubCategoryID = getLastID + 1;
+            }
+            context.Add(subCategory);
+            await context.SaveChangesAsync();
         }
 
         private void GetSubCategory(WebShopRepository context,Articles article, int SubCategoryID)
@@ -273,6 +386,7 @@ namespace Webshop.Models.BusinessLayers
             _context.Entry(artTrans).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
 
         private bool ArticleModelExists(int id)
         {

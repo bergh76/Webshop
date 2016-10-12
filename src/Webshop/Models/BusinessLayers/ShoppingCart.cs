@@ -19,8 +19,8 @@ namespace Webshop.Models.BusinessLayers
 
         private readonly WebShopRepository _context;
         public readonly string _shoppingCartId ;
-        private static string _iso;// = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
-        private static decimal _curr;// = FixerIO.GetUDSToRate(_iso);
+        public string _iso;// = new RegionInfo(CultureInfo.CurrentUICulture.Name).ISOCurrencySymbol;
+        public decimal _curr;// = FixerIO.GetUDSToRate(_iso);
 
         public decimal _sum { get; set; }
         public int _items { get; set; }
@@ -42,7 +42,7 @@ namespace Webshop.Models.BusinessLayers
         public static ShoppingCart GetCart(WebShopRepository context, string cartId)
             => new ShoppingCart(context, cartId);
 
-        public async Task AddToCart(Articles article)//, ArticleTranslation artT)
+        public async Task AddToCart(Articles article)
         {
             // Get the matching cart and items instances
             var cartItem = await _context.CartItems.SingleOrDefaultAsync(

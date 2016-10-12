@@ -16,92 +16,20 @@
     }
 }
 
-    <!--ajax script-->
-<script type="text/javascript">
-        $(function () {
-            // Document.ready -> link up remove event handler
-            $(".RemoveFromCart").click(function () {
-                // Get the id from the link
-                var recordToDelete = $(this).attr("data-id");
-                var PostToUrl = $(this).attr("data-url");
-                if (recordToDelete != '') {
-
-                    // Perform the ajax post
-                    $.ajax(PostToUrl, {
-                        type: "post",
-                        data: { "id": recordToDelete },
-                        dataType: "json",
-                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }
-                    }).done(function (data) {
-                        // Successful requests get here
-                        // Update the page elements
-                        if (data.ItemCount == 0) {
-                            $('#row-' + data.DeleteId).fadeOut('slow');
-                            window.location.reload().fadeOut("fast")
-                        } else {
-                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
-                            window.location.reload().fadeOut("fast")
-                        }
-
-                        $('#cart-total').text(data.CartTotal);
-                        $('#update-message').text(data.Message);
-                        $('#cart-status').text(data.CartCount);
-                        console.log("Borttaget\n", PostToUrl, "\n")
-                        console.log("Data \n", data, "\n")
-                        console.log("Borttaget", data.DeleteId)
-                        window.location.reload().fadeOut("fast");
-                    });
-                }
-            });
-
-        });
-    </script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#noTranslationTabel').DataTable({
-            //dom: 'B<"clear"><lf<t>ip>',
-            //buttons: [{ extend: 'copy', text: 'Kopiera', },
-            //    {
-            //    extend: 'excel',
-            //    text: 'Excel',
-            //    exportOptions: {  modifier: { page: 'current' } },
-            //},
-            //{
-            //    extend: 'pdf',
-            //    text: 'Pdf'
-            //},
-            //],
-            "language": {
-                "lengthMenu": "Visa _MENU_ rader per sida",
-                "zeroRecords": "Din sökning gav inget - försök med ett annat sökord",
-                "info": "_PAGE_ av _PAGES_",
-                "infoEmpty": "Datatabellen är tom",
-                "infoFiltered": "(filtrerdad på _MAX_ antal poster)"
-            },
-            //"order": [[0, "asc", ]], //Column1
-            "processing": true,
-
-        })
-
-        //var table = $('#myDWPTable').DataTable();
-        //var expdata = table.buttons.exportData();
-        //console.log("Tabelldata \n", expdata);
-    });
-</script>
-
 <!--ajax script end-->
 
 @if (Model._cartItems != null)
 {
     <div class="col-md-12">
-        <table id="noTranslationTabel" class="table table-striped table-font dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
+
+        <table id="noTranslationTabel" class="table table-striped dt-responsive dataTable no-footer dtr-inline collapsed" role="grid" aria-describedby="datatable-buttons_info">
             <thead>
                 <tr>
-                    <th style="width:100px">@Localizer["Article"]</th>
-                    <th style="width:20px">@Localizer["Amount"]</th>
-                    <th style="width:70px">@Localizer["Price"]</th>
-                    <th style="width:70px">@Localizer["RowTotal"]</th>
+                    <th>@Localizer["Article"]</th>
+                    <th>@Localizer["Amount"]</th>
+                    <th>@Localizer["Price"]</th>
+                    <th>@Localizer["RowTotal"]</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -109,17 +37,22 @@
                 {
                     <tr id="row-@item.CartItemId">
 
-                        <td style="width:100px" ><a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></td>
+                        <td><a asp-controller="Home" asp-action="Details" asp-route-id="@item.ArticleId">@item.ArticleName</a></td>
 
-                        <td style="width:20px" id="item-count-@item.CartItemId">@item.Count</td>
+                        <td id="item-count-@item.CartItemId">@item.Count</td>
 
-                        <td style="width:70px">@item.Article.ArticlePrice</td>
+                        <td>@Convert.ToDecimal(Math.Round(item.Article.ArticlePrice / Model._curr, 2))</td>
 
-                        <td style="width:70px">
+                        <td>
                             @{var price = item.Article.ArticlePrice;
                                 var i = item.Count;
-                                var sum = Convert.ToDecimal(Math.Round(price * i, 2));}
+                                var sum = Convert.ToDecimal(Math.Round((price * i )/ Model._curr,2));}
                             @sum
+                        </td>
+                        <td>
+                            <a class="delete-button-sm RemoveFromCart" href="#" data-id="@item.CartItemId" data-url='@Url.Content("~/ShoppingCart/RemoveFromCart")'>
+                                <i class="fa fa-remove"></i>
+                            </a>
                         </td>
                     </tr>
                                 }
@@ -141,5 +74,46 @@
    
 
 @section Scripts {
+        <!--ajax script-->
+<script type="text/javascript">
+        $(function () {
+            // Document.ready -> link up remove event handler
+            $(".RemoveFromCart").click(function () {
+                // Get the id from the link
+                var recordToDelete = $(this).attr("data-id");
+                var PostToUrl = $(this).attr("data-url");
+                if (recordToDelete != '') {
+
+                    // Perform the ajax post
+                    $.ajax(PostToUrl, {
+                        type: "post",
+                        data: { "id": recordToDelete },
+                        dataType: "json",
+                        headers: { "RequestVerificationToken": '@GetAntiXsrfRequestToken()' }
+                    }).done(function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.DeleteId).fadeOut('slow');
+                            //window.location.reload().fadeOut("fast")
+                        } else {
+                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                            //window.location.reload().fadeOut("fast")
+                        }
+
+                        $('#cart-total').text(data.CartTotal);
+                        $('#update-message').text(data.Message);
+                        $('#cart-status').text(data.CartCount);
+                        console.log("Borttaget\n", PostToUrl, "\n")
+                        console.log("Data \n", data, "\n")
+                        console.log("Borttaget", data.DeleteId)
+                        //window.location.reload().fadeOut("fast");
+                    });
+                }
+            });
+
+        });
+</script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }                             
