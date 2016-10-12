@@ -28,20 +28,21 @@ namespace Webshop.Controllers
         public async Task<IActionResult> Orders([FromServices] WebShopRepository dbContext)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var userId = dbContext.Users.Where(x => x.UserName == Convert.ToString(user)).Select(x => x.Id).SingleOrDefault();
+            var userId = dbContext.Users.Where(x => x.UserName == Convert.ToString(user)).Select(x => x.Id).FirstOrDefault();
 
             if (userId == dbContext.Orders
                 .Where(x => x.Username == Convert.ToString(user))
                 .Select(x => x.UserId)
-                .SingleOrDefault())
+                .FirstOrDefault())
             {
                 var artList = from o in dbContext.Orders
+                              join u in dbContext.Users on o.UserId equals u.Id
                               join od in dbContext.OrderDetails on o.OrderId equals od.OrderId
                               join a in dbContext.Articles on od.ArticleId equals a.ArticleId
-                              join u in dbContext.Users on o.UserId equals u.Id
-                              join at in dbContext.ArticleTranslations on  
+                              join at in dbContext.ArticleTranslations on
                                                             new { a.ArticleId, Second = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName }
                                                             equals new { at.ArticleId, Second = at.LangCode }
+                              where u.Id == o.UserId
                               select new OrderOverviewViewModel
                               {
                                   OrderId = o.OrderId,

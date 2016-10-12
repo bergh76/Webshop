@@ -39,8 +39,8 @@
     });
     </script>
 
-@if (SignInManager.IsSignedIn(User)) //Check loggedin user and match orderId<=>UserId in controller to populate OrderList
-{
+@*@if (SignInManager.IsSignedIn(User)) //Check loggedin user and match orderId<=>UserId in controller to populate OrderList
+{*@
         <section class="container content-box">
             <section class="row">   
                 <div class="col-md-12 pad-top">
@@ -65,7 +65,7 @@
                             <tbody>
                                 @if (Model != null)
                                 {
-                                     @foreach (var item in Model)
+                                     @foreach (var item in Model.Where(x => x.UserId == UserManager.GetUserId(User)))
                                      { 
 
                                         <tr>
@@ -102,5 +102,5 @@
                 </div>
             </section>
         </section>
-}
+@*}*@
 
