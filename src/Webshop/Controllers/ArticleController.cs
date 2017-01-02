@@ -505,6 +505,10 @@ namespace Webshop.Controllers
             return View("~/Views/Shared/AccessDenied.cshtml");
         }
 
+        public IActionResult Error()
+        {
+            return View();
+        }
         private bool ArticleModelExists(int id)
         {
             return _context.Articles.Any(e => e.ArticleId == id);

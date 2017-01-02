@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using System.IO;
 using Webshop.HelperClasses;
 using Webshop.Interfaces;
 using Webshop.Models;
@@ -27,6 +28,7 @@ namespace Webshop
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -35,7 +37,11 @@ namespace Webshop
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
+            //Add webhostbuilder.
+            //services.Configure<IISOptions>(options =>
+            //{
+            //    options.AuthenticationDescriptions;
+            //});
             // Add framework services.
             services.AddDbContext<WebShopRepository>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

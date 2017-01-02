@@ -1,4 +1,4 @@
-﻿namespace Webshop.Controllers
+﻿namespace Webshop.ViewModels
 {
     internal class ShoppingCartRemoveViewModel
     {

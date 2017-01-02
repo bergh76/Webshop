@@ -1,25 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Webshop.Models;
-using Webshop.ViewModels;
 using Newtonsoft.Json;
 using System.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using System.Net;
-using Webshop.Models.BusinessLayers;
 
 namespace Webshop.Services
 {
     public class Klarna
     {
         public static HttpClient _client = new HttpClient();
-        public readonly string Shared_Secret = "tE94QeKzSdUVJGe";
-        public static string KlarnaOrderId { get; set; }
+        public readonly string Shared_Secret = "tE94QeKzSdUVJGe"; // shared secret connected to your Klarna account
+        public static string KlarnaOrderId { get; set; } // order id from KCO API
+
         private string CreateAuthorization(string data)
         {
             //base64(hex(sha256 (request_payload + shared_secret)))

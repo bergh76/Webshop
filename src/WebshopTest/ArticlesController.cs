@@ -1,19 +1,17 @@
 ﻿// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Webshop.Models;
 using Webshop.ViewModels;
-using Xunit;
 
 namespace Webshop.Controllers
 {
